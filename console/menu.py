@@ -34,8 +34,10 @@ class MenuItems():
         
     @staticmethod
     def options(dict_options):
-        for key, value in dict_options.iteritems():
-            print key + '.' + ' ' + value
+        keys = dict_options.keys()
+        keys.sort()
+        for key in keys:
+            print key + '.' + ' ' + dict_options[key]
         
         
 class MenuBuilder():
