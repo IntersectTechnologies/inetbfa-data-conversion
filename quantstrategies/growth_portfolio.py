@@ -43,7 +43,6 @@ valid_ix = [ix for ix in listed if ix in data['Close'].columns and ix in data['T
 
 print 'Number of available shares to select from: ' + str(len(valid_ix))
 
-
 def calc_means(data, fields, '1M'):
     
     listed_mc = marketcap[valid_ix].last('1M')
