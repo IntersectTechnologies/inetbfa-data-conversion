@@ -106,5 +106,4 @@ def calc_momentum(fc):
     # RANK
     return(output.sort(columns = 'Momentum - 12M', ascending = False))
 
-
 calc_momentum(fc).to_excel(path.join('C:\\', 'Users', 'Niel', 'Google Drive', 'NWU', 'Portfolio', 'Portfolio_' + str(dt.date.today()) + '.xlsx'))
