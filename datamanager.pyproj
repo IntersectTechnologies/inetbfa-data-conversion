@@ -53,7 +53,6 @@
     <Compile Include="src\main\python\datamanager\process\update_reference.py" />
     <Compile Include="src\main\python\datamanager\process_downloads.py" />
     <Compile Include="src\main\python\datamanager\run.py" />
-    <Compile Include="src\main\python\datamanager\setup.py" />
     <Compile Include="src\main\python\datamanager\sync.py" />
     <Compile Include="src\main\python\datamanager\tasks.py">
       <SubType>Code</SubType>
