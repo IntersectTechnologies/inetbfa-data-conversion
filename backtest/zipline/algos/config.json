@@ -1,0 +1,17 @@
+{
+    "benchmark": "JSE_J203", 
+    "end": "2013-12-31", 
+    "name": "Simple Momentum", 
+    "module": "simple_momentum",
+    "quandl": {
+        "authtoken": "MBaawgy9DEZJHU3NkcNd", 
+        "source": "NIELSWART"
+    }, 
+    "source": "local", 
+    "start": "2010-1-1", 
+    "symbols": "all", 
+    "metrics": ["Close", "Volume", "Market Cap", "Total Number Of Shares", "Number Of Trades"],
+    "timezone": "Africa/Johannesburg", 
+    "version": "0.1",
+	"exchange": "JSE"
+}
