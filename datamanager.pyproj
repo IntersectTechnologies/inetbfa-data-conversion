@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9859b002-a89e-44cc-8e64-a02d0048a650}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>src\main\python\datamanager\run.py</StartupFile>
+    <SearchPath>..\;..\core\src\main\python\;..\console\src\main\python\;src\main\python\;..\quantstrategies\src\main\python\</SearchPath>
+    <WorkingDirectory>./src/main/python</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId />
+    <InterpreterVersion />
+    <IsWindowsApplication>False</IsWindowsApplication>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="src\" />
+    <Folder Include="src\main\" />
+    <Folder Include="src\main\python\" />
+    <Folder Include="src\main\python\datamanager\" />
+    <Folder Include="src\main\python\datamanager\process\" />
+    <Folder Include="src\main\python\datamanager\utils\" />
+    <Folder Include="src\main\scripts\" />
+    <Folder Include="src\unittest\" />
+    <Folder Include="src\unittest\python\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="src\main\python\datamanager\adjust.py" />
+    <Compile Include="build.py" />
+    <Compile Include="src\main\python\datamanager\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\main\python\datamanager\datamodel.py" />
+    <Compile Include="src\main\python\datamanager\liquidity_metrics.py" />
+    <Compile Include="src\main\python\datamanager\process\data_preprocessing.py" />
+    <Compile Include="src\main\python\datamanager\process\dividend_preprocessing.py" />
+    <Compile Include="src\main\python\datamanager\process\extract_index_reference.py" />
+    <Compile Include="src\main\python\datamanager\process\extract_ratio_lineitems.py" />
+    <Compile Include="src\main\python\datamanager\process\FileIO.py" />
+    <Compile Include="src\main\python\datamanager\process\index_preprocessing.py" />
+    <Compile Include="src\main\python\datamanager\process\market_preprocessing.py" />
+    <Compile Include="src\main\python\datamanager\process\preprocessing.py" />
+    <Compile Include="src\main\python\datamanager\process\ratios_preprocessing.py" />
+    <Compile Include="src\main\python\datamanager\process\transform_data.py" />
+    <Compile Include="src\main\python\datamanager\process\update_reference.py" />
+    <Compile Include="src\main\python\datamanager\process_downloads.py" />
+    <Compile Include="src\main\python\datamanager\run.py" />
+    <Compile Include="src\main\python\datamanager\setup.py" />
+    <Compile Include="src\main\python\datamanager\sync.py" />
+    <Compile Include="src\main\python\datamanager\tasks.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\main\python\datamanager\universe_select.py" />
+    <Compile Include="src\main\python\datamanager\utils\utils.py" />
+    <Compile Include="src\main\python\datamanager\utils\__init__.py" />
+    <Compile Include="src\unittest\python\test.py" />
+  </ItemGroup>
+  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+</Project>
