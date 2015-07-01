@@ -35,6 +35,7 @@
     <Folder Include="src\unittest\python\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="build.py" />
     <Compile Include="src\main\python\quantstrategies\build.py" />
     <Compile Include="src\main\python\quantstrategies\filters.py" />
     <Compile Include="src\main\python\quantstrategies\growth_portfolio.py" />

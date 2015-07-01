@@ -5,7 +5,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>00c8ac46-3415-456e-905b-242d66d17189</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>trading.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,13 +22,25 @@
     <DebugSymbols>true</DebugSymbols>
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="trading.py" />
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="src\" />
+    <Folder Include="src\main\" />
+    <Folder Include="src\main\python\" />
+    <Folder Include="src\main\python\trading\" />
+    <Folder Include="src\main\scripts\" />
+    <Folder Include="src\unittest\" />
+    <Folder Include="src\unittest\python\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="build.py" />
+    <Compile Include="src\main\python\trading\logger.py" />
+    <Compile Include="src\main\python\trading\tracker.py" />
+    <Compile Include="src\main\python\trading\__init__.py" />
+  </ItemGroup>
   <Import Condition="Exists($(PtvsTargetsFile))" Project="$(PtvsTargetsFile)" />
   <Import Condition="!Exists($(PtvsTargetsFile))" Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

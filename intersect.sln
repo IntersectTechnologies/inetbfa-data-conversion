@@ -11,6 +11,8 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "console", "console\console.
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "quantstrategies", "quantstrategies\quantstrategies.pyproj", "{FE0BF156-431F-44DB-B8A3-67001BD57813}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "trading", "trading\trading.pyproj", "{00C8AC46-3415-456E-905B-242D66D17189}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,8 @@ Global
 		{D872BD79-464F-4F71-A598-BE5626FDDE6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE0BF156-431F-44DB-B8A3-67001BD57813}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FE0BF156-431F-44DB-B8A3-67001BD57813}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00C8AC46-3415-456E-905B-242D66D17189}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00C8AC46-3415-456E-905B-242D66D17189}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

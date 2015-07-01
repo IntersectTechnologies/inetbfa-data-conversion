@@ -36,6 +36,7 @@
     <Folder Include="src\unittest\python\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="build.py" />
     <Compile Include="src\main\python\console\menu.py" />
     <Compile Include="src\main\python\console\__init__.py" />
   </ItemGroup>
