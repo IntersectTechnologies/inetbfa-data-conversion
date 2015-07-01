@@ -2,3 +2,5 @@ data/
 *.pyc
 .vs/
 */target/*
+*.log
+*.lnk
