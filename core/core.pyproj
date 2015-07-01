@@ -38,6 +38,7 @@
     <Folder Include="src\unittest\python\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="build.py" />
     <Compile Include="src\main\python\core\__init__.py">
       <SubType>Code</SubType>
     </Compile>
