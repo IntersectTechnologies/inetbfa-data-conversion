@@ -30,18 +30,8 @@ def calc_means(data, fields, period = '1M'):
 class NWUMomentum():
     """
     """
-    daily_path = path.join(DATA_PATH, 'jse', 'equities', 'daily')
 
-    # Select Universe
-    listed = dm.get_all_listed()
-
-    fields = [
-        'Close',
-        'Market Cap',
-        'Volume',
-        'Total Number Of Shares',
-        'VWAP'
-    ]
+    
 
     def __init__(self, start_date, end_date):
         '''
@@ -49,6 +39,14 @@ class NWUMomentum():
         self.start_date = '2014-06-01'
         self.end_date = '2015-05-31'
         
+        daily_path = path.join(DATA_PATH, 'jse', 'equities', 'daily')
+        fields = [
+            'Close',
+            'Market Cap',
+            'Volume',
+            'Total Number Of Shares',
+            'VWAP'
+        ]
         # Import the last 12 month's data
         self.data = MarketData.load_from_file(daily_path, fields, start_date, end_date)
 
@@ -62,24 +60,26 @@ class NWUMomentum():
         filtered = listed
 
         # Volume zero filter
-        filtered = filtered.intersection(greater_than_filter(means['Volume'], 1))
+        filtered = filtered.intersection(greater_than_filter(self.means['Volume'], 1))
 
         # Price filter
-        filtered = filtered.intersection(greater_than_filter(data['Close'].last('1D').ix[0], 100))
+        filtered = filtered.intersection(greater_than_filter(self.data['Close'].last('1D').ix[0], 100))
     
         # Market Cap filter
-        filtered = filtered.intersection(top_filter(means['Market Cap'], 200))
+        filtered = filtered.intersection(top_filter(self.means['Market Cap'], 200))
     
         # Trading Frequency Filter
-        filtered = filtered.intersection(greater_than_filter((means['Volume']/means['Total Number Of Shares'])*100, 0.01))
+        filtered = filtered.intersection(greater_than_filter((self.means['Volume']/self.means['Total Number Of Shares'])*100, 0.01))
     
         return(filtered)
 
-    def calc_momentum():
+    def calc_momentum(self):
         '''
         Calculate momentum
         '''
-        filtered = filter_universe(listed)
+        # Select Universe
+        listed = dm.get_all_listed()
+        filtered = self.filter_universe(listed)
         fc = self.data['Close'][filtered].sort(ascending=False)
 
         mom12 = np.log(fc.shift(-21)) - np.log(fc.shift(-252))
@@ -96,7 +96,7 @@ class NWUMomentum():
         output = equities[cols].ix[filtered].copy()
 
         output['Momentum - 12M'] = latest_mom
-        output['Price'] = data['Close'].last('1D').ix[0]
+        output['Price'] = self.data['Close'].last('1D').ix[0]
         # RANK
         return(output.sort(columns = 'Momentum - 12M', ascending = False))
 

@@ -16,11 +16,11 @@ from core.envs import *
 def calc_adj_close():
 
     # Import closing price data with pandas
-    cp = path.join(DATA_PATH, "jse", "equities", "daily", "Close.csv")
+    cp = path.join(MASTER_DATA_PATH, "jse", "equities", "daily", "Close.csv")
     close = pd.read_csv(cp, index_col = 0, parse_dates=True)
 
     # Import dividend ex date data with pandas
-    dp = path.join(DATA_PATH, "jse", "equities", "daily", "Dividend Ex Date.csv")
+    dp = path.join(MASTER_DATA_PATH, "jse", "equities", "daily", "Dividend Ex Date.csv")
     divs = pd.read_csv(dp, index_col = 0, parse_dates=True)
 
     # Calculate multipliers for each dividend payment
@@ -58,7 +58,6 @@ def calc_adj_close():
     adj_close = close * dmult;
 
     # Save to file
-
     return adj_close
     
 

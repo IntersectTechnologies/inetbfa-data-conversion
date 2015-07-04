@@ -104,7 +104,7 @@ class ReferenceProcessor(object):
                         if conv_val != cur_val:
                             if conv_val != 'Unclassified': 
                                 upd.set_value(i, f1, conv_val)   
-                            elif conv_val == 'Unclassified' and cur_value == '':
+                            elif conv_val == 'Unclassified' and cur_val == '':
                                 upd.set_value(i, f1, conv_val) 
                 else:
                     upd.set_value(i, f1, conv_val)
