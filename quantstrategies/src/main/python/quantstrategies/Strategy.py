@@ -15,23 +15,9 @@ from datamanager.datamodel import MarketData
 from datamanager.envs import *
 from quantstrategies.filters import greater_than_filter, less_than_filter, top_filter
 
-def calc_means(data, fields, period = '1M'):
-    
-    means = {}
-    for f in fields:
-        data[f].fillna(method = 'pad', inplace=True)
-        means[f] = data[f].last(period).mean()
-        
-        if type(means[f]) != pd.Series:
-            raise TypeError
-        
-    return means
-
-class NWUMomentum():
+class Strategy():
     """
     """
-
-    
 
     def __init__(self, start_date, end_date):
         '''
@@ -52,39 +38,25 @@ class NWUMomentum():
 
         self.means = calc_means(self.data, fields)
 
-    def filter_universe(self, listed):
+    def filter(self, listed):
         '''
         Apply filters
         '''
 
         filtered = listed
 
-        # Volume zero filter
-        filtered = filtered.intersection(greater_than_filter(self.means['Volume'], 1))
-
-        # Price filter
-        filtered = filtered.intersection(greater_than_filter(self.data['Close'].last('1D').ix[0], 100))
-    
-        # Market Cap filter
-        filtered = filtered.intersection(top_filter(self.means['Market Cap'], 200))
-    
-        # Trading Frequency Filter
-        filtered = filtered.intersection(greater_than_filter((self.means['Volume']/self.means['Total Number Of Shares'])*100, 0.01))
-    
+        
         return(filtered)
 
-    def calc_momentum(self):
+    def calc(self):
+        
         '''
         Calculate momentum
         '''
         # Select Universe
         listed = dm.get_all_listed()
         filtered = self.filter_universe(listed)
-        fc = self.data['Close'][filtered].sort(ascending=False)
-
-        mom12 = np.log(fc.shift(-21)) - np.log(fc.shift(-252))
-        latest_mom = mom12.ix[0]
-    
+           
         equities = dm.get_equities()
 
         cols = [
@@ -95,10 +67,9 @@ class NWUMomentum():
 
         output = equities[cols].ix[filtered].copy()
 
-        output['Momentum - 12M'] = latest_mom
         output['Price'] = self.data['Close'].last('1D').ix[0]
         # RANK
-        return(output.sort(columns = 'Momentum - 12M', ascending = False))
+        return(output)
 
-    def save(self):
-        self.calc_momentum().to_excel(path.join('C:\\', 'Users', 'Niel', 'Google Drive', 'NWU', 'Portfolio', 'Portfolio_' + str(dt.date.today()) + '.xlsx'))
+    def save(self, filepath):
+        self.calc().to_excel(filepath + '.xlsx')

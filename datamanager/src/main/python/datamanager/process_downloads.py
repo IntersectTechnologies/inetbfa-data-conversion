@@ -11,7 +11,7 @@ from os import path, listdir
 import datetime as dt
 
 from datamodel import Equity
-from core.envs import *
+from datamanager.envs import *
 
 class Processor(object):
     '''

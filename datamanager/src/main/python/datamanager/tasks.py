@@ -4,7 +4,7 @@ import logging
 import datetime as dt
 import calendar as cal
 
-from core.envs import *
+from datamanager.envs import *
 from datamanager.datamodel import MarketData, Dividends, get_equities, set_equities, update_listing_status
 from datamanager.process_downloads import MarketDataProcessor, ReferenceProcessor
 from datamanager.sync import create_dir, sync_latest_master, sync_master_slave
