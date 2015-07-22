@@ -11,7 +11,7 @@ from os import path
 
 from datamodel import MarketData, DataModel
 import datamodel as dm
-from core.envs import *
+from datamanager.envs import *
 
 def calc_adj_close():
 

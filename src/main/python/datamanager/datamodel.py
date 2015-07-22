@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np
 import datetime as dt
 
-from core.envs import *
+from datamanager.envs import *
 
 EQUITIES = pd.read_csv(path.join(MASTER_DATA_PATH, 'jse', 'jse_equities.csv'), sep = ',', index_col = 0)
 
