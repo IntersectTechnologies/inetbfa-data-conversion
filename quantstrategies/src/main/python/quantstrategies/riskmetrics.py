@@ -1,4 +1,4 @@
-# Copyright 2015 Intersect Technologies CC
+﻿# Copyright 2015 Intersect Technologies CC
 # Copyright 2014 Quantopian, Inc.
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,8 +23,6 @@ import math
 import numpy as np
 import numpy.linalg as la
 import ffn
-import quantifi.utils.math_utils as q_math
-
 
 def sharpe_ratio(portf_return, riskfree_return, portf_volatility):
     """

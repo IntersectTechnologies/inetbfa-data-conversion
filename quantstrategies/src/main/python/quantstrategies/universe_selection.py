@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright 2015 Intersect Technologies CC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +19,16 @@ Created on Mon Dec 08 16:08:10 2014
 
 import pandas as pd
 from . import liquidity_metrics as lf 
+
+def less_than_filter(data, threshold):
+    return data[data < threshold].index
+    
+def greater_than_filter(data, threshold):
+    return data[data >= threshold].index
+
+def top_filter(data, n):
+    data.sort(ascending = False)
+    return data[0:n].index    
 
 def _get_larger_than(data, value, date='latest'):
     

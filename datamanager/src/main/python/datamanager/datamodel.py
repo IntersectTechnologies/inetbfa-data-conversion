@@ -1,4 +1,17 @@
-# -*- coding: utf-8 -*-
+# Copyright 2015 Intersect Technologies CC
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 """
 Created on Tue Jan 27 11:34:28 2015
 
@@ -12,97 +25,6 @@ import datetime as dt
 
 from datamanager.envs import *
 
-EQUITIES = pd.read_csv(path.join(MASTER_DATA_PATH, 'jse', 'jse_equities.csv'), sep = ',', index_col = 0)
-
-def set_equities(equities):
-    '''
-    '''
-    global EQUITIES
-    if type(equities) == pd.DataFrame:
-        EQUITIES = equities
-    else:
-        raise ValueError
-    
-def get_equities():
-    '''
-    '''
-    
-    eq = EQUITIES.copy()
-    return eq
-    
-def get_all():
-    '''
-    '''        
-    
-    eq = EQUITIES.copy()
-    return eq.index
-
-def get_all_listed():
-    '''
-    Get all listed equities
-    
-    Returns
-    -------
-
-    Pandas DataFrame of all listed Equities
-    '''
-    
-    eq = EQUITIES[EQUITIES.listing_status=='CURRENT'].copy()
-    return eq.index 
-    
-def get_all_delisted():
-    '''
-    Get all delisted equities
-    
-    Parameters
-    ----------
-    
-    Returns
-    -------
-    '''
-    eq = EQUITIES[EQUITIES.listing_status=='DELISTED'].copy()
-    return eq.index
-    
-    
-def get_all_active():
-    '''
-    Get all actively traded equities
-    
-    
-    Parameters
-    ----------
-    
-    Returns
-    -------
-    '''
-    eq = EQUITIES[EQUITIES.trading_status=='DELISTED'].copy()
-    return eq.index
-    
-    
-def get_all_suspended():
-    '''
-    Get all suspended equities
-    
-    Parameters
-    ----------
-    
-    Returns
-    -------
-    '''
-    
-    eq = EQUITIES[EQUITIES.trading_status=='DELISTED'].copy()
-    return eq.index    
-    
-def update_listing_status():
-    
-    def update_ls(ls, lu, ix):
-        if lu != str(dt.date.today()) and ls != 'DELISTED':
-            EQUITIES.set_value(ix, 'listing_status', 'DELISTED')
-
-    map(update_ls, EQUITIES['listing_status'], EQUITIES['last_update'], EQUITIES.index)    
-    EQUITIES.to_csv(path.join(MASTER_DATA_PATH, 'jse', 'jse_equities.csv'), sep = ',', index_col = 0)
-    return EQUITIES
-        
 class DataModel(object):
     
     def __init__(self):
@@ -321,10 +243,7 @@ class MarketData(DataModel):
 class Ratios(DataModel):
     '''
     '''
-    
-    def __init__(self):
-        
-        self.fields = [
+    fields = [
             'Book Value / Share (c)',
             'Cash Flow / Share (c)',
             'Debt / Assets',

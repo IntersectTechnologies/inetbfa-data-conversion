@@ -1,9 +1,21 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat May 23 15:22:03 2015
+# Copyright 2015 Intersect Technologies CC
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
+'''
+Created on Sat May 23 15:22:03 2015
 @author: Niel Swart
-"""
+'''
 
 from os import path, listdir, makedirs
 import pandas as pd
@@ -13,7 +25,7 @@ import datetime as dt
 import datamanager.datamodel as dm
 from datamanager.datamodel import MarketData
 from datamanager.envs import *
-from quantstrategies.filters import greater_than_filter, less_than_filter, top_filter
+from quantstrategies.universe_selection import greater_than_filter, less_than_filter, top_filter
 
 def calc_means(data, fields, period = '1M'):
     
@@ -30,8 +42,6 @@ def calc_means(data, fields, period = '1M'):
 class NWUMomentum():
     """
     """
-
-    
 
     def __init__(self, start_date, end_date):
         '''

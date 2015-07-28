@@ -23,11 +23,9 @@ Created on Tue Jan 20 09:18:51 2015
 import pandas as pd
 
 def daily_ave_vol_month(montlhly_vol):
-	'''
+    '''
 	Calculate the daily average volume over the last month
-	'''
- 
-     
+	'''   
 	
 def daily_ave_vol_week(weekly_vol):
 	'''
