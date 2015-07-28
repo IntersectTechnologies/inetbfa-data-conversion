@@ -9,13 +9,16 @@ import pandas as pd
 import numpy as np
 from os import path, listdir
 import datetime as dt
-
 from datamodel import Equity
 from datamanager.envs import *
 
-class Processor(object):
+class Processor:
     '''
     '''
+
+    def __init__():
+        '''
+        '''
     
     @staticmethod
     def blank_ts_df(equities):
@@ -36,8 +39,21 @@ class Processor(object):
         template = pd.DataFrame(dat, index = rows, columns = cols)
         return template
 
+    def load_new(self, fpath):
+        '''
+        '''
+
+
+    def update(self, old, new):
+        '''
+        '''
+
 class ReferenceProcessor(object):
     '''
+    TODO: convert referenceprocessor to work the same as the marketdata processeor
+
+    - output a currently listed file -> save output of load_new
+    - append historic record of reference data
     '''
     
     def __init__(self):
@@ -112,17 +128,6 @@ class ReferenceProcessor(object):
             upd.set_value(i, 'last_update', str(dt.date.today()))
             
         return upd
-        
-class Validate(object):
-    '''
-    
-    '''
-
-class ErrorChecking(object):
-    '''
-    '''
-    
-    
 
 class MarketDataProcessor(object):
     
