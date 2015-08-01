@@ -1,4 +1,4 @@
-#
+﻿#
 # Copyright 2013 Quantopian, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import math
-
 
 def tolerant_equals(a, b, atol=10e-7, rtol=10e-7):
     return math.fabs(a - b) <= (atol + rtol * math.fabs(b))

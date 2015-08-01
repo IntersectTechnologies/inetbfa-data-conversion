@@ -6,6 +6,19 @@ Created on Fri Aug 15 14:37:02 2014
 """
 from os import path, listdir, remove
 import pandas as pd
+import datetime as dt
+
+def last_month_end():
+    td = dt.datetime.today()
+    enddt = dt.date(td.year, td.month-1, cal.monthrange(td.year, td.month-1)[1])
+    return(enddt)
+
+def date_days_ago(days=0):
+    td = dt.datetime.today()
+    tmpd = td - dt.timedelta(days=days)
+
+    return str(tmpd.date())
+
 
 # helper functions    
 def clear_tempfiles(root):

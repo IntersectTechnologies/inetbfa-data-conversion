@@ -5,18 +5,27 @@ import datetime as dt
 import calendar as cal
 
 from datamanager.envs import *
-from datamanager.datamodel import MarketData, Dividends, get_equities, set_equities, update_listing_status
+from datamanager.datamodel import MarketData, Dividends
+from datamanager.load import get_equities, set_equities # update_listing_status
 from datamanager.process_downloads import MarketDataProcessor, ReferenceProcessor
 from datamanager.sync import create_dir, sync_latest_master, sync_master_slave
 from datamanager.adjust import calc_adj_close
-from quantstrategies.nwu_momentum import NWUMomentum
+from quantstrategies.strategies.nwu_momentum import NWUMomentum
+
+from utils import 
 
 # logging
 logging.basicConfig(filename='datamanager.log', level=logging.INFO)
 
+jse_path = path.join(MASTER_DATA_PATH, 'jse')
 fields = MarketData.fields
 fields.extend(Dividends.fields)
     
+def task_startup():
+
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
 def task_calc_adjusted_close():
     adj_close = calc_adj_close()
     adj_close.to_csv(path.join(MASTER_DATA_PATH, 'jse' , 'equities', 'daily', 'Adjusted Close.csv'))
@@ -39,8 +48,8 @@ def task_update_ref_data():
     refp = ReferenceProcessor()
     refnew = refp.load_new(DL_PATH)
     
-    set_equities(refp.update(ref, refnew))
-    update_listing_status()    
+    # Update path to write to
+    #refnew.to_csv(path.join(jse_path, 'jse_equities.csv'))
 
 def task_update_market_data():
     '''
