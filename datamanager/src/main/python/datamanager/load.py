@@ -8,19 +8,32 @@ Created on Tue Feb 10 09:38:31 2015
 import pandas as pd
 from os import path
 from os.path import expanduser
-from datamanager.envs import DATA_PATH
+from datamanager.envs import DATA_PATH, MASTER_DATA_PATH
 import pytz
+from datetime import datetime as dt
 
-EQUITIES = pd.read_csv(path.join(MASTER_DATA_PATH, 'jse', 'jse_equities.csv'), sep = ',', index_col = 0)
+# globals
+EQUITIES = pd.read_csv(path.join(DATA_PATH, 'jse', 'jse_equities.csv'), sep = ',', index_col = 0)
+jse_path = path.join(DATA_PATH, 'jse')
+daily_path = path.join(jse_path, 'equities', 'daily')
 
-def load_prices(tickers, start='2010-01-01', end=None):
+def load_close(tickers=None, start='2010-01-01', end=str(dt.today().date())):
     '''
     '''
     
-    data = pd.read_csv(path.join(DATA_PATH, 'jse', 'market', 'daily', 'Close.csv'), sep = ',', index_col = 0, parse_dates = True)
+    return load_field(field = 'Close', tickers=tickers, start=start, end = end)
+
+def load_field(field = 'Close', tickers=None, start='2010-01-01', end=str(dt.today().date())):
+    '''
+    '''
+    
+    data = pd.read_csv(path.join(daily_path, field + '.csv'), sep = ',', index_col = 0, parse_dates = True)
     data = data.ix[start:end]
     
-    return data[tickers].dropna()
+    if (tickers==None):
+        return data.dropna(how='all')
+    else:
+        return data[tickers].dropna(how='all')
 
 def load_panel(data_metrics):
     '''
@@ -37,11 +50,10 @@ def load_panel(data_metrics):
     
     assert (type(data_metrics)== str or type(data_metrics==list))
     
-    market_fp = path.join(DATA_PATH, 'jse', 'market', 'daily')
     dd = {}     # data dictionary
     
     for metric in data_metrics:   
-        fp = path.join(market_fp, metric + '.csv')
+        fp = path.join(daily_path, metric + '.csv')
         if path.exists(fp):
             stkd = pd.DataFrame.from_csv(fp)
             dd[metric] = stkd
@@ -57,36 +69,35 @@ def load_panel(data_metrics):
   
 def load_numtrades():
     '''
-    
     '''
     
-    return pd.read_csv(path.join(DATA_PATH, 'jse', 'market', 'daily', 'Number Of Trades.csv'), sep = ',', index_col = 0)
+    return pd.read_csv(path.join(daily_path, 'Number Of Trades.csv'), sep = ',', index_col = 0)
 
 def load_totalnumshares():
     '''
     
     '''
     
-    return pd.read_csv(path.join(DATA_PATH, 'jse', 'market', 'daily', 'Total Number Of Shares.csv'), sep = ',', index_col = 0, parse_dates=True)
+    return pd.read_csv(path.join(daily_path, 'Total Number Of Shares.csv'), sep = ',', index_col = 0, parse_dates=True)
 
 def load_volume():
     '''
     '''
     
-    return pd.read_csv(path.join(DATA_PATH, 'jse', 'market', 'daily', 'Volume.csv'), sep = ',', index_col = 0, parse_dates=True)
+    return pd.read_csv(path.join(daily_path, 'Volume.csv'), sep = ',', index_col = 0, parse_dates=True)
     
     
 def load_marketcap():
     '''
     '''
     
-    return pd.read_csv(path.join(DATA_PATH, 'jse', 'market', 'daily', 'Market Cap.csv'), sep = ',', index_col = 0, parse_dates=True)
+    return pd.read_csv(path.join(daily_path, 'Market Cap.csv'), sep = ',', index_col = 0, parse_dates=True)
     
 def load_equities():
     '''
     '''
     
-    EQUITIES = pd.read_csv(path.join(DATA_PATH, 'jse_equities.csv'), sep = ',', index_col = 0)
+    EQUITIES = pd.read_csv(path.join(jse_path, 'jse_equities.csv'), sep = ',', index_col = 0)
     
     return EQUITIES
 
@@ -169,13 +180,3 @@ def get_all_suspended():
     eq = EQUITIES[EQUITIES.trading_status=='DELISTED'].copy()
     return eq.index    
  
-# TODO: remove  
-def update_listing_status():
-    
-    def update_ls(ls, lu, ix):
-        if lu != str(dt.date.today()) and ls != 'DELISTED':
-            EQUITIES.set_value(ix, 'listing_status', 'DELISTED')
-
-    map(update_ls, EQUITIES['listing_status'], EQUITIES['last_update'], EQUITIES.index)    
-    EQUITIES.to_csv(path.join(MASTER_DATA_PATH, 'jse', 'jse_equities.csv'), sep = ',', index_col = 0)
-    return EQUITIES
