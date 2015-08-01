@@ -25,33 +25,62 @@ Examples:
     Data smoothing and filtering
 
     Sub-sampling
-
 """
 
-transforms = {
-    'mean' : mean,
-    'momentum': momentum,    
-}
+import numpy as np
+import pandas as pd
 
 def mean(window):
-
-    window.mean()
-
+    return window.mean()
 
 def momentum(window):
     '''
+    :window Pandas DataFrame
+
+    :returns Pandas Series
     '''
 
-    mom = np.log(window.end) - np.log(window.start)
+    mom = np.log(window.iloc[-1]) - np.log(window.iloc[0])
+    return mom
 
-def last_mean(data, period = '1M'):
+def log_returns(window):
+    '''
+    :window Pandas DataFrame
+
+    :returns Pandas DataFrame
+    '''
+
+    ret = np.log(window) - np.log(window.shift(1))
+    return ret
+
+def last_mean(window, period = '1M'):
     '''
     '''
 
-    data.fillna(method = 'pad', inplace=True)
-    means = data.last(period).mean()
+    window.fillna(method = 'pad', inplace=True)
+    means = window.last(period).mean()
         
     if type(means) != pd.Series:
             raise TypeError
         
     return means
+
+def max(window, period=50):
+    return window.ix[-period:].max()
+
+def movavg(window, period=50):
+    return window.ix[-period:].mean()
+
+def index_log_returns(window):
+    window.fillna(method = 'pad', inplace=True)
+    return np.exp(window.cumsum())*100
+
+def index_price(window):
+    window.fillna(method = 'pad', inplace=True)
+    pct = window.pct_change()
+    temp.ix[0]=100
+
+def index_returns(window):
+    window.fillna(method = 'pad', inplace=True)
+    window.iloc[0] = 100
+    return window.cumsum(axis=0)
