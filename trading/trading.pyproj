@@ -36,12 +36,14 @@
     <Folder Include="src\main\scripts\" />
     <Folder Include="src\unittest\" />
     <Folder Include="src\unittest\python\" />
+    <Folder Include="trading\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="build.py" />
     <Compile Include="src\main\python\trading\logger.py" />
     <Compile Include="src\main\python\trading\tracker.py" />
-    <Compile Include="src\main\python\trading\__init__.py" />
+    <Compile Include="trading\logger.py" />
+    <Compile Include="trading\tracker.py" />
+    <Compile Include="trading\__init__.py" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="{9a7a9026-48c1-4688-9d5d-e5699d47d074}\2.7" />
