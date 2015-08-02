@@ -12,7 +12,7 @@ from datamanager.sync import create_dir, sync_latest_master, sync_master_slave
 from datamanager.adjust import calc_adj_close
 from quantstrategies.strategies.nwu_momentum import NWUMomentum
 
-from utils import 
+from core.utils import last_month_end
 
 # logging
 logging.basicConfig(filename='datamanager.log', level=logging.INFO)
@@ -20,11 +20,12 @@ logging.basicConfig(filename='datamanager.log', level=logging.INFO)
 jse_path = path.join(MASTER_DATA_PATH, 'jse')
 fields = MarketData.fields
 fields.extend(Dividends.fields)
-    
+
+archive_path = path.join(MASTER_DATA_PATH, last_month_end())
 def task_startup():
 
-    if not os.path.exists(directory):
-        os.makedirs(directory)
+    if not os.path.exists(archive_path):
+        os.makedirs(archive_path)
 
 def task_calc_adjusted_close():
     adj_close = calc_adj_close()
@@ -32,8 +33,7 @@ def task_calc_adjusted_close():
 
 def task_update_nwu_momentum_portfolio():
     
-    td = dt.datetime.today()
-    enddt = dt.date(td.year, td.month-1, cal.monthrange(td.year, td.month-1)[1])
+    enddt = last_month_end()
     tmpd = enddt - dt.timedelta(days=365)
     startdt = dt.date(tmpd.year, tmpd.month+1, 1)
     mom = NWUMomentum(startdt, enddt)
@@ -49,7 +49,7 @@ def task_update_ref_data():
     refnew = refp.load_new(DL_PATH)
     
     # Update path to write to
-    #refnew.to_csv(path.join(jse_path, 'jse_equities.csv'))
+    refnew.to_csv(path.join(archive_path, 'jse_equities.csv'))
 
 def task_update_market_data():
     '''
