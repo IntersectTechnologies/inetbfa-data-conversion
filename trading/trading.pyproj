@@ -28,18 +28,9 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\" />
-    <Folder Include="src\main\" />
-    <Folder Include="src\main\python\" />
-    <Folder Include="src\main\python\trading\" />
-    <Folder Include="src\main\scripts\" />
-    <Folder Include="src\unittest\" />
-    <Folder Include="src\unittest\python\" />
     <Folder Include="trading\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\main\python\trading\logger.py" />
-    <Compile Include="src\main\python\trading\tracker.py" />
     <Compile Include="trading\logger.py" />
     <Compile Include="trading\tracker.py" />
     <Compile Include="trading\__init__.py" />

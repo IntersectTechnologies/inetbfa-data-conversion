@@ -29,18 +29,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="console\" />
-    <Folder Include="src\" />
-    <Folder Include="src\main\" />
-    <Folder Include="src\main\python\" />
-    <Folder Include="src\main\python\console\" />
-    <Folder Include="src\main\scripts\" />
-    <Folder Include="src\unittest\" />
-    <Folder Include="src\unittest\python\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="console\menu.py" />
     <Compile Include="console\__init__.py" />
-    <Compile Include="src\main\python\console\menu.py" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="{9a7a9026-48c1-4688-9d5d-e5699d47d074}\2.7" />
