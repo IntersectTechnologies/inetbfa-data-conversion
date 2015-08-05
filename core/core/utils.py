@@ -7,6 +7,9 @@ Created on Fri Aug 15 14:37:02 2014
 from os import path, listdir, remove
 import pandas as pd
 import datetime as dt
+import calendar as cal
+import logging
+import sys
 
 def last_month_end():
     td = dt.datetime.today()
@@ -19,6 +22,23 @@ def date_days_ago(days=0):
 
     return str(tmpd.date())
 
+
+def getLog(name='root', filename=None):
+    log = logging.getLogger(name)
+    logFormatter = logging.Formatter("'%(asctime)s-%(name)s-[%(levelname)s] - %(message)s'")
+
+    if filename == None:
+        filename = name
+
+    fileHandler = logging.FileHandler("{0}.log".format(filename))
+    fileHandler.setFormatter(logFormatter)
+    log.addHandler(fileHandler)
+
+    consoleHandler = logging.StreamHandler(sys.stdout)
+    consoleHandler.setFormatter(logFormatter)
+    log.addHandler(consoleHandler)
+
+    return log
 
 # helper functions    
 def clear_tempfiles(root):

@@ -44,11 +44,11 @@ class Processor:
         '''
 
 
-    def update(self, old, new):
+    def merge(self, old, new):
         '''
         '''
 
-class ReferenceProcessor(object):
+class ReferenceProcessor(Processor):
     '''
     TODO: convert referenceprocessor to work the same as the marketdata processeor
 
@@ -75,7 +75,7 @@ class ReferenceProcessor(object):
                      ('financial_currency','Financial Currency', lambda x: x.strip() if (type(x) == unicode or type(x) == str) else x),
                      ('listing_status', 'Listing Status', lambda x: ('CURRENT' if x.strip() == 'Current' else x.strip()) if (type(x) == unicode or type(x) == str) else x),
                      ('fullname', 'Name', lambda x: x.strip() if type(x) == unicode or type(x) == str else x)]
-        
+
     def load_new(self, fpath):
         '''
         '''
@@ -129,13 +129,11 @@ class ReferenceProcessor(object):
             
         return upd
 
-class MarketDataProcessor(object):
+class MarketDataProcessor(Processor):
     
-    def __init__(self, reference):
+    def __init__(self):
         '''
         '''
-
-        self.reference = reference
         
     def load_new(self, field, fpath):
         '''
@@ -166,23 +164,23 @@ class MarketDataProcessor(object):
             temp = pd.read_csv(fn, header=0, index_col=0, parse_dates=True) 
             return temp
     
-    def load_and_merge(self, field, old_fp, new_fp):
+    def load_and_merge(self, field, old_fp, new_fp, ref):
         '''
         '''
         old = self.load_old(field, old_fp)
         new = self.load_new(field, new_fp)
-        return self.update(old, new)
+        return self.merge(old, new, ref)
         
     def save(self, data, dest_fpath):
         '''
         '''
         data.to_csv(dest_fpath)
     
-    def update(self, olddata, newdata):
+    def merge(self, olddata, newdata, equities):
         '''
         '''
         
-        blank = Processor.blank_ts_df(self.reference)
+        blank = Processor.blank_ts_df(equities)
         
         blank.update(olddata)
         blank.update(newdata)
