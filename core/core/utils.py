@@ -25,18 +25,18 @@ def date_days_ago(days=0):
 
 def getLog(name='root', filename=None):
     log = logging.getLogger(name)
-    logFormatter = logging.Formatter("'%(asctime)s-%(name)s-[%(levelname)s] - %(message)s'")
+    formatter = logging.Formatter("'%(asctime)s-%(name)s-[%(levelname)s] - %(message)s'")
 
     if filename == None:
         filename = name
 
     fileHandler = logging.FileHandler("{0}.log".format(filename))
-    fileHandler.setFormatter(logFormatter)
+    fileHandler.setFormatter(formatter)
     log.addHandler(fileHandler)
 
-    consoleHandler = logging.StreamHandler(sys.stdout)
-    consoleHandler.setFormatter(logFormatter)
-    log.addHandler(consoleHandler)
+    #consoleHandler = logging.StreamHandler(sys.stdout)
+    #consoleHandler.setFormatter(formatter)
+    #log.addHandler(consoleHandler)
 
     return log
 
