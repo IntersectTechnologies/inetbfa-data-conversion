@@ -35,6 +35,7 @@
   <ItemGroup>
     <Compile Include="src\main\python\datamanager\adjust.py" />
     <Compile Include="build.py" />
+    <Compile Include="src\main\python\datamanager\envs.py" />
     <Compile Include="src\main\python\datamanager\__init__.py">
       <SubType>Code</SubType>
     </Compile>

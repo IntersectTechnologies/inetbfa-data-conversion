@@ -10,7 +10,7 @@ import shutil as su
 from os import path, listdir, makedirs
 import logging
 
-from core.envs import *
+from datamanager.envs import *
 
 slave_paths = [
     path.join('C:\\','root', 'intersect',  'data')
