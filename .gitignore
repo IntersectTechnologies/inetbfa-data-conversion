@@ -4,7 +4,6 @@ data/
 */target/*
 *.log
 *.lnk
-*.pyproj
 *.user
 *.csv
 datamanager/build/

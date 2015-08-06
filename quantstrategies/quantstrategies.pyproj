@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{aeac58c9-cc97-494c-a624-0284fb7b73df}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile />
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId />
+    <InterpreterVersion />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="quantstrategies\liquidity_metrics.py" />
+    <Compile Include="quantstrategies\models.py" />
+    <Compile Include="quantstrategies\nwu_do.py" />
+    <Compile Include="quantstrategies\portfolio_selection.py" />
+    <Compile Include="quantstrategies\riskmetrics.py" />
+    <Compile Include="quantstrategies\security_selection.py" />
+    <Compile Include="quantstrategies\simple_test.py" />
+    <Compile Include="quantstrategies\strategies\detrended_oscillator.py" />
+    <Compile Include="quantstrategies\strategies\growth_portfolio.py" />
+    <Compile Include="quantstrategies\strategies\nwu_momentum.py" />
+    <Compile Include="quantstrategies\strategies\simple_momentum.py" />
+    <Compile Include="quantstrategies\strategies\simple_strategy.py" />
+    <Compile Include="quantstrategies\strategies\strategy.py" />
+    <Compile Include="quantstrategies\strategies\__init__.py" />
+    <Compile Include="quantstrategies\transforms.py" />
+    <Compile Include="quantstrategies\universe_selection.py" />
+    <Compile Include="quantstrategies\utils\__init__.py" />
+    <Compile Include="quantstrategies\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="quantstrategies" />
+    <Folder Include="quantstrategies\strategies" />
+    <Folder Include="quantstrategies\utils" />
+  </ItemGroup>
+  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+</Project>

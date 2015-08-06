@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "datamanager", "datamanager\datamanager.pyproj", "{9859B002-A89E-44CC-8E64-A02D0048A650}"
-EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "core", "core\core.pyproj", "{0A4891C2-BFC6-4514-9B3E-F08D2334AB94}"
-EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "console", "console\console.pyproj", "{D872BD79-464F-4F71-A598-BE5626FDDE6E}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "quantstrategies", "quantstrategies\quantstrategies.pyproj", "{FE0BF156-431F-44DB-B8A3-67001BD57813}"
-EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "trading", "trading\trading.pyproj", "{00C8AC46-3415-456E-905B-242D66D17189}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "datamanager", "datamanager\datamanager.pyproj", "{A539792C-B7EA-4C1B-9BDE-807C79E185A1}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "quantstrategies", "quantstrategies\quantstrategies.pyproj", "{AEAC58C9-CC97-494C-A624-0284FB7B73DF}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "core", "core\core.pyproj", "{E85539C4-96F5-4E3B-8D6E-94DFCD4D6954}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,16 +19,16 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9859B002-A89E-44CC-8E64-A02D0048A650}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9859B002-A89E-44CC-8E64-A02D0048A650}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A4891C2-BFC6-4514-9B3E-F08D2334AB94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A4891C2-BFC6-4514-9B3E-F08D2334AB94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D872BD79-464F-4F71-A598-BE5626FDDE6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D872BD79-464F-4F71-A598-BE5626FDDE6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FE0BF156-431F-44DB-B8A3-67001BD57813}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FE0BF156-431F-44DB-B8A3-67001BD57813}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00C8AC46-3415-456E-905B-242D66D17189}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{00C8AC46-3415-456E-905B-242D66D17189}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A539792C-B7EA-4C1B-9BDE-807C79E185A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A539792C-B7EA-4C1B-9BDE-807C79E185A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEAC58C9-CC97-494C-A624-0284FB7B73DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEAC58C9-CC97-494C-A624-0284FB7B73DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E85539C4-96F5-4E3B-8D6E-94DFCD4D6954}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E85539C4-96F5-4E3B-8D6E-94DFCD4D6954}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
