@@ -8,6 +8,46 @@ Created on Sat May 23 15:22:03 2015
 import pandas as pd
 from functools import partial
 from uuid import uuid4
+from types import FunctionType
+
+class Block(object):
+
+    def __init__(self, callback):
+        '''
+        '''
+        # block-guid block-ref, called (bool)
+        self.inPort = {}
+        self.outPort = {}
+
+        self.name = name
+        self.guid = uuid4()
+        self.data = data
+
+        self.callback = callback
+    
+    def onData(self, callerblock):
+        '''
+        '''
+
+        #if (self.inPort[callerblock.guid][1]):
+
+        if (all([d[1] for d in self.inPort.itervalues()])):
+            self.onComplete()
+
+    def onError():
+        '''
+        '''
+
+    def onComplete():
+        '''
+        '''
+        # now call the onData methods of all the blocks connected to outPort
+        for block in self.outPort:
+            block.onData(self)
+
+    def connectTo(self, block):
+        self.outPort[block.guid] = (block, False)
+        block.inPort[self.guid] = (self, False)
 
 # TODO: create callback class / partial function that wraps the repetive logic of callbacks and node registration
 class Node(object):
@@ -20,6 +60,7 @@ class Node(object):
         self.data = data
         self.callbacks = []
         self.from_nodes = []
+        self.to_nodes = []
 
     def __call__(self):
         '''
@@ -30,28 +71,29 @@ class Node(object):
         # wait until all from nodes have been called...
         if len(self.callbacks) > 0:
             for cb in self.callbacks:
-                cb()
+                if ((type(cb) != FunctionType) and (cb in self.from_nodes)):
+                    if (len(self.from_nodes) > 1):
+                        self.from_nodes.remove(cb)
+                    else:
+                        cb()
+                else:
+                    cb()
+               
         else:
             print('No callbacks registered...')
 
     def to_(self, node):
         '''
         '''
-
-        def copy():
+        self.to_nodes.append(node)
+        def register():
             node.data = self.data.copy()
+            node.from_nodes.append(self)
             node()
 
-        self.callbacks.append(copy)
+        self.callbacks.append(register)
         return self
-
-    def from_(self, *nodes):
-        '''
-        '''
-        
-        self.append(nodes);
-
-        
+   
 class SourceNode(Node):
     '''
     '''

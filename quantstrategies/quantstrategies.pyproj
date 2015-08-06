@@ -6,7 +6,7 @@
     <ProjectGuid>{aeac58c9-cc97-494c-a624-0284fb7b73df}</ProjectGuid>
     <ProjectHome />
     <StartupFile />
-    <SearchPath />
+    <SearchPath>.;..\console\;..\core\;..\datamanager\;..\..\intersect</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>

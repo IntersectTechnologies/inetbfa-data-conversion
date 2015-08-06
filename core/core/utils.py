@@ -22,21 +22,13 @@ def date_days_ago(days=0):
 
     return str(tmpd.date())
 
-
 def getLog(name='root', filename=None):
+    if (filename == None):
+        logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+    else:
+        logging.basicConfig(filename=filename, level=logging.DEBUG)
+
     log = logging.getLogger(name)
-    formatter = logging.Formatter("'%(asctime)s-%(name)s-[%(levelname)s] - %(message)s'")
-
-    if filename == None:
-        filename = name
-
-    fileHandler = logging.FileHandler("{0}.log".format(filename))
-    fileHandler.setFormatter(formatter)
-    log.addHandler(fileHandler)
-
-    #consoleHandler = logging.StreamHandler(sys.stdout)
-    #consoleHandler.setFormatter(formatter)
-    #log.addHandler(consoleHandler)
 
     return log
 

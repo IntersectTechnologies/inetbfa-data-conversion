@@ -18,12 +18,8 @@ def intro():
     MenuItems.info('#                                        #')
     MenuItems.info('##########################################')
 
-    def main_menu():
+def main_menu():
     
-    tasks.task_update_ref_data
-
-
-
     options = {
         '1': 'Update Reference Data',
         '2': 'Update Market Data',
