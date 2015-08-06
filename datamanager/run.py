@@ -1,21 +1,16 @@
 ﻿from os import path, listdir
 import re, codecs
 import logging
-
+import sys
 import datamanager.tasks as tasks
-# logging
+from core.utils import getLog
 
-logger = logging.getLogger('datamanager')
-formatter = logging.Formatter("'%(asctime)s-%(name)s-%(levelname)s - %(message)s'")
+log = getLog('datamanager')
 
-fileHandler = logging.FileHandler("{0}.log".format('datamanager'))
-fileHandler.setFormatter(formatter)
-logger.addHandler(fileHandler)
-
-logger.info('Initializing data processing')
+log.info('Initializing data processing')
 tasks.task_startup()
 
-log.info('Start converting data')
+log.info('Starting to convert data')
 tasks.task_convert_ref_data()
 tasks.task_convert_market_data()
 

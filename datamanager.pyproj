@@ -12,8 +12,8 @@
 =======
     <ProjectGuid>{a539792c-b7ea-4c1b-9bde-807c79e185a1}</ProjectGuid>
     <ProjectHome />
-    <StartupFile />
-    <SearchPath />
+    <StartupFile>datamanager\run.py</StartupFile>
+    <SearchPath>..\quantstrategies\;..\console\;..\core\;.;..\..\intersect</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
 >>>>>>> Updated intersect solution
     <OutputPath>.</OutputPath>
