@@ -13,8 +13,9 @@ import datetime as dt
 import datamanager.datamodel as dm
 from datamanager.datamodel import MarketData
 from datamanager.envs import *
-from quantstrategies.filters import greater_than_filter, less_than_filter, top_filter
-from quantstrategies.date_utils import last_month_end, date_days_ago
+from quantstrategies.universe_selection import greater_than_filter, less_than_filter, top_filter
+from datamanager.load import get_all_listed, get_equities
+from core.utils import last_month_end, date_days_ago
 
 def calc_means(data, fields, period = '1M'):
     
@@ -79,7 +80,7 @@ class Momentum(object):
         Calculate momentum
         '''
         # Select Universe
-        listed = dm.get_all_listed()
+        listed = get_all_listed()
         filtered = self.filter_universe(listed)
         fc = self.data['Close'][filtered].sort(ascending=False)
 
@@ -97,7 +98,7 @@ class Momentum(object):
         # TODO: calculate minimum variance portfolio of resulting stocks
 
 
-        equities = dm.get_equities()
+        equities = get_equities()
 
         cols = [
         'fullname',
@@ -119,5 +120,5 @@ class Momentum(object):
 
     def save(self):
 
-        # C:\root\OneDrive\Intersect Technologies\Intersect Invest\Products
-        self.calc_momentum().to_excel(path.join('C:\\', 'root', 'OneDrive', 'Intersect Technologies', 'Intersect Invest', 'Products', 'Portfolios', 'Growth Portfolio - ' + str(dt.date.today()) + '.xlsx'))
+        # C:\root\OneDrive\Intersect Technologies\Intersect Research\Products
+        self.calc_momentum().to_excel(path.join('C:\\', 'root', 'OneDrive', 'Intersect Technologies', 'Intersect Research', 'Products', 'Portfolios', 'Growth Portfolio - ' + str(dt.date.today()) + '.xlsx'))

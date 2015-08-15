@@ -6,4 +6,4 @@ data/
 *.lnk
 *.user
 *.csv
-datamanager/build/
+*/build/*

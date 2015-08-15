@@ -10,6 +10,7 @@ from datamanager.process_downloads import MarketDataProcessor, ReferenceProcesso
 from datamanager.sync import create_dir, sync_latest_master, sync_master_slave
 from datamanager.adjust import calc_adj_close
 from quantstrategies.strategies.nwu_momentum import NWUMomentum
+from quantstrategies.strategies.growth_portfolio import Momentum
 
 from core.utils import last_month_end, getLog
 
@@ -92,6 +93,15 @@ def task_update_nwu_momentum_portfolio():
     tmpd = enddt - dt.timedelta(days=365)
     startdt = dt.date(tmpd.year, tmpd.month+1, 1)
     mom = NWUMomentum(startdt, enddt)
+
+    mom.calc_momentum()
+    mom.save()
+
+def task_update_growth_portfolio():
+    enddt = last_month_end()
+    tmpd = enddt - dt.timedelta(days=365)
+    startdt = dt.date(tmpd.year, tmpd.month+1, 1)
+    mom = Momentum(startdt, enddt)
 
     mom.calc_momentum()
     mom.save()

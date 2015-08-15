@@ -21,12 +21,15 @@ reporter = SinkNode(name = 'StatsReport')
 
 log.info('Creating data flow graph...')
 
-datan.filter(load.get_all_listed()).transform(log_returns).to_(returns).to_(reporter)
-returns.transform(index_log_returns).stats(movavg20 = short_movavg, movavg50 = long_movavg, max = max)
+datan.filter(load.get_all_listed()).transform(log_returns).to_(returns)
+do_stats = returns.transform(index_log_returns).stats(movavg20 = short_movavg, movavg50 = long_movavg, max = max).to_(reporter)
 stats = datan.stats(momentum = momentum, mean = mean).to_(reporter)
 
 reporter.report()
+datan()
+
+do = (do_stats.data.ix['movavg20'] - do_stats.data.ix['movavg50']) / do_stats.data.ix['max']
+do.to_csv('DO.csv')
 
 log.info('Running data flow graph...')
 
-datan()
