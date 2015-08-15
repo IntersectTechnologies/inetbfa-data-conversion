@@ -12,7 +12,7 @@
 =======
     <ProjectGuid>{a539792c-b7ea-4c1b-9bde-807c79e185a1}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>datamanager\run.py</StartupFile>
+    <StartupFile>datamanager\main.py</StartupFile>
     <SearchPath>..\quantstrategies\;..\console\;..\core\;.;..\..\intersect</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
 >>>>>>> Updated intersect solution
@@ -92,11 +92,17 @@
     <Compile Include="datamanager\process\transform_data.py" />
     <Compile Include="datamanager\process\update_reference.py" />
     <Compile Include="datamanager\process_downloads.py" />
-    <Compile Include="datamanager\run.py" />
+    <Compile Include="datamanager\main.py" />
     <Compile Include="datamanager\sync.py" />
     <Compile Include="datamanager\tasks.py" />
     <Compile Include="datamanager\utils\__init__.py" />
+    <Compile Include="datamanager\_version.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="datamanager\__init__.py" />
+    <Compile Include="setup.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="test\test.py" />
   </ItemGroup>
   <ItemGroup>
@@ -105,6 +111,10 @@
     <Folder Include="datamanager\utils" />
     <Folder Include="test" />
 >>>>>>> Updated intersect solution
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Readme.md" />
+    <Content Include="setup.cfg" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
