@@ -15,7 +15,7 @@ log = Logger(__name__)
 
 def main(args):
     log.notice('Starting datamanager {version}...'.format(version=__version__))
-    logger.notice('Using arguments: %s' % args)
+    log.notice('Using arguments: %s' % args)
 
     log.info('Initializing data processing')
     tasks.task_startup()
@@ -36,6 +36,18 @@ def main(args):
     logging.info('Updating NWU Momentum Portfolio')
     tasks.task_update_nwu_momentum_portfolio()
 
+def parseArgs():
+    """Parse CLI arguments using argparse and return NameSpace object"""
+    parser = argparse.ArgumentParser("datamanager - \
+        task runner for several data processing tasks",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    
+    parser.add_argument("all", help="run all data processing tasks", default=1200, type=str)
+    #parser.add_argument('--version', action='version', version='{0}'.format(__version__))
+
+    args = parser.parse_args()
+    return args
+
 def enter():
     args = parseArgs()
     logFileName = os.path.join(args.directory, 'datamanager.log')
@@ -46,8 +58,6 @@ def enter():
         ])
     with log_setup.applicationbound():
         main(args)
-    
-    
     
 if __name__=='__main__':
     enter()

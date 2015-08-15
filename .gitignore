@@ -8,3 +8,4 @@ data/
 *.csv
 */build/*
 
+datamanager/dist/UNKNOWN-0.0.0-py2.7.egg
