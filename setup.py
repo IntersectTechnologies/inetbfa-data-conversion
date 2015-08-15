@@ -1,5 +1,4 @@
-﻿import versioneer
-from setuptools import setup
+﻿from setuptools import setup
 
 config = {
     'install_requires': ['pandas', 'logbook'],
