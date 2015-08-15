@@ -42,9 +42,6 @@
     <Compile Include="datamanager\sync.py" />
     <Compile Include="datamanager\tasks.py" />
     <Compile Include="datamanager\utils\__init__.py" />
-    <Compile Include="datamanager\_version.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="datamanager\__init__.py" />
     <Compile Include="setup.py">
       <SubType>Code</SubType>
