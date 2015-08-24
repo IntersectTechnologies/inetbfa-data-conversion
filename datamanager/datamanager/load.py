@@ -7,9 +7,7 @@ Created on Tue Feb 10 09:38:31 2015
 
 import pandas as pd
 from os import path
-from os.path import expanduser
 from datamanager.envs import DATA_PATH, MASTER_DATA_PATH
-import pytz
 from datetime import datetime as dt
 
 # globals
@@ -35,7 +33,29 @@ def load_field(field = 'Close', tickers=None, start='2010-01-01', end=str(dt.tod
     else:
         return data[tickers].dropna(how='all')
 
-def load_panel(data_metrics):
+def load_fields(fields, tickers=None, start='2010-01-01', end=str(dt.today().date())):
+    '''
+    '''
+    
+    assert type(fields) == list
+    data = {}
+    for f in fields:
+        temp = pd.read_csv(path.join(daily_path, f + '.csv'), sep=',', header=0, 
+                    index_col=0, parse_dates=True)
+                           
+        temp = temp.ix[start:end]  
+        
+        if (tickers==None):
+            temp = temp.dropna(how='all')
+        else:
+            temp = temp[tickers].dropna(how='all')
+
+        temp.fillna(method = 'pad', inplace=True)
+        data[f] = temp
+        
+    return data 
+    
+def load_panel(fields = ['Close']):
     '''
     
     Parameters
@@ -52,7 +72,7 @@ def load_panel(data_metrics):
     
     dd = {}     # data dictionary
     
-    for metric in data_metrics:   
+    for metric in fields:   
         fp = path.join(daily_path, metric + '.csv')
         if path.exists(fp):
             stkd = pd.DataFrame.from_csv(fp)
@@ -85,8 +105,7 @@ def load_volume():
     '''
     
     return pd.read_csv(path.join(daily_path, 'Volume.csv'), sep = ',', index_col = 0, parse_dates=True)
-    
-    
+       
 def load_marketcap():
     '''
     '''
@@ -116,67 +135,3 @@ def get_equities():
     
     eq = EQUITIES.copy()
     return eq
-    
-def get_all():
-    '''
-    '''        
-    
-    eq = EQUITIES.copy()
-    return eq.index
-
-def get_all_listed():
-    '''
-    Get all listed equities
-    
-    Returns
-    -------
-
-    Pandas DataFrame of all listed Equities
-    '''
-    
-    eq = EQUITIES[EQUITIES.listing_status=='CURRENT'].copy()
-    return eq.index 
-    
-def get_all_delisted():
-    '''
-    Get all delisted equities
-    
-    Parameters
-    ----------
-    
-    Returns
-    -------
-    '''
-    eq = EQUITIES[EQUITIES.listing_status=='DELISTED'].copy()
-    return eq.index
-    
-    
-def get_all_active():
-    '''
-    Get all actively traded equities
-    
-    
-    Parameters
-    ----------
-    
-    Returns
-    -------
-    '''
-    eq = EQUITIES[EQUITIES.trading_status=='DELISTED'].copy()
-    return eq.index
-    
-    
-def get_all_suspended():
-    '''
-    Get all suspended equities
-    
-    Parameters
-    ----------
-    
-    Returns
-    -------
-    '''
-    
-    eq = EQUITIES[EQUITIES.trading_status=='DELISTED'].copy()
-    return eq.index    
- 

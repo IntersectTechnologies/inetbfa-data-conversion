@@ -1,4 +1,4 @@
-# Copyright 2015 Intersect Technologies CC
+﻿# Copyright 2015 Intersect Technologies CC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,6 +19,10 @@ Created on Mon Dec 08 16:08:10 2014
 
 import pandas as pd
 from . import liquidity_metrics as lf 
+from datamanager.envs import DATA_PATH, MASTER_DATA_PATH
+from os import path
+
+EQUITIES = pd.read_csv(path.join(DATA_PATH, 'jse', 'jse_equities.csv'), sep = ',', index_col = 0)
 
 def less_than_filter(data, threshold):
     return data[data < threshold].index
@@ -67,7 +71,6 @@ def get_largest_price(pricedata, n, date='latest'):
     else:
         assert type(date) == pd.Timestamp
         
-    
 def get_larger_than_price(pricedata, price, date='latest'):
     """
     Get all equities with a nominal closing price larger than price
@@ -149,8 +152,7 @@ def get_larger_than_average_daily_volume(volumedata, volume_threshold, date='lat
     '''
     
     return _get_larger_than(volumedata, volume_threshold, date)
-    
-    
+       
 def min_fraction_of_trading_days(volume, minfraction):
     '''
     
@@ -199,20 +201,6 @@ def get_most_liquid(n, volume, total_num_shares, numtrades, date='latest'):
     
     return score[:n].index
     
-def get_all(equities):
-    '''
-    
-    Parameters
-    ----------
-    
-    Returns
-    -------
-    '''
-    
-    return equities.index
-    
-    
-# TODO:    
 def get_by_sector(equities, sector):
     '''
     
@@ -223,7 +211,7 @@ def get_by_sector(equities, sector):
     -------
     '''    
     
-def get_prefs(equities):
+def get_prefs():
     '''
     Get all preference shares
     
@@ -234,10 +222,10 @@ def get_prefs(equities):
     -------
     '''
     
-    eq = equities[equities.sharetype=='PREFERENCE'].copy()
+    eq = EQUITIES[EQUITIES.sharetype=='PREFERENCE'].copy()
     return eq.index
     
-def get_ordinaries(equities):
+def get_ordinaries():
     '''
     Get all ordinary shares
     
@@ -247,24 +235,30 @@ def get_ordinaries(equities):
     Returns
     -------
     '''
-    eq = equities[equities.sharetype=='ORDINARY'].copy()
+    eq = EQUITIES[EQUITIES.sharetype=='ORDINARY'].copy()
     return eq.index
+  
+def get_all():
+    '''
+    '''        
     
-def get_all_listed(equities):
+    eq = EQUITIES.copy()
+    return eq.index
+
+def get_all_listed():
     '''
     Get all listed equities
     
-    Parameters
-    ----------
-    
     Returns
     -------
+
+    Pandas Index of all listed Equities
     '''
-    eq = equities[equities.listing_status=='LISTED'].copy()
-    return eq.index
     
+    eq = EQUITIES[EQUITIES.listing_status=='CURRENT'].copy()
+    return eq.index 
     
-def get_all_delisted(equities):
+def get_all_delisted():
     '''
     Get all delisted equities
     
@@ -274,11 +268,10 @@ def get_all_delisted(equities):
     Returns
     -------
     '''
-    eq = equities[equities.listing_status=='DELISTED'].copy()
+    eq = EQUITIES[EQUITIES.listing_status=='DELISTED'].copy()
     return eq.index
     
-    
-def get_all_active(equities):
+def get_all_active():
     '''
     Get all actively traded equities
     
@@ -289,11 +282,10 @@ def get_all_active(equities):
     Returns
     -------
     '''
-    eq = equities[equities.trading_status!='SUSPENDED'].copy()
+    eq = EQUITIES[EQUITIES.trading_status=='DELISTED'].copy()
     return eq.index
-    
-    
-def get_all_suspended(equities):
+       
+def get_all_suspended():
     '''
     Get all suspended equities
     
@@ -304,5 +296,5 @@ def get_all_suspended(equities):
     -------
     '''
     
-    eq = equities[equities.trading_status=='DELISTED'].copy()
-    return eq.index
+    eq = EQUITIES[EQUITIES.trading_status=='DELISTED'].copy()
+    return eq.index    

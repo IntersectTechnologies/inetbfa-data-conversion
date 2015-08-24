@@ -10,7 +10,13 @@ from functools import partial
 from uuid import uuid4
 from types import FunctionType
 
-class Block(object):
+# Actors:
+# idempotent
+# stateless
+# immutable
+# message passing - through callbacks
+
+class Actor(object):
 
     def __init__(self, callback):
         '''
@@ -25,11 +31,11 @@ class Block(object):
 
         self.callback = callback
     
-    def onData(self, callerblock):
+    def receive(self, message):
         '''
         '''
-
-        #if (self.inPort[callerblock.guid][1]):
+         
+        outdata = callback(message);
 
         if (all([d[1] for d in self.inPort.itervalues()])):
             self.onComplete()
@@ -38,12 +44,12 @@ class Block(object):
         '''
         '''
 
-    def onComplete():
+    def send():
         '''
         '''
         # now call the onData methods of all the blocks connected to outPort
         for block in self.outPort:
-            block.onData(self)
+            block.receive(self.data)
 
     def connectTo(self, block):
         self.outPort[block.guid] = (block, False)
