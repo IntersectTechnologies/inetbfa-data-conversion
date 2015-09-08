@@ -82,9 +82,9 @@ class ReferenceProcessor(Processor):
         drop_cols = [0, 1]
         drop_rows = [0, 1]
         
-        if path.isfile(path.join(fpath, 'Reference.xlsx')):
+        if path.isfile(fpath):
             
-            fn = path.join(fpath, 'Reference.xlsx')
+            fn = fpath
             temp = pd.read_excel(fn, header=0, skiprows=[2], index_col=2, parse_dates=True)                 
             temp.drop(temp.columns[drop_cols], axis=1, inplace=True)
             fields = [f for f in temp.ix[0]]
@@ -153,7 +153,22 @@ class MarketDataProcessor(Processor):
             temp.columns = tickers
             
             return temp
+    
+    def load_new(self, fn):
+        '''
+        '''
+        drop_cols = [0,1]
+        drop_rows = 0
         
+        temp = pd.read_excel(fn, header=0, skiprows=[1, 2], index_col=2, parse_dates=True)                 
+        temp.drop(temp.columns[drop_cols], axis=1, inplace=True)
+            
+        temp.drop(temp.index[drop_rows], axis=0, inplace=True)
+        tickers = [t.split(':')[0] for t in temp.columns]
+        temp.columns = tickers
+            
+        return temp
+         
     def load_old(self, field, fpath):
         '''
         '''

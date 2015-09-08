@@ -1,4 +1,4 @@
-"""
+﻿"""
 Created on Thu Jun 04 21:06:13 2015
 
 @author: Niel
@@ -12,14 +12,12 @@ from datamodel import MarketData, DataModel
 import datamodel as dm
 from datamanager.envs import *
 
-def calc_adj_close():
+def calc_adj_close(cp, dp):
 
     # Import closing price data with pandas
-    cp = path.join(MASTER_DATA_PATH, "jse", "equities", "daily", "Close.csv")
     close = pd.read_csv(cp, index_col = 0, parse_dates=True)
 
     # Import dividend ex date data with pandas
-    dp = path.join(MASTER_DATA_PATH, "jse", "equities", "daily", "Dividend Ex Date.csv")
     divs = pd.read_csv(dp, index_col = 0, parse_dates=True)
 
     # Calculate multipliers for each dividend payment

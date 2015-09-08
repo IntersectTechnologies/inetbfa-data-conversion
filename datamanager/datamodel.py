@@ -202,7 +202,7 @@ class MarketData(DataModel):
             'Total Number Of Shares',
             'Last Bid',
             'Last Offer',
-            'Number Of Trades',
+            #'Number Of Trades',
             'Volume',
             'VWAP'
         ]
