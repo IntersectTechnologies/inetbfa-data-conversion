@@ -43,6 +43,9 @@
     <Compile Include="datamanager\tasks.py" />
     <Compile Include="datamanager\utils\__init__.py" />
     <Compile Include="datamanager\__init__.py" />
+    <Compile Include="dodo.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="setup.py">
       <SubType>Code</SubType>
     </Compile>

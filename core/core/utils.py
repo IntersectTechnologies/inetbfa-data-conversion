@@ -8,8 +8,11 @@ from os import path, listdir, remove
 import pandas as pd
 import datetime as dt
 import calendar as cal
-import logging
 import sys
+
+from logbook import Logger, NestedSetup, RotatingFileHandler, StreamHandler
+
+log = Logger(__name__)
 
 def last_month_end():
     td = dt.datetime.today()
@@ -23,14 +26,12 @@ def date_days_ago(days=0):
     return str(tmpd.date())
 
 def getLog(name='root', filename=None):
-    if (filename == None):
-        logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-    else:
-        logging.basicConfig(filename=filename, level=logging.DEBUG)
-
-    log = logging.getLogger(name)
-
-    return log
+    logFileName = os.path.join(args.directory, 'datamanager.log')
+    log_setup = NestedSetup([
+        RotatingFileHandler(logFileName),
+        StreamHandler(sys.stdout, level='NOTICE', bubble=True,
+            format_string='{record.message}')
+        ])
 
 # helper functions    
 def clear_tempfiles(root):

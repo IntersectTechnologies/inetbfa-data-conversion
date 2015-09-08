@@ -36,18 +36,6 @@ def main(args):
     logging.info('Updating NWU Momentum Portfolio')
     tasks.task_update_nwu_momentum_portfolio()
 
-def parseArgs():
-    """Parse CLI arguments using argparse and return NameSpace object"""
-    parser = argparse.ArgumentParser("datamanager - \
-        task runner for several data processing tasks",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    
-    parser.add_argument("all", help="run all data processing tasks", default=1200, type=str)
-    #parser.add_argument('--version', action='version', version='{0}'.format(__version__))
-
-    args = parser.parse_args()
-    return args
-
 def enter():
     args = parseArgs()
     logFileName = os.path.join(args.directory, 'datamanager.log')

@@ -21,6 +21,9 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="dodo.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="quantstrategies\liquidity_metrics.py" />
     <Compile Include="quantstrategies\models.py" />
     <Compile Include="quantstrategies\nwu_do.py" />
