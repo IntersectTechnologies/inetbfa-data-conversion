@@ -11,6 +11,7 @@ root = path.join('C:\\', 'root')
 DL_PATH = path.join(root, 'data_downloads')
 MASTER_DATA_PATH = path.join(root, 'data')    
 
+BACKUP_PATH = path.join(root, 'backup')
 DATA_PATH = path.join(root, 'intersect', 'data')
 CONVERT_PATH = path.join(root, 'converted')
 PORTFOLIO_PATH = path.join(root, 'portfolios')

@@ -14,10 +14,9 @@ from core.utils import last_month_end
 
 #log = getLog('datamanager')
 
-jse_path = path.join(MASTER_DATA_PATH, 'jse')
 fields = MarketData.fields
 fields.extend(Dividends.fields)
-archive_path = path.join(MASTER_DATA_PATH, str(last_month_end()))
+archive_path = path.join(BACKUP_PATH, str(last_month_end()))
 
 def convert_ref_data(dependencies, targets):
     '''
@@ -33,12 +32,15 @@ def convert_ref_data(dependencies, targets):
     refnew.to_csv(targets[0])
 
 def convert_market_data(dependencies, targets):
-    ref = get_equities()
+    refdata = get_equities()
     prc = MarketDataProcessor()
 
     dependencies = list(dependencies)
     new_data = prc.load_new(dependencies[0])
-    prc.save(new_data, targets[0])
+    old_data = prc.load_old(oldfp)
+    
+    merged = prc.merge(old_data, new_data, refdata)
+    prc.save(merged, targets[0])
 
 def merge_market_data(dependencies, targets):
     '''
@@ -46,22 +48,33 @@ def merge_market_data(dependencies, targets):
     
     ref = get_equities()
     prc = MarketDataProcessor()
-
-    #merged = prc.load_and_merge(f, MarketData.filepath, DL_PATH, ref)
-    #prc.save(merged, targets[0])
+    dependencies = list(dependencies)
+    merged = prc.merge(dependencies[0], dependencies[1], ref)
+    prc.save(merged, targets[0])
 
 def calc_adjusted_close(dependencies, targets):
     dependencies = list(dependencies)
     adj_close = calc_adj_close(dependencies[0], dependencies[1])
     adj_close.to_csv(targets[0])
 
+##########################################################################################
+# DOIT tasks
+##########################################################################################
+
+#TODO:
+'''
+def init():
+    return {
+        'actions':[],
+        'targets':[]
+    }
+'''    
 def task_convertrefdata():
     return {
         'actions': [convert_ref_data],
         'file_dep': [path.join(DL_PATH, 'Reference.xlsx')],
         'targets':[path.join(CONVERT_PATH, 'jse_equities.csv')]
     }
-
 
 def task_convertmarketdata():
     for f in fields:
@@ -77,26 +90,33 @@ def task_mergemarketdata():
         yield {
             'name':f,
             'actions':[merge_market_data],
-            'targets':[path.join(MASTER_DATA_PATH, 'jse', 'equities', 'daily', f+ '.csv')],
-            'file_dep':[path.join(CONVERT_PATH, f + '.csv')]
+            'targets':[path.join(MASTER_DATA_PATH, 'jse', 'equities', 'daily', f + '.csv')],
+            'file_dep':[path.join(CONVERT_PATH, f + '.csv'), path.join(MASTER_DATA_PATH, f + '.csv')]
         }
 
-def task_calculate():
+def task_calculatedata():
     return {
         'actions':[calc_adjusted_close],
         'file_dep': [path.join(MASTER_DATA_PATH, "jse", "equities", "daily", "Close.csv"),
                      path.join(MASTER_DATA_PATH, "jse", "equities", "daily", "Dividend Ex Date.csv")],
-        'targets':[path.join(MASTER_DATA_PATH, "jse", "equities", "daily",'Adjusted Close.csv')]
+        'targets':[path.join(MASTER_DATA_PATH, "jse", "equities", "daily", "Adjusted Close.csv")]
     }
 
 def task_copy():
+    gdrivepath = path.join('')
+    
     return {
-        'file_dep':[],
-        'actions':['cp %(dependencies)s %(targets)s'],
-        'targets':[]
+        'file_dep':[MASTER_DATA_PATH]
+        'actions':['cp -rp %s' % MASTER_DATA_PATH + ' %(targets)s'],
+        'targets':[gdrivepath, DATA_PATH]
     }
 
+#TODO:
+'''       
 def task_archive():
+    
     return {
         'actions':[]
+        'targets':[path.join(archive_path)]
     }
+'''
