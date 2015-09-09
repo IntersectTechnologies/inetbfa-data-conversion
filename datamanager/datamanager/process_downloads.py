@@ -43,7 +43,6 @@ class Processor:
         '''
         '''
 
-
     def merge(self, old, new):
         '''
         '''
