@@ -12,7 +12,7 @@ import datetime as dt
 from datamodel import Equity
 from datamanager.envs import *
 
-class Processor:
+class Processor(object):
     '''
     '''
 
@@ -39,11 +39,14 @@ class Processor:
         template = pd.DataFrame(dat, index = rows, columns = cols)
         return template
 
+    def load_oald(self, fpath):
+        
+            
     def load_new(self, fpath):
         '''
         '''
 
-    def merge(self, old, new):
+    def merge(self, oldpath, newpath):
         '''
         '''
 
@@ -178,26 +181,26 @@ class MarketDataProcessor(Processor):
             temp = pd.read_csv(fn, header=0, index_col=0, parse_dates=True) 
             return temp
     
-    def load_and_merge(self, field, old_fp, new_fp, ref):
+    def load_old(self, fn):
         '''
         '''
-        old = self.load_old(field, old_fp)
-        new = self.load_new(field, new_fp)
-        return self.merge(old, new, ref)
-        
+
+        temp = pd.read_csv(fn, header=0, index_col=0, parse_dates=True) 
+        return temp
+            
     def save(self, data, dest_fpath):
         '''
         '''
         data.to_csv(dest_fpath)
     
-    def merge(self, olddata, newdata, equities):
+    def merge(self, old, new, equities):
         '''
         '''
         
         blank = Processor.blank_ts_df(equities)
         
-        blank.update(olddata)
-        blank.update(newdata)
+        blank.update(old)
+        blank.update(new)
         
         return blank.copy()    
     

@@ -2,6 +2,9 @@
 
 This repo contains various projects related to quantitative investment management.
 
+## Directory structure ##
+
+
 ### What is this repository for? ###
 
 * Quick summary
