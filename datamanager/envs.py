@@ -21,3 +21,8 @@ MODEL_PATH = path.join(DATA_ROOT, 'models')
 INDICES_PATH = path.join(DATA_ROOT, 'indices')
 TRANSACT_PATH = path.join(DATA_ROOT, 'transactions')
 
+'''
+Directory structure:
+    root/{exchange}/{security-type}/{frequency}
+    
+'''
