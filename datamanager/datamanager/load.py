@@ -7,12 +7,12 @@ Created on Tue Feb 10 09:38:31 2015
 
 import pandas as pd
 from os import path
-from datamanager.envs import DATA_PATH, MASTER_DATA_PATH
+from datamanager.envs import MASTER_DATA_PATH
 from datetime import datetime as dt
 
 # globals
-EQUITIES = pd.read_csv(path.join(DATA_PATH, 'jse', 'jse_equities.csv'), sep = ',', index_col = 0)
-jse_path = path.join(DATA_PATH, 'jse')
+EQUITIES = pd.read_csv(path.join(MASTER_DATA_PATH, 'jse', 'jse_equities.csv'), sep = ',', index_col = 0)
+jse_path = path.join(MASTER_DATA_PATH, 'jse')
 daily_path = path.join(jse_path, 'equities', 'daily')
 
 def load_close(tickers=None, start='2010-01-01', end=str(dt.today().date())):

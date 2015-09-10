@@ -37,10 +37,7 @@ def convert_market_data(dependencies, targets):
 
     dependencies = list(dependencies)
     new_data = prc.load_new(dependencies[0])
-    old_data = prc.load_old(oldfp)
-    
-    merged = prc.merge(old_data, new_data, refdata)
-    prc.save(merged, targets[0])
+    prc.save(new_data, targets[0])
 
 def merge_market_data(dependencies, targets):
     '''
@@ -49,7 +46,9 @@ def merge_market_data(dependencies, targets):
     ref = get_equities()
     prc = MarketDataProcessor()
     dependencies = list(dependencies)
-    merged = prc.merge(dependencies[0], dependencies[1], ref)
+    new = prc.load_old(dependencies[0])
+    old = prc.load_old(dependencies[1])
+    merged = prc.merge(old, new, ref)
     prc.save(merged, targets[0])
 
 def calc_adjusted_close(dependencies, targets):
@@ -61,14 +60,18 @@ def calc_adjusted_close(dependencies, targets):
 # DOIT tasks
 ##########################################################################################
 
-#TODO:
 '''
-def init():
-    return {
-        'actions':[],
-        'targets':[]
-    }
-'''    
+def task_init():
+    src = path.join(MASTER_DATA_PATH, "jse", "equities", "daily") 
+    for f in listdir(src):
+        yield  {
+            'name': f,
+            'file_dep':[src],
+            'actions':['cp %s' % path.join(src, f) + ' %(targets)s'],
+            'targets':[path.join(MERGED_PATH, f)]
+        }
+'''
+   
 def task_convertrefdata():
     return {
         'actions': [convert_ref_data],
@@ -90,8 +93,8 @@ def task_mergemarketdata():
         yield {
             'name':f,
             'actions':[merge_market_data],
-            'targets':[path.join(MASTER_DATA_PATH, 'jse', 'equities', 'daily', f + '.csv')],
-            'file_dep':[path.join(CONVERT_PATH, f + '.csv'), path.join(MASTER_DATA_PATH, f + '.csv')]
+            'targets':[path.join(MERGED_PATH, f + '.csv')],
+            'file_dep':[path.join(CONVERT_PATH, f + '.csv'), path.join(MASTER_DATA_PATH, "jse", "equities", "daily", f + '.csv')]
         }
 
 def task_calculatedata():
@@ -102,11 +105,18 @@ def task_calculatedata():
         'targets':[path.join(MASTER_DATA_PATH, "jse", "equities", "daily", "Adjusted Close.csv")]
     }
 
+def task_update():
+
+    return {
+        'actions':['cp /c/root/data/merged/* /c/root/data/master/jse/equities/daily/'],
+        'file_dep':[MERGED_PATH]
+    }
+
 def task_copy():
-    gdrivepath = path.join('')
+    gdrivepath = path.join('C:\\','Users','Niel','Google Drive')
     
     return {
-        'file_dep':[MASTER_DATA_PATH]
+        'file_dep':[MASTER_DATA_PATH],
         'actions':['cp -rp %s' % MASTER_DATA_PATH + ' %(targets)s'],
         'targets':[gdrivepath, DATA_PATH]
     }
