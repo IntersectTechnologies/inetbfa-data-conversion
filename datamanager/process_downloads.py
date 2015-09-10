@@ -39,8 +39,9 @@ class Processor(object):
         template = pd.DataFrame(dat, index = rows, columns = cols)
         return template
 
-    def load_oald(self, fpath):
-        
+    def load_old(self, fpath):
+        '''
+        '''        
             
     def load_new(self, fpath):
         '''
