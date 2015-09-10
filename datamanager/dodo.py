@@ -5,7 +5,7 @@ import calendar as cal
 
 from datamanager.envs import *
 from datamanager.datamodel import MarketData, Dividends
-from datamanager.load import get_equities, set_equities # update_listing_status
+from datamanager.load import get_equities
 from datamanager.process_downloads import MarketDataProcessor, ReferenceProcessor
 from datamanager.sync import create_dir, sync_latest_master, sync_master_slave
 from datamanager.adjust import calc_adj_close
@@ -24,26 +24,24 @@ def convert_ref_data(dependencies, targets):
 
     dependencies = list(dependencies)
     #log.info('Converting reference data')
-    ref = get_equities()
-    refp = ReferenceProcessor()
 
+    refp = ReferenceProcessor()
     refnew = refp.load_new(dependencies[0])
     # Update path to write to
     refnew.to_csv(targets[0])
 
 def convert_market_data(dependencies, targets):
-    refdata = get_equities()
     prc = MarketDataProcessor()
 
     dependencies = list(dependencies)
     new_data = prc.load_new(dependencies[0])
     prc.save(new_data, targets[0])
 
-def merge_market_data(dependencies, targets):
-    '''
-    '''
+def merge_ref_data(dependencies, targets):
+    old = get_equities() # MASTER
     
-    ref = get_equities()
+def merge_market_data(dependencies, targets):   
+    ref = get_equities() # dependency 3
     prc = MarketDataProcessor()
     dependencies = list(dependencies)
     new = prc.load_old(dependencies[0])
@@ -78,6 +76,16 @@ def task_convertmarketdata():
             'file_dep':[path.join(DL_PATH, f + '.xlsx')]
             'task_dep':['convertrefdata']
         }
+
+# should merge with old jse_equities file
+'''
+def task_mergerefdata():
+    return {
+        'actions': ['cp %(dependencies)s %(targets)s'],
+        'file_dep': [path.join(CONVERT_PATH, 'jse_equities.csv')],
+        'targets':[path.join(MERGED_PATH, 'jse_equities.csv')]
+    }
+'''
 # 3
 def task_mergemarketdata():
     for f in fields:
@@ -85,7 +93,7 @@ def task_mergemarketdata():
             'name':f,
             'actions':[merge_market_data],
             'targets':[path.join(MERGED_PATH, f + '.csv')],
-            'file_dep':[path.join(CONVERT_PATH, f + '.csv'), path.join(MASTER_DATA_PATH, "jse", "equities", "daily", f + '.csv')]
+            'file_dep':[path.join(CONVERT_PATH, f + '.csv'), path.join(MASTER_DATA_PATH, "jse", "equities", "daily", f + '.csv'), path.join(MERGED_PATH, 'jse_equities.csv')]
         }
 # 4
 def task_calculatedata():
@@ -105,7 +113,7 @@ def task_update():
 
 # 6
 def task_copy():
-    gdrivepath = path.join('C:\\','Users','Niel','Google Drive')
+    gdrivepath = path.join('C:\\','Users','Niel','Google Drive', 'NWU', 'data')
     
     return {
         'actions':['cp -ru %s' % MASTER_DATA_PATH + ' %(targets)s'],
