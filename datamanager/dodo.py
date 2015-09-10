@@ -16,7 +16,7 @@ from core.utils import last_month_end
 
 fields = MarketData.fields
 fields.extend(Dividends.fields)
-archive_path = path.join(BACKUP_PATH, str(last_month_end()))
+archive_path = path.join(BACKUP_PATH, str(last_month_end())+'.tar.gz')
 
 def convert_ref_data(dependencies, targets):
     '''
@@ -60,18 +60,7 @@ def calc_adjusted_close(dependencies, targets):
 # DOIT tasks
 ##########################################################################################
 
-'''
-def task_init():
-    src = path.join(MASTER_DATA_PATH, "jse", "equities", "daily") 
-    for f in listdir(src):
-        yield  {
-            'name': f,
-            'file_dep':[src],
-            'actions':['cp %s' % path.join(src, f) + ' %(targets)s'],
-            'targets':[path.join(MERGED_PATH, f)]
-        }
-'''
-   
+# 1  
 def task_convertrefdata():
     return {
         'actions': [convert_ref_data],
@@ -79,6 +68,7 @@ def task_convertrefdata():
         'targets':[path.join(CONVERT_PATH, 'jse_equities.csv')]
     }
 
+# 2
 def task_convertmarketdata():
     for f in fields:
         yield {
@@ -86,8 +76,9 @@ def task_convertmarketdata():
             'actions':[convert_market_data],
             'targets':[path.join(CONVERT_PATH, f+ '.csv')],
             'file_dep':[path.join(DL_PATH, f + '.xlsx')]
+            'task_dep':['convertrefdata']
         }
-
+# 3
 def task_mergemarketdata():
     for f in fields:
         yield {
@@ -96,37 +87,37 @@ def task_mergemarketdata():
             'targets':[path.join(MERGED_PATH, f + '.csv')],
             'file_dep':[path.join(CONVERT_PATH, f + '.csv'), path.join(MASTER_DATA_PATH, "jse", "equities", "daily", f + '.csv')]
         }
-
+# 4
 def task_calculatedata():
     return {
         'actions':[calc_adjusted_close],
-        'file_dep': [path.join(MASTER_DATA_PATH, "jse", "equities", "daily", "Close.csv"),
-                     path.join(MASTER_DATA_PATH, "jse", "equities", "daily", "Dividend Ex Date.csv")],
-        'targets':[path.join(MASTER_DATA_PATH, "jse", "equities", "daily", "Adjusted Close.csv")]
+        'file_dep': [path.join(MERGED_PATH, "Close.csv"),
+                     path.join(MERGED_PATH, "Dividend Ex Date.csv")],
+        'targets':[path.join(MERGED_PATH, "Adjusted Close.csv")]
     }
-
+# 5
 def task_update():
 
     return {
         'actions':['cp /c/root/data/merged/* /c/root/data/master/jse/equities/daily/'],
-        'file_dep':[MERGED_PATH]
+        'task_dep':['calculatedata']
     }
 
+# 6
 def task_copy():
     gdrivepath = path.join('C:\\','Users','Niel','Google Drive')
     
     return {
-        'file_dep':[MASTER_DATA_PATH],
-        'actions':['cp -rp %s' % MASTER_DATA_PATH + ' %(targets)s'],
+        'actions':['cp -ru %s' % MASTER_DATA_PATH + ' %(targets)s'],
         'targets':[gdrivepath, DATA_PATH]
+        'task_dep':['update']
     }
 
-#TODO:
-'''       
+# 7
 def task_archive():
     
     return {
-        'actions':[]
+        'actions':['tar -cvzf %(targets)s ' + DATA_ROOT]
         'targets':[path.join(archive_path)]
-    }
-'''
+        'task_dep':['copy']
+    
