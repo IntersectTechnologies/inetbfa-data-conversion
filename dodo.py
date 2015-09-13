@@ -73,7 +73,7 @@ def task_convertmarketdata():
             'name':f,
             'actions':[convert_market_data],
             'targets':[path.join(CONVERT_PATH, f+ '.csv')],
-            'file_dep':[path.join(DL_PATH, f + '.xlsx')]
+            'file_dep':[path.join(DL_PATH, f + '.xlsx')],
             'task_dep':['convertrefdata']
         }
 
@@ -105,27 +105,7 @@ def task_calculatedata():
     }
 # 5
 def task_update():
-
     return {
         'actions':['cp /c/root/data/merged/* /c/root/data/master/jse/equities/daily/'],
         'task_dep':['calculatedata']
     }
-
-# 6
-def task_copy():
-    gdrivepath = path.join('C:\\','Users','Niel','Google Drive', 'NWU', 'data')
-    
-    return {
-        'actions':['cp -ru %s' % MASTER_DATA_PATH + ' %(targets)s'],
-        'targets':[gdrivepath, DATA_PATH]
-        'task_dep':['update']
-    }
-
-# 7
-def task_archive():
-    
-    return {
-        'actions':['tar -cvzf %(targets)s ' + DATA_ROOT]
-        'targets':[path.join(archive_path)]
-        'task_dep':['copy']
-    

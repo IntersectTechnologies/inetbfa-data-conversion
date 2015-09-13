@@ -11,6 +11,7 @@ from os import path
 from datamodel import MarketData, DataModel
 import datamodel as dm
 from datamanager.envs import *
+from datamanager.load import get_equities
 
 def calc_adj_close(cp, dp):
 
@@ -44,7 +45,7 @@ def calc_adj_close(cp, dp):
         divmult[t] = pd.Series(mult.values(), tmp_mult.index)
 
     startdate = pd.datetime(2000, 1 , 1).date()
-    divm = DataModel.blank_ts_df(dm.get_all(), startdate)
+    divm = DataModel.blank_ts_df(get_equities(), startdate)
 
     for k in divmult.iterkeys():
         divm[k] = divmult[k]
