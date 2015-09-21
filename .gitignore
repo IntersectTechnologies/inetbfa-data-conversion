@@ -8,3 +8,5 @@ data/
 *.csv
 */build/*
 */.doit.db
+*/.doit.db.dat
+*/.doit.db.dir

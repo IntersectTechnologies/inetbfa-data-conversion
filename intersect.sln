@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "console", "console\console.pyproj", "{D872BD79-464F-4F71-A598-BE5626FDDE6E}"
-EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "trading", "trading\trading.pyproj", "{00C8AC46-3415-456E-905B-242D66D17189}"
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "datamanager", "datamanager\datamanager.pyproj", "{A539792C-B7EA-4C1B-9BDE-807C79E185A1}"
@@ -19,8 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D872BD79-464F-4F71-A598-BE5626FDDE6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D872BD79-464F-4F71-A598-BE5626FDDE6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00C8AC46-3415-456E-905B-242D66D17189}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{00C8AC46-3415-456E-905B-242D66D17189}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A539792C-B7EA-4C1B-9BDE-807C79E185A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

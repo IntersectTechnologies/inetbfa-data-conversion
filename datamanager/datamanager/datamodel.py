@@ -1,4 +1,4 @@
-# Copyright 2015 Intersect Technologies CC
+﻿# Copyright 2015 Intersect Technologies CC
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -107,7 +107,7 @@ class Equity(DataModel):
             
             if key in Equity.fields:
                 if key == 'ticker' and ticker != value:
-                    print 'Oops...'
+                    print('Oops...')
                     break
                 else:
                     equity.properties[key] = value

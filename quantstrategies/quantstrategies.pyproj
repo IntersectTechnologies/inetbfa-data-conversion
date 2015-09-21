@@ -6,7 +6,7 @@
     <ProjectGuid>{aeac58c9-cc97-494c-a624-0284fb7b73df}</ProjectGuid>
     <ProjectHome />
     <StartupFile />
-    <SearchPath>.;..\console\;..\core\;..\datamanager\;..\..\intersect</SearchPath>
+    <SearchPath>.;..\core\;..\datamanager\;..\..\intersect</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
@@ -26,7 +26,6 @@
     </Compile>
     <Compile Include="quantstrategies\liquidity_metrics.py" />
     <Compile Include="quantstrategies\models.py" />
-    <Compile Include="quantstrategies\nwu_do.py" />
     <Compile Include="quantstrategies\portfolio_selection.py" />
     <Compile Include="quantstrategies\riskmetrics.py" />
     <Compile Include="quantstrategies\security_selection.py" />
@@ -34,8 +33,6 @@
     <Compile Include="quantstrategies\strategies\detrended_oscillator.py" />
     <Compile Include="quantstrategies\strategies\growth_portfolio.py" />
     <Compile Include="quantstrategies\strategies\nwu_momentum.py" />
-    <Compile Include="quantstrategies\strategies\simple_momentum.py" />
-    <Compile Include="quantstrategies\strategies\simple_strategy.py" />
     <Compile Include="quantstrategies\strategies\strategy.py" />
     <Compile Include="quantstrategies\strategies\__init__.py" />
     <Compile Include="quantstrategies\transforms.py" />

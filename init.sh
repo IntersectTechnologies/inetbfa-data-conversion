@@ -7,4 +7,5 @@ mkdir ../data/portfolios
 mkdir ../data/models
 mkdir ../data/transactions
 mkdir ../backup
+mkdir ../workspace
 mkdir ../workspace/data

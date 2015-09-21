@@ -38,7 +38,7 @@ def clear_tempfiles(root):
     '''
     
     '''
-    print 'Looking in ' + root + '...'
+    print('Looking in ' + root + '...')
     if listdir(root):
         # this folder contains files and sub directories
         for f in listdir(root):
@@ -47,7 +47,7 @@ def clear_tempfiles(root):
             subpath = path.join(root, f)
             if path.isfile(subpath):
                 # check if it is a file
-                print 'Deleting file: ' + subpath
+                print('Deleting file: ' + subpath)
                 # Delete file from directory
                 remove(subpath)
             elif path.isdir(subpath):

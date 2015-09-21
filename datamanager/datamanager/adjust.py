@@ -8,8 +8,8 @@ import pandas as pd
 import datetime as dt
 from os import path
 
-from datamodel import MarketData, DataModel
-import datamodel as dm
+from datamanager.datamodel import MarketData, DataModel
+import datamanager.datamodel as dm
 from datamanager.envs import *
 from datamanager.load import get_equities
 
