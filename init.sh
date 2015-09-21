@@ -1,0 +1,10 @@
+mkdir ../data
+mkdir ../data/master
+mkdir ../data/downloads
+mkdir ../data/converted
+mkdir ../data/merged
+mkdir ../data/portfolios
+mkdir ../data/models
+mkdir ../data/transactions
+mkdir ../backup
+mkdir ../workspace/data
