@@ -34,8 +34,9 @@ def update_growth_portfolio():
 
 def task_portfolio_momentum():
     return {
+        'file_dep':[path.join(DATA_PATH)]
         'actions':['update_nwu_momentum_portfolio']
-        'targets':[]
+        'targets':[path.join(MODEL_PATH, last_month_end() + '.csv' )]
     }
     
  def task_portfolio_growth():
