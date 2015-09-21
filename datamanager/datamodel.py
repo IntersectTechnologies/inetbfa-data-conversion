@@ -207,7 +207,7 @@ class MarketData(DataModel):
             'VWAP'
         ]
         
-    filepath = path.join(MASTER_DATA_PATH, 'jse', 'equities', 'daily')
+    filepath = path.join(DATA_PATH, 'jse', 'equities', 'daily')
     
     def __init__(self):
         '''
