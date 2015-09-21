@@ -9,7 +9,7 @@ import pandas as pd
 import numpy as np
 from os import path, listdir
 import datetime as dt
-from datamodel import Equity
+from datamanager.datamodel import Equity
 from datamanager.envs import *
 
 class Processor(object):

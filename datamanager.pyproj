@@ -5,8 +5,10 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{a539792c-b7ea-4c1b-9bde-807c79e185a1}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>datamanager\main.py</StartupFile>
-    <SearchPath>..\quantstrategies\;..\console\;..\core\;.;..\..\intersect</SearchPath>
+    <StartupFile>
+    </StartupFile>
+    <SearchPath>
+    </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
@@ -24,7 +26,6 @@
     <Compile Include="datamanager\adjust.py" />
     <Compile Include="datamanager\datamodel.py" />
     <Compile Include="datamanager\envs.py" />
-    <Compile Include="datamanager\liquidity_metrics.py" />
     <Compile Include="datamanager\load.py" />
     <Compile Include="datamanager\process\data_preprocessing.py" />
     <Compile Include="datamanager\process\dividend_preprocessing.py" />
@@ -38,9 +39,6 @@
     <Compile Include="datamanager\process\transform_data.py" />
     <Compile Include="datamanager\process\update_reference.py" />
     <Compile Include="datamanager\process_downloads.py" />
-    <Compile Include="datamanager\main.py" />
-    <Compile Include="datamanager\sync.py" />
-    <Compile Include="datamanager\tasks.py" />
     <Compile Include="datamanager\utils\__init__.py" />
     <Compile Include="datamanager\__init__.py" />
     <Compile Include="dodo.py">
@@ -49,13 +47,11 @@
     <Compile Include="setup.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="test\test.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="datamanager" />
     <Folder Include="datamanager\process" />
     <Folder Include="datamanager\utils" />
-    <Folder Include="test" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Readme.md" />

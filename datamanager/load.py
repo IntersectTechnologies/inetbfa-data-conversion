@@ -78,7 +78,7 @@ def load_panel(fields = ['Close']):
             stkd = pd.DataFrame.from_csv(fp)
             dd[metric] = stkd
         else: 	
-            print 'Oops..'
+            print('Oops..')
 
     panel = pd.Panel(dd)
     panel.major_axis = panel.major_axis.tz_localize(pytz.utc)

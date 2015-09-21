@@ -7,7 +7,6 @@ from datamanager.envs import *
 from datamanager.datamodel import MarketData, Dividends
 from datamanager.load import get_equities
 from datamanager.process_downloads import MarketDataProcessor, ReferenceProcessor
-from datamanager.sync import create_dir, sync_latest_master, sync_master_slave
 from datamanager.adjust import calc_adj_close
 
 from core.utils import last_month_end
