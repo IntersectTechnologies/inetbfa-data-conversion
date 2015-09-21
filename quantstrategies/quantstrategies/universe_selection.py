@@ -1,4 +1,4 @@
-# Copyright 2015 Intersect Technologies CC
+﻿# Copyright 2015 Intersect Technologies CC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ Created on Mon Dec 08 16:08:10 2014
 
 import pandas as pd
 from . import liquidity_metrics as lf 
-from datamanager.envs import DATA_PATH, MASTER_DATA_PATH
+from datamanager.envs import DATA_PATH
 from os import path
 
 EQUITIES = pd.read_csv(path.join(DATA_PATH, 'jse', 'jse_equities.csv'), sep = ',', index_col = 0)

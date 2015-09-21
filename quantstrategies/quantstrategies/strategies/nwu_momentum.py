@@ -1,4 +1,4 @@
-# Copyright 2015 Intersect Technologies CC
+﻿# Copyright 2015 Intersect Technologies CC
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,30 +24,20 @@ import numpy as np
 import datetime as dt
 import datamanager.datamodel as dm
 from datamanager.datamodel import MarketData
+from datamanager.load import get_equities
 from datamanager.envs import *
-from quantstrategies.universe_selection import greater_than_filter, less_than_filter, top_filter
+from quantstrategies.strategies.model_portfolio import ModelPortfolio, calc_means
+from quantstrategies.universe_selection import greater_than_filter, less_than_filter, top_filter, get_all_listed
 
-def calc_means(data, fields, period = '1M'):
-    
-    means = {}
-    for f in fields:
-        data[f].fillna(method = 'pad', inplace=True)
-        means[f] = data[f].last(period).mean()
-        
-        if type(means[f]) != pd.Series:
-            raise TypeError
-        
-    return means
 
-class NWUMomentum():
+class NWUMomentum(ModelPortfolio):
     """
     """
 
     def __init__(self, start_date, end_date):
         '''
         '''
-        self.start_date = '2014-06-01'
-        self.end_date = '2015-05-31'
+        super(NWUMomentum, self).__init__(start_date, end_date)
         
         daily_path = path.join(DATA_PATH, 'jse', 'equities', 'daily')
         fields = [
@@ -83,19 +73,20 @@ class NWUMomentum():
     
         return(filtered)
 
-    def calc_momentum(self):
+    def run(self):
         '''
         Calculate momentum
         '''
         # Select Universe
-        listed = dm.get_all_listed()
+        listed = get_all_listed()
+        # filter universe
         filtered = self.filter_universe(listed)
         fc = self.data['Close'][filtered].sort(ascending=False)
 
         mom12 = np.log(fc.shift(-21)) - np.log(fc.shift(-252))
         latest_mom = mom12.ix[0]
     
-        equities = dm.get_equities()
+        equities = get_equities()
 
         cols = [
         'fullname',
@@ -109,6 +100,3 @@ class NWUMomentum():
         output['Price'] = self.data['Close'].last('1D').ix[0]
         # RANK
         return(output.sort(columns = 'Momentum - 12M', ascending = False))
-
-    def save(self):
-        self.calc_momentum().to_excel(path.join('C:\\', 'Users', 'Niel', 'Google Drive', 'NWU', 'Portfolio', 'Portfolio_' + str(dt.date.today()) + '.xlsx'))

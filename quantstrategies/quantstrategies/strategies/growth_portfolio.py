@@ -1,4 +1,4 @@
-"""
+﻿"""
 Created on Sun May 17 14:55:49 2015
 
 @author: Niel
@@ -12,31 +12,19 @@ import datetime as dt
 import datamanager.datamodel as dm
 from datamanager.datamodel import MarketData
 from datamanager.envs import *
-from quantstrategies.universe_selection import greater_than_filter, less_than_filter, top_filter
-from datamanager.load import get_all_listed, get_equities
+from quantstrategies.universe_selection import greater_than_filter, less_than_filter, top_filter, get_all_listed
+from datamanager.load import get_equities
 from core.utils import last_month_end, date_days_ago
+from quantstrategies.strategies.model_portfolio import ModelPortfolio, calc_means
 
-def calc_means(data, fields, period = '1M'):
-    
-    means = {}
-    for f in fields:
-        data[f].fillna(method = 'pad', inplace=True)
-        means[f] = data[f].last(period).mean()
-        
-        if type(means[f]) != pd.Series:
-            raise TypeError
-        
-    return means
-
-class Momentum(object):
+class GrowthPortfolio(ModelPortfolio):
     """
     """
 
     def __init__(self, start_date, end_date):
         '''
         '''
-        self.start_date = '2014-06-01'
-        self.end_date = '2015-05-31'
+        super(GrowthPortfolio, self).__init__(start_date, end_date)
         
         daily_path = path.join(DATA_PATH, 'jse', 'equities', 'daily')
         fields = [
@@ -74,7 +62,7 @@ class Momentum(object):
     
         return(filtered)
 
-    def calc_momentum(self):
+    def run(self):
         '''
         Calculate momentum
         '''
@@ -116,8 +104,3 @@ class Momentum(object):
 
         # RANK
         return(output.sort(columns = 'Momentum - 6M', ascending = False))
-
-    def save(self):
-
-        # C:\root\OneDrive\Intersect Technologies\Intersect Research\Products
-        self.calc_momentum().to_excel(path.join('C:\\', 'root', 'OneDrive', 'Intersect Technologies', 'Intersect Research', 'Products', 'Portfolios', 'Growth Portfolio - ' + str(dt.date.today()) + '.xlsx'))

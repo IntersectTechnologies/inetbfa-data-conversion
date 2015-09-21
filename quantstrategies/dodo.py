@@ -1,46 +1,45 @@
-
-from os import path, listdir, makedirs
+﻿from os import path, listdir, makedirs
 import re, codecs
 import datetime as dt
 import calendar as cal
 
 from datamanager.envs import *
-from datamanager.load import get_equities, set_equities # update_listing_status
-from datamanager.process_downloads import MarketDataProcessor, ReferenceProcessor
-from datamanager.sync import create_dir, sync_latest_master, sync_master_slave
-from datamanager.adjust import calc_adj_close
-
+from quantstrategies.strategies.nwu_momentum import NWUMomentum
+from quantstrategies.strategies.growth_portfolio import GrowthPortfolio
+from quantstrategies.strategies.detrended_oscillator import DetrendedOscillator
 from core.utils import last_month_end
 
-def update_nwu_momentum_portfolio():
-    
-    enddt = last_month_end()
-    tmpd = enddt - dt.timedelta(days=365)
-    startdt = dt.date(tmpd.year, tmpd.month+1, 1)
+enddt = last_month_end()
+tmpd = enddt - dt.timedelta(days=365)
+startdt = dt.date(tmpd.year, tmpd.month+1, 1)
+
+def update_nwu_momentum_portfolio(dependencies, targets):
     mom = NWUMomentum(startdt, enddt)
+    mom.save(targets[0])
 
-    mom.calc_momentum()
-    mom.save()
+def update_growth_portfolio(dependencies, targets):
+    mom = GrowthPortfolio(startdt, enddt)
+    mom.save(targets[0])
 
-def update_growth_portfolio():
-    enddt = last_month_end()
-    tmpd = enddt - dt.timedelta(days=365)
-    startdt = dt.date(tmpd.year, tmpd.month+1, 1)
-    mom = Momentum(startdt, enddt)
-
-    mom.calc_momentum()
-    mom.save()
-
-
+def update_detrended_oscillator_portfolio(dependencies, targets):
+    do = DetrendedOscillator(startdt, enddt)
+    do.save(targets[0])  
+    
+   
 def task_portfolio_momentum():
     return {
-        'file_dep':[path.join(DATA_PATH)]
-        'actions':['update_nwu_momentum_portfolio']
-        'targets':[path.join(MODEL_PATH, last_month_end() + '.csv' )]
+        'actions':[update_nwu_momentum_portfolio],
+        'targets':[path.join(MODEL_PATH, 'NWU Momentum Portfolio-' + str(last_month_end()) + '.xlsx' )]
     }
     
- def task_portfolio_growth():
+def task_portfolio_growth():
     return {
-        'actions':['update_growth_portfolio']
-        'targets':[]
+        'actions':[update_growth_portfolio],
+        'targets':[path.join(MODEL_PATH, 'Growth Portfolio-' + str(last_month_end()) + '.xlsx' )]
+    }
+
+def task_portfolio_detrended_oscillator():
+    return {
+        'actions':[update_detrended_oscillator_portfolio],
+        'targets':[path.join(MODEL_PATH, 'Detrended Oscillator Portfolio-' + str(last_month_end()) + '.xlsx' )]
     }
