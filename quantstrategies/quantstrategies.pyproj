@@ -24,19 +24,27 @@
     <Compile Include="dodo.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="quantstrategies\Backtest.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="quantstrategies\liquidity_metrics.py" />
     <Compile Include="quantstrategies\models.py" />
+    <Compile Include="quantstrategies\ParametricSweep.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="quantstrategies\portfolio_selection.py" />
     <Compile Include="quantstrategies\riskmetrics.py" />
     <Compile Include="quantstrategies\security_selection.py" />
-    <Compile Include="quantstrategies\simple_test.py" />
     <Compile Include="quantstrategies\strategies\detrended_oscillator.py" />
     <Compile Include="quantstrategies\strategies\growth_portfolio.py" />
+    <Compile Include="quantstrategies\strategies\model_portfolio.py" />
     <Compile Include="quantstrategies\strategies\nwu_momentum.py" />
-    <Compile Include="quantstrategies\strategies\strategy.py" />
     <Compile Include="quantstrategies\strategies\__init__.py" />
     <Compile Include="quantstrategies\transforms.py" />
     <Compile Include="quantstrategies\universe_selection.py" />
+    <Compile Include="quantstrategies\utils\finmath.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="quantstrategies\utils\__init__.py" />
     <Compile Include="quantstrategies\__init__.py" />
   </ItemGroup>

@@ -1,12 +1,13 @@
-﻿from os import path, listdir, makedirs
-import re, codecs
+﻿# Copyright 2015 Intersect Technologies CC
+# 
+
+from os import path
 import datetime as dt
-import calendar as cal
 
 from datamanager.envs import *
-from quantstrategies.strategies.nwu_momentum import NWUMomentum
-from quantstrategies.strategies.growth_portfolio import GrowthPortfolio
-from quantstrategies.strategies.detrended_oscillator import DetrendedOscillator
+from quantstrategies.strategies.model_portfolio import ModelPortfolio
+import quantstrategies.strategies.nwu_momentum as nm
+import quantstrategies.strategies.growth_portfolio as gp
 from core.utils import last_month_end
 
 enddt = last_month_end()
@@ -14,17 +15,19 @@ tmpd = enddt - dt.timedelta(days=365)
 startdt = dt.date(tmpd.year, tmpd.month+1, 1)
 
 def update_nwu_momentum_portfolio(dependencies, targets):
-    mom = NWUMomentum(startdt, enddt)
-    mom.save(targets[0])
+    nwu_momentum = ModelPortfolio(startdt, enddt, nm.fields())
+    nwu_momentum.handle(nm.filter, nm.transform, nm.security_selection, nm.portfolio_selection)
+    nwu_momentum.save(targets[0])
 
 def update_growth_portfolio(dependencies, targets):
-    mom = GrowthPortfolio(startdt, enddt)
-    mom.save(targets[0])
+    growth = ModelPortfolio(startdt, enddt, gp.fields())
+    growth.handle(gp.filter, gp.transform, gp.security_selection, gp.portfolio_selection)
+    growth.save(targets[0])
 
 def update_detrended_oscillator_portfolio(dependencies, targets):
-    do = DetrendedOscillator(startdt, enddt)
-    do.save(targets[0])  
-    
+    do = ModelPortfolio(startdt, enddt, gp.fields())
+    do.handle(gp.filter, gp.transform, gp.security_selection, gp.portfolio_selection)
+    do.save(targets[0])
    
 def task_model_momentum_portfolio():
     return {

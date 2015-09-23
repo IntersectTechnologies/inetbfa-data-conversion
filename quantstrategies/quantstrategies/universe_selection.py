@@ -20,9 +20,33 @@ Created on Mon Dec 08 16:08:10 2014
 import pandas as pd
 from . import liquidity_metrics as lf 
 from datamanager.envs import DATA_PATH
+from quantstrategies.utils.finmath import calc_means
 from os import path
 
 EQUITIES = pd.read_csv(path.join(DATA_PATH, 'jse', 'jse_equities.csv'), sep = ',', index_col = 0)
+
+def liquid_jse_shares(data):
+        '''
+        Get the most liquid jse shares based on:
+            - 
+        '''
+
+        means = calc_means(data, fields)
+        filtered = get_all_listed()
+
+        # Volume zero filter
+        filtered = filtered.intersection(greater_than_filter(means['Volume'], 1))
+
+        # Price filter
+        filtered = filtered.intersection(greater_than_filter(data['Close'].last('1D').ix[0], 100))
+    
+        # Market Cap filter
+        filtered = filtered.intersection(top_filter(means['Market Cap'], 200))
+    
+        # Trading Frequency Filter
+        filtered = filtered.intersection(greater_than_filter((means['Volume']/means['Total Number Of Shares'])*100, 0.01))
+    
+        return(filtered)
 
 def less_than_filter(data, threshold):
     return data[data < threshold].index

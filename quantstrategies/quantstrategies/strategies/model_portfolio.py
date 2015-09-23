@@ -1,35 +1,46 @@
-﻿import pandas as pd
-
-def calc_means(data, fields, period = '1M'):
-    means = {}
-    for f in fields:
-        data[f].fillna(method = 'pad', inplace=True)
-        means[f] = data[f].last(period).mean()
-        
-        if type(means[f]) != pd.Series:
-            raise TypeError
-        
-    return means     
+﻿# Copyright 2015 Intersect Technologies CC
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 class ModelPortfolio(object):
     '''
     '''
     
-    def __init__(self, start_date, end_date):
+    def __init__(self, start_date, end_date, fields):
         '''
         '''
         self.start_date = start_date
         self.end_date = end_date
-    
-    def compose(self, config):
-        '''
-        '''
 
-    def run(self):
+        daily_path = path.join(DATA_PATH, 'jse', 'equities', 'daily')
+        self.data = MarketData.load_from_file(daily_path, fields, start_date, end_date)
+
+    def handle(self, filter, transform, security_selection, portfolio_selection):
         '''
         Run the strategy
         '''
+        # Filter the universe
+        shares = filter(self.data)
+
+        # Calculate the transforms
         print("No implementation given...")
-         
+        trans = transform(data[shares])
+
+        # Select the securities
+        portf_input = security_selection(trans)
+
+        # Create the portfolio
+        return portfolio_selection(portf_input)
+
     def save(self, fpath):
-        self.run().to_excel(fpath)
+        self.handle().to_excel(fpath)
