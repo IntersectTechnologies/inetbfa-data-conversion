@@ -26,20 +26,40 @@ def update_detrended_oscillator_portfolio(dependencies, targets):
     do.save(targets[0])  
     
    
-def task_portfolio_momentum():
+def task_model_momentum_portfolio():
     return {
         'actions':[update_nwu_momentum_portfolio],
         'targets':[path.join(MODEL_PATH, 'NWU Momentum Portfolio-' + str(last_month_end()) + '.xlsx' )]
     }
     
-def task_portfolio_growth():
+def task_model_growth_portfolio():
     return {
         'actions':[update_growth_portfolio],
         'targets':[path.join(MODEL_PATH, 'Growth Portfolio-' + str(last_month_end()) + '.xlsx' )]
     }
 
-def task_portfolio_detrended_oscillator():
+def task_model_detrended_oscillator_portfolio():
     return {
         'actions':[update_detrended_oscillator_portfolio],
         'targets':[path.join(MODEL_PATH, 'Detrended Oscillator Portfolio-' + str(last_month_end()) + '.xlsx' )]
+    }
+
+def task_model_history():
+    return {
+    }
+
+def task_model_transaction():
+    return {
+    }
+
+def task_transaction_history():
+    return {
+    }
+
+def task_portfolio_history():
+    return {
+    }
+
+def task_indices():
+    return {
     }

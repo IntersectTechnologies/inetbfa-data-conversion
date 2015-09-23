@@ -20,6 +20,16 @@ class ModelPortfolio(object):
         '''
         self.start_date = start_date
         self.end_date = end_date
-        
+    
+    def compose(self, config):
+        '''
+        '''
+
+    def run(self):
+        '''
+        Run the strategy
+        '''
+        print("No implementation given...")
+         
     def save(self, fpath):
         self.run().to_excel(fpath)

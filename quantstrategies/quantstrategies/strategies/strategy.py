@@ -72,7 +72,7 @@ class Node(object):
         '''
         '''
 
-        print 'Node ' + str(self.guid) + ' called...'
+        print('Node ' + str(self.guid) + ' called...')
 
         # wait until all from nodes have been called...
         if len(self.callbacks) > 0:
