@@ -31,7 +31,7 @@ def liquid_jse_shares(data):
             - 
         '''
 
-        means = calc_means(data, fields)
+        means = calc_means(data)
         filtered = get_all_listed()
 
         # Volume zero filter

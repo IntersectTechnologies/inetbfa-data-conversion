@@ -49,20 +49,25 @@ def task_model_detrended_oscillator_portfolio():
 
 def task_model_history():
     return {
+        'actions':[]
     }
 
 def task_model_transaction():
     return {
+        'actions':[]
     }
 
 def task_transaction_history():
     return {
+        'actions':[]
     }
 
 def task_portfolio_history():
     return {
+        'actions':[]
     }
 
 def task_indices():
     return {
+        'actions':[]
     }

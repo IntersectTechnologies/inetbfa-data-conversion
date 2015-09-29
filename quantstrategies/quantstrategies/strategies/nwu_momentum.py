@@ -25,7 +25,6 @@ def filter(data):
 
     return(liquid_jse_shares(data))
 
-
 def transform(data):
     '''
     Calculate the momentum

@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from os import path
+from datamanager.datamodel import MarketData
+from datamanager.envs import *
+import pandas as pd
+
 class ModelPortfolio(object):
     '''
     '''
@@ -23,18 +28,19 @@ class ModelPortfolio(object):
         self.end_date = end_date
 
         daily_path = path.join(DATA_PATH, 'jse', 'equities', 'daily')
-        self.data = MarketData.load_from_file(daily_path, fields, start_date, end_date)
+        self.data = pd.Panel(MarketData.load_from_file(daily_path, fields, start_date, end_date))
+
+        assert type(self.data) == pd.Panel
 
     def handle(self, filter, transform, security_selection, portfolio_selection):
         '''
         Run the strategy
         '''
-        # Filter the universe
+        # Filter the universe - 
         shares = filter(self.data)
 
-        # Calculate the transforms
-        print("No implementation given...")
-        trans = transform(data[shares])
+        # Calculate the transforms - panel data
+        trans = transform(self.data)
 
         # Select the securities
         portf_input = security_selection(trans)

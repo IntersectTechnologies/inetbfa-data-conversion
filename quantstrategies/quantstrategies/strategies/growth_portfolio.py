@@ -61,9 +61,9 @@ def security_selection(data):
     equities = get_equities()
 
     cols = [
-    'fullname',
-    'industry',
-    'sector'
+        'fullname',
+        'industry',
+        'sector'
     ]
 
     output = equities[cols].ix[filtered].copy()

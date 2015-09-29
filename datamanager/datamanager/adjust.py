@@ -47,7 +47,7 @@ def calc_adj_close(cp, dp):
     startdate = pd.datetime(2000, 1 , 1).date()
     divm = DataModel.blank_ts_df(get_equities(), startdate)
 
-    for k in divmult.iterkeys():
+    for k in divmult.keys():
         divm[k] = divmult[k]
         divm.set_value(divm.index[-1], k, 1.0)
 
