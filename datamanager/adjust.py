@@ -45,10 +45,12 @@ def calc_adj_close(cp, dp):
         divmult[t] = pd.Series(mult.values(), tmp_mult.index)
 
     startdate = pd.datetime(2000, 1 , 1).date()
-    divm = DataModel.blank_ts_df(get_equities(), startdate)
+    divm = DataModel.blank_ts_df(list(get_equities().index), startdate)
 
+    # ensure the integrity of the dataframe stays -- simplify algo
     for k in divmult.keys():
         divm[k] = divmult[k]
+
         divm.set_value(divm.index[-1], k, 1.0)
 
     # fillna with pad
