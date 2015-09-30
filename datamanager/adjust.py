@@ -13,6 +13,42 @@ import datamanager.datamodel as dm
 from datamanager.envs import *
 from datamanager.load import get_equities
 
+def calc_divmult(div, close):
+    '''
+    params:
+    div - dividends of a single ticker [DataFrame]
+    close - close of a single ticker
+    '''
+
+    assert type(div)==pd.DataFrame 
+    assert type(close)==pd.DataFrame
+
+    # calculate multiplier for each dividend payment
+    mult = (1-(div/close)).dropna()
+    mult = mult.sort_index(ascending=False)
+
+    return mult
+
+def backwards_calc(mult):
+    '''
+    Backwards calculate multipliers:
+    div 10: Mult10 = (1- div/price)
+    div 9 : Mult9 = (1-div/price)*Mult10
+    etc
+
+    return bmult
+    '''
+
+    bmult = {}
+    # 
+    for i, m in enumerate(mult):
+        if c == 0:
+            bmult[i] = m
+        else:
+            bmult[i] = m*mult[i-1]
+
+    return bmult
+
 def calc_adj_close(cp, dp):
 
     # Import closing price data with pandas
@@ -21,27 +57,15 @@ def calc_adj_close(cp, dp):
     # Import dividend ex date data with pandas
     divs = pd.read_csv(dp, index_col = 0, parse_dates=True)
 
-    # Calculate multipliers for each dividend payment
-
     # fillna with pad.
     divmult = {}
     for t in divs.columns:
-        tmp_div= divs[t].dropna()
+        # get the dividends and close of a single ticker and drop all NaN values
+        tmp_div = divs[t].dropna()
         tmp_close = close[t].dropna()
     
-        tmp_mult = (1-(tmp_div/tmp_close)).dropna()
-        tmp_mult = tmp_mult.sort_index(ascending=False)
-        mult = {}
-        # Backwards calculate multipliers:
-        # div 10: Mult10 = (1- div/price)
-        # div 9 : Mult9 = (1-div/price)*Mult10
-        # etc
-        for c, i in enumerate(tmp_mult):
-            if c == 0:
-               mult[c] = i
-            else:
-               mult[c] = i*mult[c-1]
-
+        tmp_mult = calc_divmult(tmp_div, tmp_close)
+        mult = backwards_calc(tmp_mult)
         divmult[t] = pd.Series(mult.values(), tmp_mult.index)
 
     startdate = pd.datetime(2000, 1 , 1).date()
