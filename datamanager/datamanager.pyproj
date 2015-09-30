@@ -47,11 +47,15 @@
     <Compile Include="setup.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="test\datamanager.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="datamanager" />
     <Folder Include="datamanager\process" />
     <Folder Include="datamanager\utils" />
+    <Folder Include="test\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Readme.md" />
