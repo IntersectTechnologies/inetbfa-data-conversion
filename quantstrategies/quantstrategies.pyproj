@@ -24,14 +24,8 @@
     <Compile Include="dodo.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="quantstrategies\Backtest.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="quantstrategies\liquidity_metrics.py" />
     <Compile Include="quantstrategies\models.py" />
-    <Compile Include="quantstrategies\ParametricSweep.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="quantstrategies\portfolio_selection.py" />
     <Compile Include="quantstrategies\riskmetrics.py" />
     <Compile Include="quantstrategies\security_selection.py" />
