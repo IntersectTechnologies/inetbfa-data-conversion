@@ -56,7 +56,7 @@ def calc_adj_close(closepath, divpath):
     divs = pd.read_csv(divpath, index_col = 0, parse_dates=True)
 
     # fillna with pad.
-    divmult = pd.DataFrame()
+    divmult = DataModel.blank_ts_df(list(get_equities().index))
     for ticker in divs.columns:
         # get the dividends and close of a single ticker and drop all NaN values
         tmp_div = divs[ticker].dropna()
@@ -74,7 +74,8 @@ def calc_adj_close(closepath, divpath):
     divm.update(divmult) 
 
     # fillna with pad
-    adj_close = close * divm.bfill()
+    divm = divm.bfill()
+    adj_close = close * divm
 
     # Save to file
     return adj_close

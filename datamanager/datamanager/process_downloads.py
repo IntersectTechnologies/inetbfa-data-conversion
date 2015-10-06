@@ -143,17 +143,9 @@ class MarketDataProcessor(Processor):
         '''
         files = listdir(fpath)
         
-        drop_cols = [0,1]
-        drop_rows = 0
-        
         if field in [f.split('.')[0] for f in files]:
             fn = path.join(fpath, field + '.xlsx')
-            temp = pd.read_excel(fn, header=0, skiprows=[1, 2], index_col=2, parse_dates=True)                 
-            temp.drop(temp.columns[drop_cols], axis=1, inplace=True)
-            
-            temp.drop(temp.index[drop_rows], axis=0, inplace=True)
-            tickers = [t.split(':')[0] for t in temp.columns]
-            temp.columns = tickers
+            temp = self.load_new(fn)
             
             return temp
     
@@ -169,19 +161,19 @@ class MarketDataProcessor(Processor):
         temp.drop(temp.index[drop_rows], axis=0, inplace=True)
         tickers = [t.split(':')[0] for t in temp.columns]
         temp.columns = tickers
-            
-        return temp
-         
-    def load_old(self, field, fpath):
-        '''
-        '''
         
+        return temp.sort_index()
+    
+    '''     
+    def load_old(self, field, fpath):
+
         files = listdir(fpath)
         if field in [f.split('.')[0] for f in files]:
             fn = path.join(fpath, field + '.csv')
             temp = pd.read_csv(fn, header=0, index_col=0, parse_dates=True) 
             return temp
-    
+    '''
+
     def load_old(self, fn):
         '''
         '''
@@ -199,7 +191,6 @@ class MarketDataProcessor(Processor):
         '''
         
         blank = Processor.blank_ts_df(equities)
-        
         blank.update(old)
         blank.update(new)
         
