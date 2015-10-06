@@ -5,8 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{a539792c-b7ea-4c1b-9bde-807c79e185a1}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>
-    </StartupFile>
+    <StartupFile>test\tests.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -47,7 +46,7 @@
     <Compile Include="setup.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="test\datamanager.py">
+    <Compile Include="test\tests.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

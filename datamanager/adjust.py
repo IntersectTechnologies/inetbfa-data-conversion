@@ -5,23 +5,20 @@ Created on Thu Jun 04 21:06:13 2015
 """
 
 import pandas as pd
-import datetime as dt
-from os import path
-
-from datamanager.datamodel import MarketData, DataModel
-import datamanager.datamodel as dm
-from datamanager.envs import *
+from datamanager.datamodel import DataModel
 from datamanager.load import get_equities
 
 def calc_divmult(div, close):
     '''
     params:
-    div - dividends of a single ticker [DataFrame]
-    close - close of a single ticker
+    div - dividends of a single ticker : Seriess
+    close - close of a single ticker : Series
+
+    return : Series
     '''
 
-    assert type(div)==pd.DataFrame 
-    assert type(close)==pd.DataFrame
+    assert isinstance(div, pd.Series)
+    assert isinstance(close, pd.Series)
 
     # calculate multiplier for each dividend payment
     mult = (1-(div/close)).dropna()
@@ -29,44 +26,43 @@ def calc_divmult(div, close):
 
     return mult
 
-def backwards_calc(mult):
+def backwards_calc(multiplier):
     '''
     Backwards calculate multipliers:
     div 10: Mult10 = (1- div/price)
     div 9 : Mult9 = (1-div/price)*Mult10
     etc
 
-    return bmult
+    return bmult: dict
     '''
-
+    assert isinstance(multiplier, pd.Series)
     bmult = {}
-    # 
-    for i, m in enumerate(mult):
-        if c == 0:
-            bmult[i] = m
+    for i, mult in enumerate(multiplier):
+        if i == 0:
+            bmult[i] = mult
         else:
-            bmult[i] = m*mult[i-1]
+            bmult[i] = mult*multiplier[i-1]
 
     return bmult
 
-def calc_adj_close(cp, dp):
+def calc_adj_close(closepath, divpath):
 
     # Import closing price data with pandas
-    close = pd.read_csv(cp, index_col = 0, parse_dates=True)
+    close = pd.read_csv(closepath, index_col = 0, parse_dates=True)
 
     # Import dividend ex date data with pandas
-    divs = pd.read_csv(dp, index_col = 0, parse_dates=True)
+    divs = pd.read_csv(divpath, index_col = 0, parse_dates=True)
 
     # fillna with pad.
     divmult = {}
-    for t in divs.columns:
+    for ticker in divs.columns:
         # get the dividends and close of a single ticker and drop all NaN values
-        tmp_div = divs[t].dropna()
-        tmp_close = close[t].dropna()
-    
+        tmp_div = divs[ticker].dropna()
+        tmp_close = close[ticker].dropna()
+
         tmp_mult = calc_divmult(tmp_div, tmp_close)
         mult = backwards_calc(tmp_mult)
-        divmult[t] = pd.Series(mult.values(), tmp_mult.index)
+        divmult[ticker] = pd.Series(mult.values(), tmp_mult.index)
 
     startdate = pd.datetime(2000, 1 , 1).date()
     divm = DataModel.blank_ts_df(list(get_equities().index), startdate)

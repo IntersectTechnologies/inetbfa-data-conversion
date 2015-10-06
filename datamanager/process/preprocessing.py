@@ -6,12 +6,8 @@ Created on Fri Aug 15 14:38:15 2014
 """
 
 import pandas as pd
-from utils import clear_tempfiles
 from os import listdir, path
-import csv
-from fields import ratios, index_fields
-from utils import empty_clone
-          
+import csv    
 
 def merge_files(filedir):
     
@@ -19,7 +15,7 @@ def merge_files(filedir):
     for f in listdir(filedir):
         
         # read multi index csv file into data frame
-        print 'Adding file: ' + f
+        print('Adding file: ' + f)
         if counter == 0:
             fn1 = filedir + f
             df = pd.read_csv(fn1, sep = ',', 
@@ -43,11 +39,11 @@ def extract_fields_and_save(df, fields, dest):
    
    # Close
    for field in fields:
-       print 'Extracting ratio ' + field
+       print('Extracting ratio ' + field)
        sub_df = df.stack().ix[field]
        fn = (field + '.csv').replace('/', 'Per')
        
-       print 'Save to ' + fn
+       print('Save to ' + fn)
        
        sub_df.sort(inplace=True)
        sub_df.to_csv(dest + fn)
@@ -58,7 +54,7 @@ def extract_fields_and_save(df, fields, dest):
    '''
    
    for field in fields:
-       print 'Extracting ' + field
+       print('Extracting ' + field)
        sub_df = df.xs(field, level = 1, axis = 1)
        fn = field + '.csv'
        
@@ -82,14 +78,14 @@ def extract_data(filedir, panel, fields):
         
         if f.split('.')[1] == 'csv':
             # read multi index csv file into data frame
-            print f
+            print(f)
             fn1 = path.join(filedir, f)
             df = pd.read_csv(fn1, sep = ',', 
                      header = [0,1], index_col = 0, parse_dates = True)
                          
             # extract fields
             for field in fields:
-                print 'Extracting ' + field
+                print('Extracting ' + field)
                 sub = df.xs(field, level = 1, axis = 1)
                 panel[field].update(sub)
                 

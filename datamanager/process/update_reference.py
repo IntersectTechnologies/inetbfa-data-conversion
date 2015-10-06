@@ -104,7 +104,7 @@ def sync_marketcaps(equities, marketcap):
 				equities['market_cap'][ticker] = mc
 				equities['last_update'][ticker] = lvi
 		else:
-			print 'No data for ' + ticker
+			print('No data for ' + ticker)
 	
 	return equities
 	
@@ -123,7 +123,7 @@ def merge_files(filedir):
     for f in listdir(filedir):
         
         # read multi index csv file into data frame
-        print 'Adding file: ' + f
+        print('Adding file: ' + f)
         if counter == 0:
             fn1 = path.join(filedir, f)
             df = pd.read_csv(fn1, sep = ',', 
@@ -145,7 +145,7 @@ def extract_fields_and_save(df, fields, dest):
    '''
    
    for field in fields:
-       print 'Extracting ' + field
+       print('Extracting ' + field)
        sub_df = df.xs(field, level = 1, axis = 1)
        fn = field + '.csv'
        
@@ -179,7 +179,7 @@ def resample_monthly(source, dest, field):
     elif field == 'Market Cap':
         price_monthly = price.resample('M', how = 'last')
     elif field == 'VWAP':
-        print 'VWAP is calculated separately...'
+        print('VWAP is calculated separately...')
     else:
         raise Exception('"' + field + '" currently not supported')
     
