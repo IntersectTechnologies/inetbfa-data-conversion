@@ -1,4 +1,4 @@
-import csv
+﻿import csv
 import os
 import xl
 
@@ -46,7 +46,7 @@ class csvio(object):
                     # code has changed from previous row
                     newcode = True
                     # output current instrument code to console
-                    print code
+                    print(code)
 
                 if newcode:
                     fp = self.create_path(code,exchange)
@@ -102,7 +102,7 @@ class csvio(object):
                         # code has changed from previous row
                         newcode = True
                         # output current instrument code to console
-                        print code
+                        print(code)
 
                     if newcode:
                         fp = self.create_path(code,exchange)
@@ -114,7 +114,7 @@ class csvio(object):
                                 rowWriter = csv.writer(destfile, delimiter=',')
                                 rowWriter.writerow(data)
                             except:
-                                print 'Some error'
+                                print('Some error')
                             finally:
                                 destfile.close()
                         else:
@@ -125,13 +125,13 @@ class csvio(object):
                                 rowWriter.writerow(header)
                                 rowWriter.writerow(data)
                             except:
-                                print 'Some error'
+                                print('Some error')
                             finally:
                                 destfile.close()
 
                         newcode = False
                 except:
-                    print 'Some error'
+                    print('Some error')
                 finally:    
                     lastcode = code
 
@@ -156,14 +156,14 @@ class csvio(object):
 
         for row in csvreader:
             filename = row[0]
-            print 'Open file: ' + filename
+            print('Open file: ' + filename)
 
             path = _dir + '\\'+ filename
             new_fn = self.del_emptyrows(path)
             self.del_file(path)
             self.ren_file(new_fn, path)
-            print 'Finished with: ' + filename    
-            print ''
+            print('Finished with: ' + filename    )
+            print('')
 
         file.close()       
 

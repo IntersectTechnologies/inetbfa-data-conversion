@@ -18,7 +18,7 @@ def merge_files(filedir):
     for f in os.listdir(filedir):
         
         # read multi index csv file into data frame
-        print 'Adding file: ' + f
+        print('Adding file: ' + f)
         if counter == 0:
             fn1 = filedir + f
             df = pd.read_csv(fn1, sep = ',', 
@@ -41,11 +41,11 @@ def extract_fields_and_save(df, fields, dest):
    
    # Close
    for field in fields:
-       print 'Extracting ratio ' + field
+       print('Extracting ratio ' + field)
        sub_df = df.stack().ix[field]
        fn = (field + '.csv').replace('/', 'Per')
        
-       print 'Save to ' + fn
+       print('Save to ' + fn)
        
        sub_df.sort(inplace=True)
        sub_df.to_csv(dest + fn)
