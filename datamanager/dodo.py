@@ -17,6 +17,9 @@ fields = MarketData.fields
 fields.extend(Dividends.fields)
 archive_path = path.join(BACKUP_PATH, str(last_month_end())+'.tar.gz')
 
+
+#mergein_old
+#mergein_new = 
 def convert_ref_data(dependencies, targets):
     '''
     '''
@@ -39,14 +42,22 @@ def convert_market_data(dependencies, targets):
 def merge_ref_data(dependencies, targets):
     old = get_equities() # MASTER
     
-def merge_market_data(dependencies, targets):   
+def merge_market_data(task): 
+  
     ref = get_equities() # dependency 3
     prc = MarketDataProcessor()
-    dependencies = list(dependencies)
+    dependencies = list(task.file_dep)
+    print(task.name)
+    print("New path: " + dependencies[0])
+    
     new = prc.load_old(dependencies[0])
+   
+    print("Old path: " + dependencies[1])
     old = prc.load_old(dependencies[1])
+    
     merged = prc.merge(old, new, ref)
-    prc.save(merged, targets[0])
+    prc.save(merged, task.targets[0])
+
 
 def calc_adjusted_close(dependencies, targets):
     dependencies = list(dependencies)
