@@ -17,9 +17,13 @@ fields = MarketData.fields
 fields.extend(Dividends.fields)
 archive_path = path.join(BACKUP_PATH, str(last_month_end())+'.tar.gz')
 
+# paths
+mergein_old = path.join(MASTER_DATA_PATH, "jse", "equities", "daily")
+mergein_new = CONVERT_PATH
 
-#mergein_old
-#mergein_new = 
+closepath = path.join(MERGED_PATH, "Close.csv")
+divpath = path.join(MERGED_PATH, "Dividend Ex Date.csv")
+
 def convert_ref_data(dependencies, targets):
     '''
     '''
@@ -46,22 +50,16 @@ def merge_market_data(task):
   
     ref = get_equities() # dependency 3
     prc = MarketDataProcessor()
-    dependencies = list(task.file_dep)
     print(task.name)
-    print("New path: " + dependencies[0])
-    
-    new = prc.load_old(dependencies[0])
-   
-    print("Old path: " + dependencies[1])
-    old = prc.load_old(dependencies[1])
+    new = prc.load_old(path.join(mergein_new, task.name.split(':')[1] + '.csv'))
+    old = prc.load_old(path.join(mergein_old, task.name.split(':')[1] + '.csv'))
     
     merged = prc.merge(old, new, ref)
     prc.save(merged, task.targets[0])
 
 
 def calc_adjusted_close(dependencies, targets):
-    dependencies = list(dependencies)
-    adj_close = calc_adj_close(dependencies[0], dependencies[1])
+    adj_close = calc_adj_close(closepath, divpath)
     adj_close.to_csv(targets[0])
 
 ##########################################################################################
@@ -103,14 +101,14 @@ def task_mergemarketdata():
             'name':f,
             'actions':[merge_market_data],
             'targets':[path.join(MERGED_PATH, f + '.csv')],
-            'file_dep':[path.join(CONVERT_PATH, f + '.csv'), path.join(MASTER_DATA_PATH, "jse", "equities", "daily", f + '.csv'), path.join(MERGED_PATH, 'jse_equities.csv')]
+            'file_dep':[path.join(mergein_new, f + '.csv'), path.join(mergein_old, f + '.csv'), path.join(MERGED_PATH, 'jse_equities.csv')]
         }
 # 4
 def task_calculatedata():
     return {
         'actions':[calc_adjusted_close],
-        'file_dep': [path.join(MERGED_PATH, "Close.csv"),
-                     path.join(MERGED_PATH, "Dividend Ex Date.csv")],
+        'file_dep': [closepath,
+                     divpath],
         'targets':[path.join(MERGED_PATH, "Adjusted Close.csv")]
     }
 # 5
