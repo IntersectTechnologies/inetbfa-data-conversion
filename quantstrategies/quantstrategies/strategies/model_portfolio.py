@@ -36,17 +36,17 @@ class ModelPortfolio(object):
         '''
         Run the strategy
         '''
-        # Filter the universe - 
+        # Filter the universe
         shares = filter(self.data)
 
         # Calculate the transforms - panel data
-        trans = transform(self.data)
+        trans = transform(self.data[shares])
 
         # Select the securities
         portf_input = security_selection(trans)
 
         # Create the portfolio
-        return portfolio_selection(portf_input)
+        self.output = portfolio_selection(portf_input)
 
     def save(self, fpath):
-        self.handle().to_excel(fpath)
+        self.output.to_excel(fpath)

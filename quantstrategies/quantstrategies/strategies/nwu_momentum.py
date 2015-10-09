@@ -47,15 +47,16 @@ def security_selection(data):
     ]
 
     equities = get_equities()
-    output = equities[cols].ix[filtered].copy()
+    output = equities[cols].ix[data.columns].copy()
 
     output['Momentum - 12M'] = latest_mom
-    output['Price'] = self.data['Close'].last('1D').ix[0]
+    output['Price'] = data.last('1D').ix[0]
     return(output.sort(columns = 'Momentum - 12M', ascending = False))
 
 def portfolio_selection(data):
     '''
     '''
 
+    return(data.ix[:15])
 
 
