@@ -24,6 +24,9 @@
     <Compile Include="dodo.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="quantstrategies\filters.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="quantstrategies\liquidity_metrics.py" />
     <Compile Include="quantstrategies\models.py" />
     <Compile Include="quantstrategies\portfolio_selection.py" />
@@ -33,6 +36,9 @@
     <Compile Include="quantstrategies\strategies\growth_portfolio.py" />
     <Compile Include="quantstrategies\strategies\model_portfolio.py" />
     <Compile Include="quantstrategies\strategies\nwu_momentum.py" />
+    <Compile Include="quantstrategies\strategies\template.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="quantstrategies\strategies\__init__.py" />
     <Compile Include="quantstrategies\transforms.py" />
     <Compile Include="quantstrategies\universe_selection.py" />
