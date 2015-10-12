@@ -3,7 +3,11 @@
 
 from functools import partial
 from datamanager.envs import *
-from quantstrategies.transforms import mean, momentum, log_returns, index_log_returns, movavg, max
+from datamanager.load import get_equities
+from quantstrategies.universe_selection import liquid_jse_shares
+from quantstrategies.transforms import log_returns, index_log_returns, movavg, max
+from quantstrategies.filters import apply_filter
+import pandas as pd
 
 def fields():
     return  [
@@ -11,7 +15,8 @@ def fields():
         'Market Cap',
         'Volume',
         'Total Number Of Shares',
-        'VWAP'
+        'VWAP',
+        'Adjusted Close'
     ]
 
 def filter(data):
@@ -19,37 +24,41 @@ def filter(data):
     Uses the Market Cap, Volume, Close, Total Number Of Shares to filter shares
     '''
 
-    return(liquid_jse_shares(data))
+    assert isinstance(data, dict)
+    return(apply_filter(liquid_jse_shares, data))
 
 
 def transform(data):
     '''
-    Calculate the momentum
+    Calculate the Detrended Oscillator
     '''
-    fc = data['Close'].sort(ascending=False)
-    short_movavg = partial(movavg, period=20)
-    long_movavg = partial(movavg, period=50)
+
+    assert isinstance(data, dict)
+
+    fc = data['Adjusted Close'].sort(ascending=False)
+    ma20 = partial(movavg, period=20)
+    ma50 = partial(movavg, period=50)
     max20 = partial(max, period = 20)
 
-    lr = log_returns(data)
-    rets = returns(data)
+    lr = log_returns(fc)
     ixlr = index_log_returns(lr)
 
-    ma20 = short_movavg(ixlr)
-    ma50 = long_movavg(ixlr)
-    mom = momentum(ixlr)
-    mean = mean(ixlr)
+    assert isinstance(ixlr.index, pd.DatetimeIndex)
+    sma = ma20(ixlr)
+    lma = ma50(ixlr)
+    maximum = max20(ixlr)
 
-    do = (ma20 - ma50) / max20
-
-    return do
+    do = (sma - lma) / maximum
+    out = data.copy()
+    out['Detrended Oscillator'] = do
+    return(out)
 
 def security_selection(data):
     '''
     Select the top 15 securities based on momentum
     '''
-    
-    latest_mom = data.ix[0]
+    assert isinstance(data, dict)
+
     cols = [
         'fullname',
         'industry',
@@ -57,12 +66,14 @@ def security_selection(data):
     ]
 
     equities = get_equities()
-    output = equities[cols].ix[filtered].copy()
+    output = equities[cols].ix[data['Close'].columns].copy()
 
-    output['Momentum - 12M'] = latest_mom
-    output['Price'] = self.data['Close'].last('1D').ix[0]
-    return(output.sort(columns = 'Momentum - 12M', ascending = False))
+    output['Detrended Oscillator'] = data['Detrended Oscillator']
+    output['Price'] = data['Close'].last('1D').ix[0]
+    return(output.sort(columns = 'Detrended Oscillator', ascending = False).ix[:15])
 
 def portfolio_selection(data):
     '''
     '''
+    assert isinstance(data, pd.DataFrame)
+    return(data)

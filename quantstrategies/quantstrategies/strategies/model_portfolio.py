@@ -28,25 +28,25 @@ class ModelPortfolio(object):
         self.end_date = end_date
 
         daily_path = path.join(DATA_PATH, 'jse', 'equities', 'daily')
-        self.data = pd.Panel(MarketData.load_from_file(daily_path, fields, start_date, end_date))
-
-        assert type(self.data) == pd.Panel
+        self.data = MarketData.load_from_file(daily_path, fields, start_date, end_date)
+        self.output = pd.DataFrame()
 
     def handle(self, filter, transform, security_selection, portfolio_selection):
         '''
         Run the strategy
         '''
         # Filter the universe
-        shares = filter(self.data)
+        filtered = filter(self.data)
 
         # Calculate the transforms - panel data
-        trans = transform(self.data[shares])
+        transformed = transform(filtered)
 
         # Select the securities
-        portf_input = security_selection(trans)
+        securities = security_selection(transformed)
 
+        assert isinstance(securities, pd.DataFrame)
         # Create the portfolio
-        self.output = portfolio_selection(portf_input)
+        self.output = portfolio_selection(securities)
 
     def save(self, fpath):
         self.output.to_excel(fpath)

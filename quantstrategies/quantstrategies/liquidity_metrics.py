@@ -1,4 +1,4 @@
-# Copyright 2015 Intersect Technologies CC
+﻿# Copyright 2015 Intersect Technologies CC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,8 +26,7 @@ import pandas as pd
 def daily_ave_vol_month(montlhly_vol):
 	'''
 	Calculate the daily average volume over the last month
-	'''
- 
+	''' 
      
 	
 def daily_ave_vol_week(weekly_vol):

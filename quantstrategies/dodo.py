@@ -8,7 +8,9 @@ from datamanager.envs import *
 from quantstrategies.strategies.model_portfolio import ModelPortfolio
 import quantstrategies.strategies.nwu_momentum as nm
 import quantstrategies.strategies.growth_portfolio as gp
+import quantstrategies.strategies.detrended_oscillator as detosc
 from core.utils import last_month_end
+from quantstrategies.filters import apply_filter
 
 enddt = last_month_end()
 tmpd = enddt - dt.timedelta(days=365)
@@ -25,8 +27,8 @@ def update_growth_portfolio(dependencies, targets):
     growth.save(targets[0])
 
 def update_detrended_oscillator_portfolio(dependencies, targets):
-    do = ModelPortfolio(startdt, enddt, gp.fields())
-    do.handle(gp.filter, gp.transform, gp.security_selection, gp.portfolio_selection)
+    do = ModelPortfolio(startdt, enddt, detosc.fields())
+    do.handle(detosc.filter, detosc.transform, detosc.security_selection, detosc.portfolio_selection)
     do.save(targets[0])
    
 def task_model_momentum_portfolio():
@@ -45,29 +47,4 @@ def task_model_detrended_oscillator_portfolio():
     return {
         'actions':[update_detrended_oscillator_portfolio],
         'targets':[path.join(MODEL_PATH, 'Detrended Oscillator Portfolio-' + str(last_month_end()) + '.xlsx' )]
-    }
-
-def task_model_history():
-    return {
-        'actions':[]
-    }
-
-def task_model_transaction():
-    return {
-        'actions':[]
-    }
-
-def task_transaction_history():
-    return {
-        'actions':[]
-    }
-
-def task_portfolio_history():
-    return {
-        'actions':[]
-    }
-
-def task_indices():
-    return {
-        'actions':[]
     }
