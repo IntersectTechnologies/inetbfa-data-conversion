@@ -149,42 +149,6 @@ class Equities(DataModel):
         data = EQUITIES
         for i in data.index:
             self.__dict[i] = Equity.create_from_relation(i, data.ix[i])
-           
-class Dividends(DataModel):
-    '''
-
-    '''
-    fields = [
-            'Dividend Ex Date',
-            'Dividend Declaration Date',
-            'Dividend Payment Date'
-        ]
-        
-    def __init__(self):
-        '''
-        '''
-        
-        self.fields = []
-    
-class Indices(DataModel):
-
-    def __init__(self):
-        '''
-        '''
-        
-        self.fields = [
-            'Close',
-            'DY',
-            'EY',
-            'High',
-            'Low',
-            'Market Cap',
-            'Market Cap Free Float',
-            'Open',
-            'PE',
-            'TRI',
-            'Volume'
-        ]
                 
 class MarketData(DataModel):
     '''
@@ -204,7 +168,11 @@ class MarketData(DataModel):
             'Last Offer',
             #'Number Of Trades',
             'Volume',
-            'VWAP'
+            'VWAP',
+            'Book Value per Share',
+            'Dividend Ex Date',
+            'Dividend Declaration Date',
+            'Dividend Payment Date'
         ]
         
     filepath = path.join(DATA_PATH, 'jse', 'equities', 'daily')
@@ -237,43 +205,3 @@ class MarketData(DataModel):
                 data[f] = temp
         
         return data
-               
-class Ratios(DataModel):
-    '''
-    '''
-    fields = [
-            'Book Value / Share (c)',
-            'Cash Flow / Share (c)',
-            'Debt / Assets',
-            'Debt / Equity', 
-            'NAV / Share (c)',
-            'Earnings / Share (c)',
-            'Earnings Yield %',
-            'Dividend Yield %',
-            'Dividend / Share (c)',
-            'Price / Book Value',
-            'Price / Cash',
-            'Price / Cash Flow',
-            'Net Profit Margin %',
-            'Operating Profit Margin %',
-            'Price / EBIT',
-            'Price / Earnings',
-            'Price / EBITDA',
-            'Price / NAV',
-            'Price / Share (c)',
-            'Return On Equity %',
-            'Dividend / Share',
-            'Earnings / Share',
-            'Enterprise Value',
-            'Enterprise Value / Cash',
-            'Enterprise Value / EBIT',
-            'Enterprise Value / EBITDA',
-            'Enterprise Value / PAT',
-            'Enterprise Value / Share',
-            'Total Assets',
-            'Price / Share To Cash Flow / Share',
-            'Return On Average Equity %',
-            'Return On Assets %',
-            'Return On Average Assets %',
-            'Return On Capital Employed %'
-        ]

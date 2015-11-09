@@ -4,17 +4,16 @@ import datetime as dt
 import calendar as cal
 
 from datamanager.envs import *
-from datamanager.datamodel import MarketData, Dividends
+from datamanager.datamodel import MarketData
 from datamanager.load import get_equities
 from datamanager.process_downloads import MarketDataProcessor, ReferenceProcessor
-from datamanager.adjust import calc_adj_close
+from datamanager.adjust import calc_adj_close, calc_booktomarket
 
 from core.utils import last_month_end
 
 #log = getLog('datamanager')
 
 fields = MarketData.fields
-fields.extend(Dividends.fields)
 archive_path = path.join(BACKUP_PATH, str(last_month_end())+'.tar.gz')
 
 # paths
@@ -23,6 +22,7 @@ mergein_new = CONVERT_PATH
 
 closepath = path.join(MERGED_PATH, "Close.csv")
 divpath = path.join(MERGED_PATH, "Dividend Ex Date.csv")
+bookvaluepath = path.join(MERGED_PATH, "Book Value per Share.csv")
 
 def convert_ref_data(dependencies, targets):
     '''
@@ -61,6 +61,10 @@ def merge_market_data(task):
 def calc_adjusted_close(dependencies, targets):
     adj_close = calc_adj_close(closepath, divpath)
     adj_close.to_csv(targets[0])
+
+def booktomarket(dependencies, targets):
+    b2m = calc_booktomarket(closepath, bookvaluepath)
+    b2m.to_csv(targets[0])
 
 ##########################################################################################
 # DOIT tasks
@@ -111,6 +115,15 @@ def task_calculatedata():
                      divpath],
         'targets':[path.join(MERGED_PATH, "Adjusted Close.csv")]
     }
+
+def task_booktomarket():
+    return {
+        'actions':[booktomarket],
+        'file_dep': [closepath,
+                     bookvaluepath],
+        'targets':[path.join(MERGED_PATH, "Book-to-Market.csv")]
+    }
+
 # 5
 def task_update():
     return {
