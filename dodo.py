@@ -2,6 +2,7 @@
 import re, codecs
 import datetime as dt
 import calendar as cal
+import pandas as pd
 
 from datamanager.envs import *
 from datamanager.datamodel import MarketData
@@ -66,6 +67,20 @@ def booktomarket(dependencies, targets):
     b2m = calc_booktomarket(closepath, bookvaluepath)
     b2m.to_csv(targets[0])
 
+def swapaxes(dependencies, targets):
+    
+    temp = {}
+    for d in dependencies:
+        field = d.split("\\")[-1].split(".")[0]
+        temp[field] = pd.read_csv(d, sep = ',', index_col = 0, parse_dates=True)
+
+    # now create panel
+    panel = pd.Panel(temp)
+    out = panel.swapaxes(0, 2)
+
+    for ticker in out.items:
+        out[ticker].to_csv(path.join(MASTER_DATA_PATH, "tickers", ticker + '.csv'), index_label = "Date")
+
 ##########################################################################################
 # DOIT tasks
 ##########################################################################################
@@ -129,4 +144,12 @@ def task_update():
     return {
         'actions':['cp /c/root/data/merged/* /c/root/data/master/jse/equities/daily/'],
         'task_dep':['calculatedata']
+    }
+
+def task_swap():
+    files = [path.join(MASTER_DATA_PATH, "jse", "equities", "daily", f + '.csv') for f in fields]
+    return {
+        'actions':[swapaxes],
+        'file_dep': files,
+        'targets':[path.join(MASTER_DATA_PATH, "tickers")]
     }
