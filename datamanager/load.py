@@ -11,9 +11,8 @@ from datamanager.envs import MASTER_DATA_PATH
 from datetime import datetime as dt
 
 # globals
-EQUITIES = pd.read_csv(path.join(MASTER_DATA_PATH, 'jse', 'jse_equities.csv'), sep = ',', index_col = 0)
-jse_path = path.join(MASTER_DATA_PATH, 'jse')
-daily_path = path.join(jse_path, 'equities', 'daily')
+EQUITIES = pd.read_csv(path.join(MASTER_DATA_PATH, 'jse_equities.csv'), sep = ',', index_col = 0)
+daily_path = MASTER_DATA_PATH
 
 def load_close(tickers=None, start='2010-01-01', end=str(dt.today().date())):
     '''

@@ -18,7 +18,7 @@ fields = MarketData.fields
 archive_path = path.join(BACKUP_PATH, str(last_month_end())+'.tar.gz')
 
 # paths
-mergein_old = path.join(MASTER_DATA_PATH, "jse", "equities", "daily")
+mergein_old = MASTER_DATA_PATH
 mergein_new = CONVERT_PATH
 
 closepath = path.join(MERGED_PATH, "Close.csv")
@@ -79,7 +79,7 @@ def swapaxes(dependencies, targets):
     out = panel.swapaxes(0, 2)
 
     for ticker in out.items:
-        out[ticker].to_csv(path.join(MASTER_DATA_PATH, "tickers", ticker + '.csv'), index_label = "Date")
+        out[ticker].dropna(how='all').to_csv(path.join(MASTER_DATA_PATH, "tickers", ticker + '.csv'), index_label = "Date")
 
 ##########################################################################################
 # DOIT tasks
@@ -147,7 +147,7 @@ def task_update():
     }
 
 def task_swap():
-    files = [path.join(MASTER_DATA_PATH, "jse", "equities", "daily", f + '.csv') for f in fields]
+    files = [path.join(MASTER_DATA_PATH, f + '.csv') for f in fields]
     return {
         'actions':[swapaxes],
         'file_dep': files,
