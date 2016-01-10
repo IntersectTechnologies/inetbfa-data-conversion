@@ -3,6 +3,7 @@ import re, codecs
 import datetime as dt
 import calendar as cal
 import pandas as pd
+import string
 
 from datamanager.envs import *
 from datamanager.datamodel import MarketData
@@ -140,16 +141,31 @@ def task_booktomarket():
     }
 
 # 5
-def task_update():
-    return {
-        'actions':['cp /c/root/data/merged/* /c/root/data/master/jse/equities/daily/'],
-        'task_dep':['calculatedata']
-    }
-
 def task_swap():
     files = [path.join(MASTER_DATA_PATH, f + '.csv') for f in fields]
     return {
         'actions':[swapaxes],
         'file_dep': files,
         'targets':[path.join(MASTER_DATA_PATH, "tickers")]
+    }
+
+# 6
+def task_update():
+    return {
+        'actions':['cp /c/root/data/merged/* /c/root/data/master/'],
+        'task_dep':['swap']
+    }
+
+def task_stackalphabetically():
+    for letter in list(string.ascii_uppercase):
+        yield {
+            'name':letter,
+            'actions':['csvstack /c/root/data/master/tickers/' + letter + '*.csv -n Ticker --filenames > /c/root/data/master/temp/' + letter + '_equities.csv'],
+            'targets':[path.join(MASTER_DATA_PATH, "temp", letter + '_equities.csv')],
+            'task_dep':['swap']
+        }
+def task_stack():
+    return {
+        'actions':['csvstack /c/root/data/master/tickers/temp/*.csv > /c/root/data/master/tickers/temp/all_equities.csv'],
+        'task_dep':['stackalphabetically']
     }
