@@ -184,6 +184,7 @@ class MarketDataProcessor(Processor):
     def save(self, data, dest_fpath):
         '''
         '''
+        data = data.dropna(how='all')
         data.to_csv(dest_fpath)
     
     def merge(self, old, new, equities):

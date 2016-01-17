@@ -142,11 +142,11 @@ def task_booktomarket():
 
 # 5
 def task_swap():
-    files = [path.join(MASTER_DATA_PATH, f + '.csv') for f in fields]
+    files = [path.join(CONVERT_PATH, f + '.csv') for f in fields]
     return {
         'actions':[swapaxes],
         'file_dep': files,
-        'targets':[path.join(MASTER_DATA_PATH, "tickers")]
+        'targets':[path.join(CONVERT_PATH, "tickers")]
     }
 
 # 6
@@ -164,8 +164,9 @@ def task_stackalphabetically():
             'targets':[path.join(MASTER_DATA_PATH, "temp", letter + '_equities.csv')],
             'task_dep':['swap']
         }
+
 def task_stack():
     return {
-        'actions':['csvstack /c/root/data/master/tickers/temp/*.csv > /c/root/data/master/tickers/temp/all_equities.csv'],
+        'actions':['csvstack /c/root/data/master/temp/*.csv > /c/root/data/master/all_equities_data.csv'],
         'task_dep':['stackalphabetically']
     }
