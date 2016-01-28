@@ -80,7 +80,7 @@ def swapaxes(dependencies, targets):
     out = panel.swapaxes(0, 2)
 
     for ticker in out.items:
-        out[ticker].dropna(how='all').to_csv(path.join(MASTER_DATA_PATH, "tickers", ticker + '.csv'), index_label = "Date")
+        out[ticker].dropna(how='all').to_csv(path.join(CONVERT_PATH, "tickers", ticker + '.csv'), index_label = "Date")
 
 ##########################################################################################
 # DOIT tasks
@@ -105,15 +105,6 @@ def task_convertmarketdata():
             'task_dep':['convertrefdata']
         }
 
-# should merge with old jse_equities file
-'''
-def task_mergerefdata():
-    return {
-        'actions': ['cp %(dependencies)s %(targets)s'],
-        'file_dep': [path.join(CONVERT_PATH, 'jse_equities.csv')],
-        'targets':[path.join(MERGED_PATH, 'jse_equities.csv')]
-    }
-'''
 # 3
 def task_mergemarketdata():
     for f in fields:
