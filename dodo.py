@@ -146,18 +146,3 @@ def task_update():
         'actions':['cp /c/root/data/merged/* /c/root/data/master/'],
         'task_dep':['swap']
     }
-
-def task_stackalphabetically():
-    for letter in list(string.ascii_uppercase):
-        yield {
-            'name':letter,
-            'actions':['csvstack /c/root/data/master/tickers/' + letter + '*.csv -n Ticker --filenames > /c/root/data/master/temp/' + letter + '_equities.csv'],
-            'targets':[path.join(MASTER_DATA_PATH, "temp", letter + '_equities.csv')],
-            'task_dep':['swap']
-        }
-
-def task_stack():
-    return {
-        'actions':['csvstack /c/root/data/master/temp/*.csv > /c/root/data/master/all_equities_data.csv'],
-        'task_dep':['stackalphabetically']
-    }
