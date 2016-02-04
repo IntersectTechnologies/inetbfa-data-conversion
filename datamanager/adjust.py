@@ -47,7 +47,7 @@ def calc_dividend_multiplier(div, close):
     mult = (1-(div/close)).dropna()
     return __backwards_calc__(mult)
 
-def calc_adj_close(closepath, divpath):
+def calc_adj_close(closepath, divpath, equities):
 
     # Import closing price data with pandas
     close = pd.read_csv(closepath, index_col = 0, parse_dates=True)
@@ -56,7 +56,7 @@ def calc_adj_close(closepath, divpath):
     divs = pd.read_csv(divpath, index_col = 0, parse_dates=True)
 
     # fillna with pad.
-    divmult = DataModel.blank_ts_df(list(get_equities().index))
+    divmult = DataModel.blank_ts_df(list(equities.index))
     for ticker in divs.columns:
         # get the dividends and close of a single ticker and drop all NaN values
         tmp_div = divs[ticker].dropna()
@@ -68,13 +68,13 @@ def calc_adj_close(closepath, divpath):
 
     # get the new index 
     startdate = pd.datetime(2000, 1 , 1).date()
-    divm = DataModel.blank_ts_df(list(get_equities().index), startdate)
+    divm = DataModel.blank_ts_df(list(equities.index), startdate)
 
     # update the blank dataframe - expand to the actual index
     divm.update(divmult) 
-
     # fillna with pad
     divm = divm.bfill()
+    divm = divm.fillna(1)
     adj_close = close * divm
 
     # Save to file
