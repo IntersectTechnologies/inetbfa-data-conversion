@@ -26,6 +26,13 @@ closepath = path.join(MERGED_PATH, "Close.csv")
 divpath = path.join(MERGED_PATH, "Dividend Ex Date.csv")
 bookvaluepath = path.join(MERGED_PATH, "Book Value per Share.csv")
 
+def get_current_listed():
+    refp = ReferenceProcessor()
+    refnew = refp.load_new(path.join(DL_PATH, 'Reference.xlsx'))
+    listed_equities = list(refnew.index)
+
+    return listed_equities
+
 def convert_ref_data(dependencies, targets):
     '''
     '''
@@ -37,6 +44,7 @@ def convert_ref_data(dependencies, targets):
     refnew = refp.load_new(dependencies[0])
     # Update path to write to
     refnew.to_csv(targets[0])
+    listed_equities = list(refnew.index)
 
 def convert_market_data(dependencies, targets):
     prc = MarketDataProcessor()
@@ -50,18 +58,23 @@ def merge_ref_data(dependencies, targets):
     
 def merge_market_data(task): 
   
-    ref = get_equities() # dependency 3
+    listed_equities = get_current_listed()
+
+    ref = get_equities().ix[listed_equities] # dependency 3
     prc = MarketDataProcessor()
     print(task.name)
-    new = prc.load_old(path.join(mergein_new, task.name.split(':')[1] + '.csv'))
-    old = prc.load_old(path.join(mergein_old, task.name.split(':')[1] + '.csv'))
+    new = prc.load_old(path.join(CONVERT_PATH, task.name.split(':')[1] + '.csv'))
+    old = prc.load_old(path.join(MASTER_DATA_PATH, task.name.split(':')[1] + '.csv'))
+
+    old = old[listed_equities]
     
     merged = prc.merge(old, new, ref)
     prc.save(merged, task.targets[0])
 
 
 def calc_adjusted_close(dependencies, targets):
-    adj_close = calc_adj_close(closepath, divpath)
+    listed_equities = get_current_listed()
+    adj_close = calc_adj_close(closepath, divpath, get_equities().ix[listed_equities])
     adj_close.to_csv(targets[0])
 
 def booktomarket(dependencies, targets):
@@ -138,11 +151,4 @@ def task_swap():
         'actions':[swapaxes],
         'file_dep': files,
         'targets':[path.join(CONVERT_PATH, "tickers")]
-    }
-
-# 6
-def task_update():
-    return {
-        'actions':['cp /c/root/data/merged/* /c/root/data/master/'],
-        'task_dep':['swap']
     }
