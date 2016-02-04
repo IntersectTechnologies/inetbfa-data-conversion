@@ -115,7 +115,7 @@ def load_equities():
     '''
     '''
     
-    EQUITIES = pd.read_csv(path.join(jse_path, 'jse_equities.csv'), sep = ',', index_col = 0)
+    EQUITIES = pd.read_csv(path.join(daily_path, 'jse_equities.csv'), sep = ',', index_col = 0)
     
     return EQUITIES
 
