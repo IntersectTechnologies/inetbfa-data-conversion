@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{a539792c-b7ea-4c1b-9bde-807c79e185a1}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>test\tests.py</StartupFile>
+    <SearchPath>..\core;..\quantstrategies;..\datamanager;..\..\intersect</SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId />
+    <InterpreterVersion />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="datamanager\adjust.py" />
+    <Compile Include="datamanager\datamodel.py" />
+    <Compile Include="datamanager\envs.py" />
+    <Compile Include="datamanager\load.py" />
+    <Compile Include="datamanager\process\data_preprocessing.py" />
+    <Compile Include="datamanager\process\dividend_preprocessing.py" />
+    <Compile Include="datamanager\process\extract_index_reference.py" />
+    <Compile Include="datamanager\process\extract_ratio_lineitems.py" />
+    <Compile Include="datamanager\process\FileIO.py" />
+    <Compile Include="datamanager\process\index_preprocessing.py" />
+    <Compile Include="datamanager\process\market_preprocessing.py" />
+    <Compile Include="datamanager\process\preprocessing.py" />
+    <Compile Include="datamanager\process\ratios_preprocessing.py" />
+    <Compile Include="datamanager\process\transform_data.py" />
+    <Compile Include="datamanager\process\update_reference.py" />
+    <Compile Include="datamanager\process_downloads.py" />
+    <Compile Include="datamanager\utils\__init__.py" />
+    <Compile Include="datamanager\__init__.py" />
+    <Compile Include="dodo.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="setup.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="test\tests.py">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="datamanager" />
+    <Folder Include="datamanager\process" />
+    <Folder Include="datamanager\utils" />
+    <Folder Include="test\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Readme.md" />
+    <Content Include="setup.cfg" />
+  </ItemGroup>
+  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+</Project>
