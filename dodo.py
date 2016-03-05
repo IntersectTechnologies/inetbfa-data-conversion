@@ -11,12 +11,9 @@ from datamanager.load import get_equities
 from datamanager.process_downloads import MarketDataProcessor, ReferenceProcessor
 from datamanager.adjust import calc_adj_close, calc_booktomarket
 
-from core.utils import last_month_end
-
-#log = getLog('datamanager')
+from datamanager.utils import last_month_end
 
 fields = MarketData.fields
-archive_path = path.join(BACKUP_PATH, str(last_month_end())+'.tar.gz')
 
 # paths
 mergein_old = MASTER_DATA_PATH
