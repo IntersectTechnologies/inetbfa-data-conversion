@@ -1,4 +1,8 @@
-﻿import csv
+﻿'''
+THIS CODE IS CURRENTLY NOT USED AND ARE KEPT FOR REFERENCE ALONE
+'''
+
+import csv
 import os
 
 class csvio(object):

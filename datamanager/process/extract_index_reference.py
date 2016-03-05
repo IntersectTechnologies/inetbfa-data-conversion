@@ -3,9 +3,10 @@
 Created on Fri Aug 15 15:45:10 2014
 
 @author: Niel
+
+THIS CODE IS CURRENTLY NOT USED AND ARE KEPT FOR REFERENCE ALONE
 """
 
-from initialize import data
 from os import path
 import csv
 import pandas as pd

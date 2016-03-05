@@ -1,13 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Aug 04 12:19:50 2014
-
-@author: Niel
-
-Read ratio data downloaded from expert.mcgregorbfa.com
- and convert to a more convenient format for reading from other applications
- 
-"""
+'''
+THIS CODE IS CURRENTLY NOT USED AND ARE KEPT FOR REFERENCE ALONE
+'''
 
 import pandas as pd
 import os

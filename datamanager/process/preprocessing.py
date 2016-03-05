@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Aug 15 14:38:15 2014
-
-@author: Niel
-"""
+'''
+THIS CODE IS CURRENTLY NOT USED AND ARE KEPT FOR REFERENCE ALONE
+'''
 
 import pandas as pd
 from os import listdir, path

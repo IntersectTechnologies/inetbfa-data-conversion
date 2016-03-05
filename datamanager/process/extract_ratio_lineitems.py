@@ -1,12 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Aug 16 13:12:18 2014
-
-@author: Niel
-
-Extract lineitem values from ratios
-
-"""
+'''
+THIS CODE IS CURRENTLY NOT USED AND ARE KEPT FOR REFERENCE ALONE
+'''
 
 from os import path
 import pandas as pd
