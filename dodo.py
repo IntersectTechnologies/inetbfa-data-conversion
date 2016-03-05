@@ -6,14 +6,11 @@ import pandas as pd
 import string
 
 from datamanager.envs import *
-from datamanager.datamodel import MarketData
-from datamanager.load import get_equities
-from datamanager.process_downloads import MarketDataProcessor, ReferenceProcessor
+from datamanager.load import *
 from datamanager.adjust import calc_adj_close, calc_booktomarket
-
 from datamanager.utils import last_month_end
 
-fields = MarketData.fields
+fields = marketdata_fields()
 
 # paths
 mergein_old = MASTER_DATA_PATH
@@ -23,51 +20,50 @@ closepath = path.join(MERGED_PATH, "Close.csv")
 divpath = path.join(MERGED_PATH, "Dividend Ex Date.csv")
 bookvaluepath = path.join(MERGED_PATH, "Book Value per Share.csv")
 
-def get_current_listed():
-    refp = ReferenceProcessor()
-    refnew = refp.load_new(path.join(DL_PATH, 'Reference.xlsx'))
-    listed_equities = list(refnew.index)
+def get_all_equities():
+     new_all, _, _, _ = get_all_equities_from_data(MERGED_PATH, CONVERT_PATH, 'Close')
 
-    return listed_equities
+     return new_all
+
+def get_current_listed():
+    new_all, current, newly_listed, delisted = get_all_equities_from_data(MERGED_PATH, CONVERT_PATH, 'Close')
+    return current_set
 
 def convert_ref_data(dependencies, targets):
     '''
     '''
 
     dependencies = list(dependencies)
-    #log.info('Converting reference data')
 
-    refp = ReferenceProcessor()
-    refnew = refp.load_new(dependencies[0])
+    refnew = load_inetbfa_ref_data(dependencies[0])
     # Update path to write to
     refnew.to_csv(targets[0])
     listed_equities = list(refnew.index)
 
 def convert_market_data(dependencies, targets):
-    prc = MarketDataProcessor()
-
     dependencies = list(dependencies)
-    new_data = prc.load_new(dependencies[0])
-    prc.save(new_data, targets[0])
+    new_data = load_intebfa_ts_data(dependencies[0])
+    new_data = new_data.dropna(how='all')
+    new_data.to_csv(targets[0])
+
+def calculate_conversion_report():
+    '''
+    '''
 
 def merge_ref_data(dependencies, targets):
     old = get_equities() # MASTER
     
 def merge_market_data(task): 
   
-    listed_equities = get_current_listed()
-
-    ref = get_equities().ix[listed_equities] # dependency 3
-    prc = MarketDataProcessor()
-    print(task.name)
-    new = prc.load_old(path.join(CONVERT_PATH, task.name.split(':')[1] + '.csv'))
-    old = prc.load_old(path.join(MASTER_DATA_PATH, task.name.split(':')[1] + '.csv'))
-
-    old = old[listed_equities]
+    new = load_ts(path.join(CONVERT_PATH, task.name.split(':')[1] + '.csv'))
+    old = load_ts(path.join(MASTER_DATA_PATH, task.name.split(':')[1] + '.csv'))
     
-    merged = prc.merge(old, new, ref)
-    prc.save(merged, task.targets[0])
+    merged = empty_dataframe(get_all_equities())
+    merged.update(old)
+    merged.update(new)
 
+    merged = merged.dropna(how='all')
+    merged.to_csv(targets[0])
 
 def calc_adjusted_close(dependencies, targets):
     listed_equities = get_current_listed()

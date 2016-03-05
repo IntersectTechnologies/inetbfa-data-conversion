@@ -5,8 +5,7 @@ Created on Thu Jun 04 21:06:13 2015
 """
 
 import pandas as pd
-from datamanager.datamodel import DataModel
-from datamanager.load import get_equities
+from datamanager.load import get_equities, empty_dataframe
 
 def __backwards_calc__(multiplier):
     '''
@@ -56,7 +55,7 @@ def calc_adj_close(closepath, divpath, equities):
     divs = pd.read_csv(divpath, index_col = 0, parse_dates=True)
 
     # fillna with pad.
-    divmult = DataModel.blank_ts_df(list(equities.index))
+    divmult = empty_dataframe(list(equities.index))
     for ticker in divs.columns:
         # get the dividends and close of a single ticker and drop all NaN values
         tmp_div = divs[ticker].dropna()
