@@ -5,7 +5,7 @@ python:
 # command to install dependencies
 install:
   - pip install -r requirements.txt
-script: nosetests
+script: initialise, nosetests
 branches:
   only:
     - master
