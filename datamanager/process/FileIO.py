@@ -1,6 +1,5 @@
 ﻿import csv
 import os
-import xl
 
 class csvio(object):
     """description of class"""
@@ -135,17 +134,6 @@ class csvio(object):
                 finally:    
                     lastcode = code
 
-    def read_mcgbfa(self, _filepath):
-        """
-        Read data from Excel files downloaded form McGregor BFA
-
-        INCOMPLETE:
-
-        - Exception handling
-        """
-
-        xlsx2csv(self, _srcfile, _dim2)
-
     def fileMaintenance(self, _dir):
         """
 
@@ -166,95 +154,6 @@ class csvio(object):
             print('')
 
         file.close()       
-
-    # Generic methods
-    def xlsx2csv(self, srcfile, _dim2):
-        """
-        Read data from Excel file and write to csv file
-
-        use pyvot xl API
-        use csv API
-
-        INCOMPLETE:
-
-        - Exception handling
-        """
-        fp = os.path.join(os.getcwd(), srcfile)
-
-        _dim2 = 'G5500'
-        header = ['Code','Price_High','Price_Low','Price_Open','Price_Close','Volume']
-        blankline = False
-        lastcode = ''
-        newcode = False
-
-        wb = xl.Workbook(fp)
-
-        # Get headings (if any)
-        rw = 1
-        rng = 'A' + str(rw) + ':F' + str(rw)
-
-        # Determine data range
-        rng = wb.get('A1:' + _dim2)
-
-        # Get data from range
-        alldata = rng.get()
-
-        wb.xlWorkbook.Close()
-            
-        heading = alldata[0]
-        # Copy all not null (None) data excluding heading
-        data = [row for row in alldata[1:] if row[:][0] != None]
-
-        # Save data in fdo objects
-        dates = [row[0] for row in data]
-        price_high = [row[1] for row in data]
-        price_low = [row[2] for row in data]
-        price_open = [row[3] for row in data]
-        price_close = [row[4] for row in data]
-
-        # Write data to csv file
-        csvwriter = csv.writer(open(os.path.join(os.getcwd(),srcfile[:-4]+'csv'), 'wb'))
-        csvwriter.writerows([header]+data)
-
-    def insert_column(self, _data):
-        """
-
-        """
-
-    def insert_heading(self, _heading):
-        """
-
-        """
-
-    def remove_heading(self):
-        """
-
-        """
-
-        # Create new temp file without heading
-
-        # Copy data from current file
-
-        # Delete current file
-
-        # Rename temp file to deleted filename
-
-    def change_heading(self, _newheading):
-        """
-
-        """
-
-    def insert_row(self, _row):
-        """
-
-        """
-
-    def copy_data(self, newfn, curfn, heading):
-        """
-        Copy data in current file to new file with name: newfn - full path
-        curfn: Name of file to copy - full path
-        heading: Boolean indicating whether heading should be copied as well
-        """
 
     def merge(self, src, tgt):
         """
