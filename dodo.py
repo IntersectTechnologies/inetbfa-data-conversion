@@ -21,9 +21,8 @@ divpath = path.join(MERGED_PATH, "Dividend Ex Date.csv")
 bookvaluepath = path.join(MERGED_PATH, "Book Value per Share.csv")
 
 def get_all_equities():
-     new_all, _, _, _ = get_all_equities_from_data(MERGED_PATH, CONVERT_PATH, 'Close')
-
-     return new_all
+    new_all, _, _, _ = get_all_equities_from_data(MERGED_PATH, CONVERT_PATH, 'Close')
+    return new_all
 
 def get_current_listed():
     new_all, current, newly_listed, delisted = get_all_equities_from_data(MERGED_PATH, CONVERT_PATH, 'Close')
@@ -41,6 +40,8 @@ def convert_ref_data(dependencies, targets):
     listed_equities = list(refnew.index)
 
 def convert_market_data(dependencies, targets):
+    '''
+    '''
     dependencies = list(dependencies)
     new_data = load_intebfa_ts_data(dependencies[0])
     new_data = new_data.dropna(how='all')
@@ -51,7 +52,7 @@ def calculate_conversion_report():
     '''
 
 def merge_ref_data(dependencies, targets):
-    old = get_equities() # MASTER
+    old = get_all_equities()
     
 def merge_market_data(task): 
   
@@ -66,8 +67,8 @@ def merge_market_data(task):
     merged.to_csv(targets[0])
 
 def calc_adjusted_close(dependencies, targets):
-    listed_equities = get_current_listed()
-    adj_close = calc_adj_close(closepath, divpath, get_equities().ix[listed_equities])
+    all_equities = get_all_equities()
+    adj_close = calc_adj_close(closepath, divpath, all_equities)
     adj_close.to_csv(targets[0])
 
 def booktomarket(dependencies, targets):
@@ -129,6 +130,7 @@ def task_calculatedata():
         'targets':[path.join(MERGED_PATH, "Adjusted Close.csv")]
     }
 
+# 5
 def task_booktomarket():
     return {
         'actions':[booktomarket],
@@ -137,7 +139,7 @@ def task_booktomarket():
         'targets':[path.join(MERGED_PATH, "Book-to-Market.csv")]
     }
 
-# 5
+# 6
 def task_swap():
     files = [path.join(CONVERT_PATH, f + '.csv') for f in fields]
     return {
