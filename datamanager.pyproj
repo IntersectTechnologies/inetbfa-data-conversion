@@ -5,7 +5,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{a539792c-b7ea-4c1b-9bde-807c79e185a1}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>test\tests.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>..\core;..\quantstrategies;..\datamanager;..\..\intersect</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -25,19 +26,15 @@
     <Compile Include="datamanager\datamodel.py" />
     <Compile Include="datamanager\envs.py" />
     <Compile Include="datamanager\load.py" />
-    <Compile Include="datamanager\process\data_preprocessing.py" />
     <Compile Include="datamanager\process\dividend_preprocessing.py" />
     <Compile Include="datamanager\process\extract_index_reference.py" />
     <Compile Include="datamanager\process\extract_ratio_lineitems.py" />
     <Compile Include="datamanager\process\FileIO.py" />
     <Compile Include="datamanager\process\index_preprocessing.py" />
-    <Compile Include="datamanager\process\market_preprocessing.py" />
     <Compile Include="datamanager\process\preprocessing.py" />
     <Compile Include="datamanager\process\ratios_preprocessing.py" />
-    <Compile Include="datamanager\process\transform_data.py" />
-    <Compile Include="datamanager\process\update_reference.py" />
     <Compile Include="datamanager\process_downloads.py" />
-    <Compile Include="datamanager\utils\__init__.py" />
+    <Compile Include="datamanager\utils.py" />
     <Compile Include="datamanager\__init__.py" />
     <Compile Include="dodo.py">
       <SubType>Code</SubType>
@@ -45,18 +42,22 @@
     <Compile Include="setup.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="test\tests.py">
+    <Compile Include="test\calculation_test.py" />
+    <Compile Include="test\conversion_tests.py" />
+    <Compile Include="test\path_tests.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="datamanager" />
     <Folder Include="datamanager\process" />
-    <Folder Include="datamanager\utils" />
     <Folder Include="test\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".travis.yml" />
+    <Content Include="LICENSE" />
     <Content Include="Readme.md" />
+    <Content Include="requirements.txt" />
     <Content Include="setup.cfg" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />

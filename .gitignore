@@ -63,3 +63,5 @@ target/
 
 # CSV Data files
 **/*.csv
+*.doit.**
+*.user
