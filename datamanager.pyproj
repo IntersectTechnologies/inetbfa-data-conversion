@@ -23,17 +23,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="datamanager\adjust.py" />
-    <Compile Include="datamanager\datamodel.py" />
     <Compile Include="datamanager\envs.py" />
     <Compile Include="datamanager\load.py" />
-    <Compile Include="datamanager\process\dividend_preprocessing.py" />
     <Compile Include="datamanager\process\extract_index_reference.py" />
     <Compile Include="datamanager\process\extract_ratio_lineitems.py" />
     <Compile Include="datamanager\process\FileIO.py" />
     <Compile Include="datamanager\process\index_preprocessing.py" />
     <Compile Include="datamanager\process\preprocessing.py" />
     <Compile Include="datamanager\process\ratios_preprocessing.py" />
-    <Compile Include="datamanager\process_downloads.py" />
+    <Compile Include="datamanager\referencedata.py" />
     <Compile Include="datamanager\utils.py" />
     <Compile Include="datamanager\__init__.py" />
     <Compile Include="dodo.py">
@@ -44,6 +42,9 @@
     </Compile>
     <Compile Include="test\calculation_test.py" />
     <Compile Include="test\conversion_tests.py" />
+    <Compile Include="test\loading_tests.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="test\path_tests.py">
       <SubType>Code</SubType>
     </Compile>

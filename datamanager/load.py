@@ -108,7 +108,7 @@ def load_intebfa_ts_data(filepath):
         
     return temp.sort_index()
 
-def load_inetbfa_ref_data(self, fpath):
+def load_inetbfa_ref_data(fpath):
     '''
     '''
     drop_cols = [0, 1]
