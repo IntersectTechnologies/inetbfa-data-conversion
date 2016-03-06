@@ -11,8 +11,6 @@ from os import path
 from datamanager.envs import MASTER_DATA_PATH
 from datetime import datetime as dt
 
-# globals
-EQUITIES = pd.read_csv(path.join(MASTER_DATA_PATH, 'jse_equities.csv'), sep = ',', index_col = 0)
 daily_path = MASTER_DATA_PATH
 
 def marketdata_fields():
@@ -326,19 +324,10 @@ def load_equities():
     EQUITIES = pd.read_csv(path.join(daily_path, 'jse_equities.csv'), sep = ',', index_col = 0)
     
     return EQUITIES
-
-def set_equities(equities):
-    '''
-    '''
-    global EQUITIES
-    if type(equities) == pd.DataFrame:
-        EQUITIES = equities
-    else:
-        raise ValueError
     
 def get_equities():
     '''
     '''
     
-    eq = EQUITIES.copy()
+    eq = load_equities().copy()
     return eq
