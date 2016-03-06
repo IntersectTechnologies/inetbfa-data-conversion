@@ -83,11 +83,11 @@ def equities_from_data(current_list, all_list):
     '''
     '''
 
-    all_set = set(all)
-    current_set = set(current)
+    all_set = set(all_list)
+    current_set = set(current_list)
 
-    delisted = all - current
-    newly_listed = current - all
+    delisted = all_set - current_set
+    newly_listed = current_set - all_set
 
     new_all_set = all_set + current_set
 
