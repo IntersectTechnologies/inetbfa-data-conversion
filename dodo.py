@@ -28,18 +28,7 @@ def get_current_listed():
     new_all, current, newly_listed, delisted = get_all_equities_from_data(MERGED_PATH, CONVERT_PATH, 'Close')
     return current_set
 
-def convert_ref_data(dependencies, targets):
-    '''
-    '''
-
-    dependencies = list(dependencies)
-
-    refnew = load_inetbfa_ref_data(dependencies[0])
-    # Update path to write to
-    refnew.to_csv(targets[0])
-    listed_equities = list(refnew.index)
-
-def convert_market_data(dependencies, targets):
+def convert_data(dependencies, targets):
     '''
     '''
     dependencies = list(dependencies)
@@ -65,12 +54,8 @@ def calculate_conversion_report():
 
             report = pd.DataFrame(reportdata, index = data.columns, columns = columns)
             report.to_csv(path.join(DATA_ROOT, 'Conversion Report - '  + f))
-
-
-def merge_ref_data(dependencies, targets):
-    old = get_all_equities()
     
-def merge_market_data(task): 
+def merge_data(task): 
   
     new = load_ts(path.join(CONVERT_PATH, task.name.split(':')[1] + '.csv'))
     old = load_ts(path.join(MASTER_DATA_PATH, task.name.split(':')[1] + '.csv'))
@@ -109,36 +94,28 @@ def swapaxes(dependencies, targets):
 # DOIT tasks
 ##########################################################################################
 
-# 1  
-def task_convertrefdata():
-    return {
-        'actions': [convert_ref_data],
-        'file_dep': [path.join(DL_PATH, 'Reference.xlsx')],
-        'targets':[path.join(CONVERT_PATH, 'jse_equities.csv')]
-    }
-
-# 2
-def task_convertmarketdata():
+# 1
+def task_convert():
     for f in fields:
         yield {
             'name':f,
-            'actions':[convert_market_data],
+            'actions':[convert_data],
             'targets':[path.join(CONVERT_PATH, f+ '.csv')],
             'file_dep':[path.join(DL_PATH, f + '.xlsx')],
             'task_dep':['convertrefdata']
         }
 
-# 3
-def task_mergemarketdata():
+# 2
+def task_merge():
     for f in fields:
         yield {
             'name':f,
-            'actions':[merge_market_data],
+            'actions':[merge_data],
             'targets':[path.join(MERGED_PATH, f + '.csv')],
             'file_dep':[path.join(mergein_new, f + '.csv'), path.join(mergein_old, f + '.csv'), path.join(MERGED_PATH, 'jse_equities.csv')]
         }
-# 4
-def task_calculatedata():
+# 3
+def task_adjusted_close():
     return {
         'actions':[calc_adjusted_close],
         'file_dep': [closepath,
@@ -156,7 +133,7 @@ def task_booktomarket():
     }
 
 # 6
-def task_swap():
+def task_data_per_ticker():
     files = [path.join(CONVERT_PATH, f + '.csv') for f in fields]
     return {
         'actions':[swapaxes],
