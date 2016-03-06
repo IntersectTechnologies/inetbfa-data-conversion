@@ -64,7 +64,7 @@ def merge_market_data(task):
     merged.update(new)
 
     merged = merged.dropna(how='all')
-    merged.to_csv(targets[0])
+    merged.to_csv(task.targets[0])
 
 def calc_adjusted_close(dependencies, targets):
     all_equities = get_all_equities()
