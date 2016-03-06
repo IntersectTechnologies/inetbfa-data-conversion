@@ -42,9 +42,6 @@
     </Compile>
     <Compile Include="test\calculation_test.py" />
     <Compile Include="test\conversion_tests.py" />
-    <Compile Include="test\path_tests.py">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="datamanager" />

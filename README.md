@@ -2,6 +2,8 @@
 
 Converts and merges data downloaded with the INETBFA Excel Add-In to csv formats
 
+Build Status: https://travis-ci.org/IntersectTechnologies/inetbfa-data-conversion.svg?branch=master
+
 ## Getting started:
 
 Install python on your system if it is not already installed:
