@@ -56,7 +56,7 @@ def calc_adj_close(closepath, divpath, equities):
     divs = pd.read_csv(divpath, index_col = 0, parse_dates=True)
 
     # fillna with pad.
-    divmult = empty_dataframe(list(equities.index))
+    divmult = empty_dataframe(equities)
     for ticker in divs.columns:
         # get the dividends and close of a single ticker and drop all NaN values
         tmp_div = divs[ticker].dropna()
@@ -68,7 +68,7 @@ def calc_adj_close(closepath, divpath, equities):
 
     # get the new index 
     startdate = pd.datetime(2000, 1, 1).date()
-    divm = empty_dataframe(list(equities.index), startdate)
+    divm = empty_dataframe(equities, startdate)
 
     # update the blank dataframe - expand to the actual index
     divm.update(divmult) 
