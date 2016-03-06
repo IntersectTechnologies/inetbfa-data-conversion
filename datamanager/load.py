@@ -89,8 +89,7 @@ def equities_from_data(current_list, all_list):
     delisted = all_set - current_set
     newly_listed = current_set - all_set
 
-    new_all_set = all_set.copy()
-    new_all_set.add(current_set)
+    new_all_set = all_set | current_set # union
 
     return(new_all_set, current_set, newly_listed, delisted)
 
