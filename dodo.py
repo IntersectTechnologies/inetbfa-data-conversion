@@ -102,7 +102,6 @@ def task_convert():
             'actions':[convert_data],
             'targets':[path.join(CONVERT_PATH, f+ '.csv')],
             'file_dep':[path.join(DL_PATH, f + '.xlsx')],
-            'task_dep':['convertrefdata']
         }
 
 # 2
@@ -112,7 +111,7 @@ def task_merge():
             'name':f,
             'actions':[merge_data],
             'targets':[path.join(MERGED_PATH, f + '.csv')],
-            'file_dep':[path.join(mergein_new, f + '.csv'), path.join(mergein_old, f + '.csv'), path.join(MERGED_PATH, 'jse_equities.csv')]
+            'file_dep':[path.join(mergein_new, f + '.csv'), path.join(mergein_old, f + '.csv')]
         }
 # 3
 def task_adjusted_close():
@@ -124,7 +123,7 @@ def task_adjusted_close():
     }
 
 # 5
-def task_booktomarket():
+def task_book2market():
     return {
         'actions':[booktomarket],
         'file_dep': [closepath,
@@ -141,8 +140,8 @@ def task_data_per_ticker():
         'targets':[path.join(CONVERT_PATH, "tickers")]
     }
 
-def task_conversion_report():
+def task_convert_report():
     return {
         'actions':[calculate_conversion_report],
-        'task_dep':['convertmarketdata']
+        'task_dep':['convert']
     }
