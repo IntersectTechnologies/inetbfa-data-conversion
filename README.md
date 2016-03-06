@@ -2,7 +2,7 @@
 
 Converts and merges data downloaded with the INETBFA Excel Add-In to csv formats
 
-Build Status: https://travis-ci.org/IntersectTechnologies/inetbfa-data-conversion.svg?branch=master
+[![Build Status](https://travis-ci.org/IntersectTechnologies/inetbfa-data-conversion.svg?branch=master)](https://travis-ci.org/IntersectTechnologies/inetbfa-data-conversion)
 
 ## Getting started:
 
