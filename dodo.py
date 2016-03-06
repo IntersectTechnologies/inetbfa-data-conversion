@@ -50,6 +50,22 @@ def convert_market_data(dependencies, targets):
 def calculate_conversion_report():
     '''
     '''
+    columns = ['startdate', 'enddate', 'number', 'commnets']
+    reports = {}
+    for f in listdir(CONVERT_PATH):
+        file = f
+
+        if (f != 'jse_equities.csv'):
+            
+            data = load_ts(path.join(CONVERT_PATH, f))
+            report_data = {}
+            reportdata['startdate'] = [data[ticker].first_valid_index() for ticker in data.columns]
+            reportdata['enddate'] = [data[ticker].last_valid_index() for ticker in data.columns]
+            reportdata['number'] = [data[ticker].count() for ticker in data.columns]
+
+            report = pd.DataFrame(reportdata, index = data.columns, columns = columns)
+            report.to_csv(path.join(DATA_ROOT, 'Conversion Report - '  + f))
+
 
 def merge_ref_data(dependencies, targets):
     old = get_all_equities()
@@ -146,4 +162,10 @@ def task_swap():
         'actions':[swapaxes],
         'file_dep': files,
         'targets':[path.join(CONVERT_PATH, "tickers")]
+    }
+
+def task_conversion_report():
+    return {
+        'actions':[calculate_conversion_report],
+        'task_dep':['convertmarketdata']
     }
