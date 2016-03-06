@@ -138,7 +138,7 @@ def load_inetbfa_ref_data(fpath):
         return temp
 
 def load_ts(filepath):
-    temp = pd.read_csv(fn, header=0, index_col=0, parse_dates=True) 
+    temp = pd.read_csv(filepath, header=0, index_col=0, parse_dates=True) 
     return temp
 
 def load_field_ts(fpath, field='Close', startdate='1990-01-01', enddate = None):
