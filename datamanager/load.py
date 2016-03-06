@@ -5,6 +5,7 @@ Created on Tue Feb 10 09:38:31 2015
 @author: Niel
 """
 
+import numpy as np
 import pandas as pd
 from os import path
 from datamanager.envs import MASTER_DATA_PATH
@@ -15,8 +16,7 @@ EQUITIES = pd.read_csv(path.join(MASTER_DATA_PATH, 'jse_equities.csv'), sep = ',
 daily_path = MASTER_DATA_PATH
 
 def marketdata_fields():
-    return [
-            'Close',
+    return ['Close',
             'High',
             'Low',
             'Open',

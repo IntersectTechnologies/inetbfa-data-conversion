@@ -7,3 +7,4 @@ def test_paths():
     assert path.exists(MASTER_DATA_PATH)
     assert path.exists(CONVERT_PATH)
     assert path.exists(MERGED_PATH)
+

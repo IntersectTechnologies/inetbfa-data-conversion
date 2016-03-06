@@ -5,7 +5,7 @@ Created on Thu Jun 04 21:06:13 2015
 """
 
 import pandas as pd
-from datamanager.load import get_equities, empty_dataframe
+from datamanager.load import empty_dataframe
 
 def __backwards_calc__(multiplier):
     '''
@@ -18,18 +18,17 @@ def __backwards_calc__(multiplier):
     '''
     assert isinstance(multiplier, pd.Series)
     # sort from newest to oldest
-    multiplier = multiplier.sort_index(ascending=False)
-    
+    multiplier = multiplier.sort_index(ascending=False)    
     # make a copy of the multiplier Series
     mult = multiplier.copy()
-    for i, m in enumerate(multiplier):
+    for i, multi in enumerate(multiplier):
         if i == 0:
-            mult[i] = m
+            mult[i] = multi
         else:
-            mult[i] = m*mult[i-1]
+            mult[i] = multi*mult[i-1]
 
     return mult
-    
+
 def calc_dividend_multiplier(div, close):
     '''
     params:
@@ -47,7 +46,9 @@ def calc_dividend_multiplier(div, close):
     return __backwards_calc__(mult)
 
 def calc_adj_close(closepath, divpath, equities):
-
+    '''
+    Calculate the adjusted close
+    '''
     # Import closing price data with pandas
     close = pd.read_csv(closepath, index_col = 0, parse_dates=True)
 
@@ -66,8 +67,8 @@ def calc_adj_close(closepath, divpath, equities):
         divmult[ticker] = tmp_mult
 
     # get the new index 
-    startdate = pd.datetime(2000, 1 , 1).date()
-    divm = DataModel.blank_ts_df(list(equities.index), startdate)
+    startdate = pd.datetime(2000, 1, 1).date()
+    divm = empty_dataframe(list(equities.index), startdate)
 
     # update the blank dataframe - expand to the actual index
     divm.update(divmult) 
@@ -80,7 +81,8 @@ def calc_adj_close(closepath, divpath, equities):
     return adj_close
     
 def calc_booktomarket(closepath, bookvaluepath):
-
+    '''
+    '''
     # Import closing price data with pandas
     close = pd.read_csv(closepath, index_col = 0, parse_dates=True)
 
