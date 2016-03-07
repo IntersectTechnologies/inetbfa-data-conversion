@@ -39,22 +39,43 @@ def convert_data(dependencies, targets):
 def create_report():
     '''
     '''
-    columns = ['startdate', 'enddate', 'number', 'commnets']
-    reports = {}
-    for f in listdir(CONVERT_PATH):
-        file = f
-
-        if (f != 'jse_equities.csv'):
-            
+    reportdata = {}
+    columns = ['startdate', 'enddate', 'number', 'comments']
+    with open('report.html', 'a') as report_html:
+        report_html.write('<html>Report')
+        report_html.write('<head>')
+        report_html.write('</head>')
+        report_html.write('<body>')
+        report_html.write('<h1>Conversion Report</h1>')
+        for f in listdir(CONVERT_PATH):
+            file = f
+           
+            report_html.write('<h3>' + f + '</h3>')
             data = load_ts(path.join(CONVERT_PATH, f))
-            report_data = {}
             reportdata['startdate'] = [data[ticker].first_valid_index() for ticker in data.columns]
             reportdata['enddate'] = [data[ticker].last_valid_index() for ticker in data.columns]
             reportdata['number'] = [data[ticker].count() for ticker in data.columns]
 
             report = pd.DataFrame(reportdata, index = data.columns, columns = columns)
-            report.to_csv(path.join(DATA_ROOT, 'Conversion Report - '  + f))
-    
+            report_html.write('<div>' + report.to_html() + '</div>')
+        
+        report_html.write('<h1>Merge Report</h1>')
+        for f in listdir(MERGED_PATH):
+            file = f
+           
+            report_html.write('<h3>' + f + '</h3>')
+            data = load_ts(path.join(MERGED_PATH, f))
+            
+            reportdata['startdate'] = [data[ticker].first_valid_index() for ticker in data.columns]
+            reportdata['enddate'] = [data[ticker].last_valid_index() for ticker in data.columns]
+            reportdata['number'] = [data[ticker].count() for ticker in data.columns]
+
+            report = pd.DataFrame(reportdata, index = data.columns, columns = columns)
+            report_html.write('<div>' + report.to_html() + '</div>')
+
+        report_html.write('</body>')
+        report_html.write('</html>')
+
 def merge_data(task): 
   
     new = load_ts(path.join(CONVERT_PATH, task.name.split(':')[1] + '.csv'))
