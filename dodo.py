@@ -36,7 +36,7 @@ def convert_data(dependencies, targets):
     new_data = new_data.dropna(how='all')
     new_data.to_csv(targets[0])
 
-def calculate_conversion_report():
+def create_report():
     '''
     '''
     columns = ['startdate', 'enddate', 'number', 'commnets']
@@ -144,4 +144,10 @@ def task_convert_report():
     return {
         'actions':[calculate_conversion_report],
         'task_dep':['convert']
+    }
+
+def task_report():
+    return {
+        'actions':[create_report],
+        'task_dep':['merge']
     }

@@ -25,12 +25,8 @@
     <Compile Include="datamanager\adjust.py" />
     <Compile Include="datamanager\envs.py" />
     <Compile Include="datamanager\load.py" />
-    <Compile Include="datamanager\process\extract_index_reference.py" />
-    <Compile Include="datamanager\process\extract_ratio_lineitems.py" />
-    <Compile Include="datamanager\process\FileIO.py" />
-    <Compile Include="datamanager\process\index_preprocessing.py" />
+    <Compile Include="datamanager\process\extract.py" />
     <Compile Include="datamanager\process\preprocessing.py" />
-    <Compile Include="datamanager\process\ratios_preprocessing.py" />
     <Compile Include="datamanager\referencedata.py" />
     <Compile Include="datamanager\utils.py" />
     <Compile Include="datamanager\__init__.py" />
