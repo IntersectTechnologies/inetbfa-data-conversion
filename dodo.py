@@ -42,8 +42,10 @@ def create_report():
     reportdata = {}
     columns = ['startdate', 'enddate', 'number', 'comments']
     with open('report.html', 'a') as report_html:
-        report_html.write('<html>Report')
+        report_html.write('<!DOCTYPE html>')
+        report_html.write('<html>')
         report_html.write('<head>')
+        report_html.write('<title>Data Report</title>')
         report_html.write('</head>')
         report_html.write('<body>')
         report_html.write('<h1>Conversion Report</h1>')
