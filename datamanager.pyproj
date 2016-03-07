@@ -28,6 +28,9 @@
     <Compile Include="datamanager\process\extract.py" />
     <Compile Include="datamanager\process\preprocessing.py" />
     <Compile Include="datamanager\referencedata.py" />
+    <Compile Include="datamanager\transforms.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="datamanager\utils.py" />
     <Compile Include="datamanager\__init__.py" />
     <Compile Include="dodo.py">
