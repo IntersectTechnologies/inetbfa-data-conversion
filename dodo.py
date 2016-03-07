@@ -140,12 +140,6 @@ def task_data_per_ticker():
         'targets':[path.join(CONVERT_PATH, "tickers")]
     }
 
-def task_convert_report():
-    return {
-        'actions':[calculate_conversion_report],
-        'task_dep':['convert']
-    }
-
 def task_report():
     return {
         'actions':[create_report],
