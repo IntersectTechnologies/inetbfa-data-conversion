@@ -41,7 +41,7 @@ def create_report():
     '''
     reportdata = {}
     columns = ['startdate', 'enddate', 'number', 'comments']
-    with open('report.html', 'a') as report_html:
+    with open('report.html', 'w') as report_html:
         report_html.write('<!DOCTYPE html>')
         report_html.write('<html>')
         report_html.write('<head>')
