@@ -19,14 +19,17 @@ Install python doit automation tool:
 Clone this repository
 
     git clone https://github.com/IntersectTechnologies/inetbfa-data-conversion.git
-    
 
-**Refresh data**
+**Download data**
 
-Update the data in the downloads folder by refreshing each of the Excel Workbooks (assuming you have the INETBFA Excel  Add-Inn installed and configured properly)
+To download new data you should have Excel and have the INETBFA Excel Add-Inn installed.  This requires a subscription from http://www.inetbfa.com/
+
+Update the data in the downloads folder by refreshing each of the Excel Workbooks.
 
 **Convert data**
 
-Run the script run.sh in a shell
+**Merge the data**
 
-    ./run.sh
+**Adjustment tasks**
+
+**Transformation tasks**
