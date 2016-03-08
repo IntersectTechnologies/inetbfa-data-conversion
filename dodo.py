@@ -31,13 +31,12 @@ def get_current_listed():
 def convert_data(task):
     '''
     '''
-
-    fp = path.join(DL_PATH, task.name.split(':')[1] + '.xlsx')
+    name = task.name.split(':')[1]
+    fp = path.join(DL_PATH, name + '.xlsx')
     new_data = load_intebfa_ts_data(fp)
-    if (task.name != "Book Value per Share"):
+    if (name != "Book Value per Share"):
         new_data = new_data.dropna(how='all')
-    else:
-        new_data = new_data.dropna(how='all')
+
     new_data.to_csv(task.targets[0])
 
 def create_report():
@@ -83,15 +82,16 @@ def create_report():
         report_html.write('</html>')
 
 def merge_data(task): 
-  
-    new = load_ts(path.join(CONVERT_PATH, task.name.split(':')[1] + '.csv'))
-    old = load_ts(path.join(MASTER_DATA_PATH, task.name.split(':')[1] + '.csv'))
+    
+    name = task.name.split(':')[1]
+    new = load_ts(path.join(CONVERT_PATH, name + '.csv'))
+    old = load_ts(path.join(MASTER_DATA_PATH, name + '.csv'))
     
     merged = empty_dataframe(get_all_equities())
     merged.update(old)
     merged.update(new)
     
-    if (task.name != "Book Value per Share"):
+    if (name != "Book Value per Share"):
         merged = merged.dropna(how='all')
         
     merged.to_csv(task.targets[0])
