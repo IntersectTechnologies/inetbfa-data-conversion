@@ -96,7 +96,13 @@ def calc_adjusted_close(dependencies, targets):
     adj_close.to_csv(targets[0])
 
 def booktomarket(dependencies, targets):
-    b2m = calc_booktomarket(closepath, bookvaluepath)
+    # Import closing price data with pandas
+    close = pd.read_csv(closepath, index_col = 0, parse_dates=True)
+
+    # Import book value per share data with pandas
+    bookvalue = pd.read_csv(bookvaluepath, index_col = 0, parse_dates=True)
+    
+    b2m = calc_booktomarket(close, bookvalue)
     b2m.to_csv(targets[0])
 
 def swapaxes(dependencies, targets):
@@ -149,8 +155,7 @@ def task_adjusted_close():
 def task_book2market():
     return {
         'actions':[booktomarket],
-        'file_dep': [closepath,
-                     bookvaluepath],
+        'file_dep': [closepath, bookvaluepath],
         'targets':[path.join(MERGED_PATH, "Book-to-Market.csv")]
     }
 

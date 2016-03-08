@@ -80,16 +80,12 @@ def calc_adj_close(closepath, divpath, equities):
     # Save to file
     return adj_close
     
-def calc_booktomarket(closepath, bookvaluepath):
+def calc_booktomarket(close, bookvalue):
     '''
     '''
-    # Import closing price data with pandas
-    close = pd.read_csv(closepath, index_col = 0, parse_dates=True)
-
-    # Import book value per share data with pandas
-    bookvalue = pd.read_csv(bookvaluepath, index_col = 0, parse_dates=True)
-
-    bookvalue = bookvalue.bfill()
-    b2m = bookvalue / close
+    
+    # should forward fill - the book-value made known at a certain date is valid for the next year
+    bookval = bookvalue.ffill()
+    b2m = bookval / close
 
     return b2m
