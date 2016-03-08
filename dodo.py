@@ -32,7 +32,7 @@ def convert_data(task):
     '''
     '''
 
-    fp = path.join(DL_PATH, task.name.split(':')[1] + '.csv')
+    fp = path.join(DL_PATH, task.name.split(':')[1] + '.xlsx')
     new_data = load_intebfa_ts_data(fp)
     if (task.name != "Book Value per Share"):
         new_data = new_data.dropna(how='all')
