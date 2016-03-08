@@ -35,6 +35,8 @@ def convert_data(task):
     new_data = load_intebfa_ts_data(deps[0])
     if (task.name != "Book Value per Share"):
         new_data = new_data.dropna(how='all')
+    else:
+        new_data = new_data.dropna(how='all')
     new_data.to_csv(task.targets[0])
 
 def create_report():
