@@ -31,8 +31,9 @@ def get_current_listed():
 def convert_data(task):
     '''
     '''
-    deps = list(task.dependencies)
-    new_data = load_intebfa_ts_data(deps[0])
+
+    fp = path.join(DL_PATH, task.name.split(':')[1] + '.csv')
+    new_data = load_intebfa_ts_data(fp)
     if (task.name != "Book Value per Share"):
         new_data = new_data.dropna(how='all')
     else:
