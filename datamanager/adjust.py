@@ -84,7 +84,7 @@ def calc_booktomarket(close, bookvalue):
     '''
     '''
     
-    # should forward fill - the book-value made known at a certain date is valid for the next year
+    # should forward fill - the book-value made known at a certain date is valid for the next year / or until the next book value is available
     bookval = bookvalue.ffill()
     b2m = bookval / close
 

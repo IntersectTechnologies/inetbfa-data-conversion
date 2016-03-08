@@ -28,13 +28,14 @@ def get_current_listed():
     new_all, current, newly_listed, delisted = get_all_equities_from_data(MERGED_PATH, CONVERT_PATH, 'Close')
     return current_set
 
-def convert_data(dependencies, targets):
+def convert_data(task):
     '''
     '''
-    dependencies = list(dependencies)
-    new_data = load_intebfa_ts_data(dependencies[0])
-    new_data = new_data.dropna(how='all')
-    new_data.to_csv(targets[0])
+    deps = list(task.dependencies)
+    new_data = load_intebfa_ts_data(deps[0])
+    if (task.name != "Book Value per Share"):
+        new_data = new_data.dropna(how='all')
+    new_data.to_csv(task.targets[0])
 
 def create_report():
     '''
@@ -86,14 +87,16 @@ def merge_data(task):
     merged = empty_dataframe(get_all_equities())
     merged.update(old)
     merged.update(new)
-
-    merged = merged.dropna(how='all')
+    
+    if (task.name != "Book Value per Share"):
+        merged = merged.dropna(how='all')
+        
     merged.to_csv(task.targets[0])
 
 def calc_adjusted_close(dependencies, targets):
     all_equities = get_all_equities()
     adj_close = calc_adj_close(closepath, divpath, all_equities)
-    adj_close.to_csv(targets[0])
+    adj_close.dropna(how='all').to_csv(targets[0])
 
 def booktomarket(dependencies, targets):
     # Import closing price data with pandas
@@ -103,7 +106,7 @@ def booktomarket(dependencies, targets):
     bookvalue = pd.read_csv(bookvaluepath, index_col = 0, parse_dates=True)
     
     b2m = calc_booktomarket(close, bookvalue)
-    b2m.to_csv(targets[0])
+    b2m.dropna(how='all').to_csv(targets[0])
 
 def swapaxes(dependencies, targets):
     
