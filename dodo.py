@@ -48,31 +48,31 @@ def resample_monthly(task):
     write = True
     out = pd.DataFrame()
 
-    if field == 'Close':
+    if name == 'Close':
         out = transf.resample_monthly(data, how = 'last')
-    elif field == 'Adjusted Close':
+    elif name == 'Adjusted Close':
         out = transf.resample_monthly(data, how = 'last')
-    elif field == 'Open':
+    elif name == 'Open':
         out = transf.resample_monthly(data, how = 'first')
-    elif field == 'High':
+    elif name == 'High':
         out = transf.resample_monthly(data, how = 'max')
-    elif field == 'Low':
+    elif name == 'Low':
         out = transf.resample_monthly(data, how = 'min')
-    elif field == 'DY':
+    elif name == 'DY':
         out = transf.resample_monthly(data, how = 'last')
-    elif field == 'EY':
+    elif name == 'EY':
         out = transf.resample_monthly(data, how = 'last')
-    elif field == 'PE':
+    elif name == 'PE':
         out = transf.resample_monthly(data, how = 'last')
-    elif field == 'Book-to-Market':
+    elif name == 'Book-to-Market':
         out = transf.resample_monthly(data, how = 'last')
-    elif field == 'Volume':
+    elif name == 'Volume':
         out = transf.resample_monthly(data, how = 'sum')
-    elif field == 'Total Number Of Shares':
+    elif name == 'Total Number Of Shares':
         out = transf.resample_monthly(data, how = 'last')
-    elif field == 'Number Of Trades':
+    elif name == 'Number Of Trades':
         out = transf.resample_monthly(data, how = 'sum')
-    elif field == 'Market Cap':
+    elif name == 'Market Cap':
         out = transf.resample_monthly(data, how = 'last')
     else:
         write = False
