@@ -78,7 +78,7 @@ def resample_monthly(task):
         write = False
     
     if (not write):
-        out.to_csv(MASTER_DATA_PATH, name + '-monthly.csv')
+        out.to_csv(path.join(MASTER_DATA_PATH, name + '-monthly.csv'))
 
 def create_report():
     '''
