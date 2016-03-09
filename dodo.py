@@ -228,5 +228,5 @@ def task_resample_monthly():
             'name':f,
             'actions':[resample_monthly],
             'targets':[path.join(MASTER_DATA_PATH, f + '-monthly.csv')],
-            'file_dep':[path.join(MASTER_DATA_PATH, f + '.xlsx')],
+            'file_dep':[path.join(MASTER_DATA_PATH, f + '.csv')],
         }
