@@ -2,14 +2,18 @@
 This module contains transformation functions for time series data based on pandas DataFrame's
 '''
 
-def resample_monthly(data):
+def resample_monthly(data, how = 'last'):
     '''
     Resample the data to a monthly frequency using a specific aggregation function
     '''
+    data_monthly = data.resample('M', how = how)
+    return data_monthly
 
 def moving_avg(data, days):
     '''
     '''
+
+
 
 def momentum_monthly(close, start_lag, end_lag):
     '''

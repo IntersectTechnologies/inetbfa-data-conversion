@@ -9,6 +9,7 @@ from datamanager.envs import *
 from datamanager.load import *
 from datamanager.adjust import calc_adj_close, calc_booktomarket
 from datamanager.utils import last_month_end
+import datamanager.transforms as transf
 
 fields = marketdata_fields()
 
@@ -38,6 +39,46 @@ def convert_data(task):
         new_data = new_data.dropna(how='all')
 
     new_data.to_csv(task.targets[0])
+
+def resample_monthly(task):
+
+    name = task.name.split(':')[1]
+    data = load_field_ts(MASTER_DATA_PATH, field = name)
+    
+    write = True
+    out = pd.DataFrame()
+
+    if field == 'Close':
+        out = transf.resample_monthly(data, how = 'last')
+    elif field == 'Adjusted Close':
+        out = transf.resample_monthly(data, how = 'last')
+    elif field == 'Open':
+        out = transf.resample_monthly(data, how = 'first')
+    elif field == 'High':
+        out = transf.resample_monthly(data, how = 'max')
+    elif field == 'Low':
+        out = transf.resample_monthly(data, how = 'min')
+    elif field == 'DY':
+        out = transf.resample_monthly(data, how = 'last')
+    elif field == 'EY':
+        out = transf.resample_monthly(data, how = 'last')
+    elif field == 'PE':
+        out = transf.resample_monthly(data, how = 'last')
+    elif field == 'Book-to-Market':
+        out = transf.resample_monthly(data, how = 'last')
+    elif field == 'Volume':
+        out = transf.resample_monthly(data, how = 'sum')
+    elif field == 'Total Number Of Shares':
+        out = transf.resample_monthly(data, how = 'last')
+    elif field == 'Number Of Trades':
+        out = transf.resample_monthly(data, how = 'sum')
+    elif field == 'Market Cap':
+        out = transf.resample_monthly(data, how = 'last')
+    else:
+        write = False
+    
+    if (not write):
+        out.to_csv(MASTER_DATA_PATH, name + '-monthly.csv')
 
 def create_report():
     '''
@@ -179,3 +220,13 @@ def task_report():
         'actions':[create_report],
         'task_dep':['merge']
     }
+
+def task_resample_monthly():
+    expanded = fields + ['Book-to-Market', 'Adjusted Close']
+    for f in fields:
+        yield {
+            'name':f,
+            'actions':[resample_monthly],
+            'targets':[path.join(MASTER_DATA_PATH, f + '-monthly.csv')],
+            'file_dep':[path.join(MASTER_DATA_PATH, f + '.xlsx')],
+        }
