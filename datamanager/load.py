@@ -140,28 +140,28 @@ def load_ts(filepath):
     return temp
 
 def load_field_ts(fpath, field='Close', startdate='1990-01-01', enddate = None):
-        '''
-        '''
-        
-        if type(field) == str:
-            temp = pd.read_csv(path.join(fpath, field + '.csv'), sep=',', header=0, 
-                           index_col=0, parse_dates=True)
-                           
-            temp = temp.ix[startdate:enddate]               
-            temp.fillna(method = 'pad', inplace=True)               
-            data = temp
-                           
-        if type(field) == list:
-            data = {}
-            for f in field:
-                temp = pd.read_csv(path.join(fpath, f + '.csv'), sep=',', header=0, 
-                           index_col=0, parse_dates=True)
-                           
-                temp = temp.ix[startdate:enddate]  
-                temp.fillna(method = 'pad', inplace=True)
-                data[f] = temp
-        
-        return data
+    '''
+    '''
+    
+    if type(field) == str:
+        temp = pd.read_csv(path.join(fpath, field + '.csv'), sep=',', header=0, 
+                        index_col=0, parse_dates=True)
+                        
+        temp = temp.ix[startdate:enddate]               
+        temp.fillna(method = 'pad', inplace=True)               
+        data = temp
+                        
+    if type(field) == list:
+        data = {}
+        for f in field:
+            temp = pd.read_csv(path.join(fpath, f + '.csv'), sep=',', header=0, 
+                        index_col=0, parse_dates=True)
+                        
+            temp = temp.ix[startdate:enddate]  
+            temp.fillna(method = 'pad', inplace=True)
+            data[f] = temp
+    
+    return data
 
 def load_market_data(fpath, field):
     '''

@@ -35,9 +35,6 @@ def convert_data(task):
     name = task.name.split(':')[1]
     fp = path.join(DL_PATH, name + '.xlsx')
     new_data = load_intebfa_ts_data(fp)
-    if (name != "Book Value per Share"):
-        new_data = new_data.dropna(how='all')
-
     new_data.to_csv(task.targets[0])
 
 def resample_monthly(task):
@@ -131,16 +128,13 @@ def merge_data(task):
     merged = empty_dataframe(get_all_equities())
     merged.update(old)
     merged.update(new)
-    
-    if (name != "Book Value per Share"):
-        merged = merged.dropna(how='all')
-        
+          
     merged.to_csv(task.targets[0])
 
 def calc_adjusted_close(dependencies, targets):
     all_equities = get_all_equities()
     adj_close = calc_adj_close(closepath, divpath, all_equities)
-    adj_close.dropna(how='all').to_csv(targets[0])
+    adj_close.to_csv(targets[0])
 
 def booktomarket(dependencies, targets):
     # Import closing price data with pandas
@@ -150,7 +144,7 @@ def booktomarket(dependencies, targets):
     bookvalue = pd.read_csv(bookvaluepath, index_col = 0, parse_dates=True)
     
     b2m = calc_booktomarket(close, bookvalue)
-    b2m.dropna(how='all').to_csv(targets[0])
+    b2m.to_csv(targets[0])
 
 def swapaxes(dependencies, targets):
     
