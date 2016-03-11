@@ -10,10 +10,6 @@ import datetime as dt
 import calendar as cal
 import sys
 
-from logbook import Logger, NestedSetup, RotatingFileHandler, StreamHandler
-
-log = Logger(__name__)
-
 def last_dayof_prev_month(year, month):
     if (month == 1):
         month = 12
@@ -42,14 +38,6 @@ def date_days_ago(days=0):
     tmpd = td - dt.timedelta(days=days)
 
     return str(tmpd.date())
-
-def getLog(name='root', filename=None):
-    logFileName = os.path.join(args.directory, 'datamanager.log')
-    log_setup = NestedSetup([
-        RotatingFileHandler(logFileName),
-        StreamHandler(sys.stdout, level='NOTICE', bubble=True,
-            format_string='{record.message}')
-        ])
 
 # helper functions    
 def clear_tempfiles(root):
