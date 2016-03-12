@@ -88,37 +88,48 @@ def earnings_momentum(ey, close, start_lag, end_lag):
 def pead_momentum(announcements, close):
     '''
     Calculate the price momentum from the most recent earnings announcement normalised to annualised returns
-    A minimum of 2 days since the announcement (from day 3) is required. 
-    
+        
     Parameters
     -----------
-    
+    announcements : pandas.DataFraem
+        
+    close : pandas.DataFrame
     
     Returns
     -----------
     
     '''
+    assert len(announcements.index) == len(close.index)
+    assert len(announcements.columns) == len(close.columns)
 
     # make 1 at every earnings announcement
-    anndays = announcements.applymap(lambda x: 0 if np.isnan(x) else 1)
+    anndays = announcements.applymap(lambda x: False if np.isnan(x) else True)
     
     last_ann_price = close * anndays
     last_ann_price.ffill(inplace= True)
-    days_since_df = last_ann_price.copy()
 
     # convert this to util function taking a predicate
-    days_since = np.NaN
+    days_since_data = np.ndarray([len(anndays.index), len(anndays.columns)])
+    col = 0
+
+    ann_data = anndays.as_matrix()
     for ticker in anndays.columns:
+        days_since = 1
+        row = 0
         for day in anndays.index:
-            if (anndays.loc[day, ticker] == 1):
+            if (ann_data[row, col]):
                 days_since = 1
             else:
                 days_since += 1
             
-            days_since_df.loc[day, ticker] = days_since
-  
-    norm_factor = 252 / days_since_df
+            days_since_data[row, col] = days_since
+            row += 1
+        col += 1
+    
     # calculate returns
+    dsdf = pd.DataFrame(days_since_data, index = anndays.index, columns = anndays.columns)
+
+    norm_factor = 252 / dsdf
     norm_mom = (np.log(close) - np.log(last_ann_price)) * norm_factor
 
     return norm_mom
