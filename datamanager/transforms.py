@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 from functools import partial
+from os import path
+from datamanager.envs import MASTER_DATA_PATH
 
 '''
 This module contains transformation functions for time series data based on pandas DataFrame's
@@ -103,10 +105,12 @@ def pead_momentum(announcements, close):
     assert len(announcements.columns) == len(close.columns)
 
     # make 1 at every earnings announcement
-    anndays = announcements.applymap(lambda x: False if np.isnan(x) else True)
-    
+    anndays = announcements.applymap(lambda x: 0 if np.isnan(x) else 1)
+    ann_data = anndays.as_matrix()
+
     last_ann_price = close * anndays
-    last_ann_price.ffill(inplace= True)
+    last_ann_price = last_ann_price.applymap(lambda x: np.NaN if x == 0 else x)
+    last_ann_price = last_ann_price.ffill()
 
     # convert this to util function taking a predicate
     days_since_data = np.ndarray([len(anndays.index), len(anndays.columns)])
@@ -114,13 +118,13 @@ def pead_momentum(announcements, close):
 
     ann_data = anndays.as_matrix()
     for ticker in anndays.columns:
-        days_since = 1
+        days_since = 0
         row = 0
         for day in anndays.index:
-            if (ann_data[row, col]):
-                days_since = 1
+            if (ann_data[row, col] == 1):
+                days_since = 1.0
             else:
-                days_since += 1
+                days_since += 1.0
             
             days_since_data[row, col] = days_since
             row += 1
@@ -129,7 +133,7 @@ def pead_momentum(announcements, close):
     # calculate returns
     dsdf = pd.DataFrame(days_since_data, index = anndays.index, columns = anndays.columns)
 
-    norm_factor = 252 / dsdf
+    norm_factor = 252.0 / dsdf
     norm_mom = (np.log(close) - np.log(last_ann_price)) * norm_factor
 
     return norm_mom

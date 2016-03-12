@@ -147,8 +147,7 @@ def load_field_ts(fpath, field='Close', startdate='1990-01-01', enddate = None):
         temp = pd.read_csv(path.join(fpath, field + '.csv'), sep=',', header=0, 
                         index_col=0, parse_dates=True)
                         
-        temp = temp.ix[startdate:enddate]               
-        temp.fillna(method = 'pad', inplace=True)               
+        temp = temp.ix[startdate:enddate]                          
         data = temp
                         
     if type(field) == list:
@@ -158,7 +157,6 @@ def load_field_ts(fpath, field='Close', startdate='1990-01-01', enddate = None):
                         index_col=0, parse_dates=True)
                         
             temp = temp.ix[startdate:enddate]  
-            temp.fillna(method = 'pad', inplace=True)
             data[f] = temp
     
     return data
