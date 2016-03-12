@@ -151,8 +151,8 @@ def calc_pead_momentum(task):
     close = load_field_ts(MASTER_DATA_PATH, field = "Close")
 
     # load dividend decl date
-    announcments = load_field_ts(MASTER_DATA_PATH, field = "Dividend Declaration Date")
-    pead = pead_momentum(announcements, close)
+    announcements = load_field_ts(MASTER_DATA_PATH, field = "Dividend Declaration Date")
+    pead = transf.pead_momentum(announcements, close)
 
     pead.to_csv(path.join(MASTER_DATA_PATH, "Normalized PEAD Momentum.csv"))
 

@@ -111,7 +111,7 @@ def pead_momentum(announcements, close):
     for ticker in anndays.columns:
         for day in anndays.index:
             if (anndays.loc[day, ticker] == 1):
-                days_since = 0
+                days_since = 1
             else:
                 days_since += 1
             
@@ -119,7 +119,7 @@ def pead_momentum(announcements, close):
   
     norm_factor = 252 / days_since_df
     # calculate returns
-    norm_mom = np.log(close) - np.log(last_ann_price)
+    norm_mom = (np.log(close) - np.log(last_ann_price)) * norm_factor
 
     return norm_mom
 
