@@ -1,9 +1,30 @@
 import pandas as pd
 import numpy as np
+from functools import partial
 
 '''
 This module contains transformation functions for time series data based on pandas DataFrame's
 '''
+
+def detrended_oscillator(close):
+    '''
+    Calculate the detrended oscillator
+    '''
+
+    ma20 = partial(moving_avg, days=20)
+    ma50 = partial(moving_avg, days=50)
+    max20 = partial(max, period = 20)
+
+    ixlr = index_log_returns(close)
+
+    assert isinstance(ixlr.index, pd.DatetimeIndex)
+    sma = ma20(ixlr)
+    lma = ma50(ixlr)
+    maximum = max20(ixlr)
+
+    do = (sma - lma) / maximum
+    
+    return do
 
 def resample_monthly(data, how = 'last'):
     '''
@@ -153,3 +174,9 @@ def log_returns(data):
     assert data.index.freq == "Day"
     ret = np.log(data) - np.log(data.tshift(1))
     return ret
+
+def index_log_returns(price):
+    
+    logret = log_returns(price)
+    logret.dropna(how = 'all', inplace=True)
+    return np.exp(logret.cumsum())*100
