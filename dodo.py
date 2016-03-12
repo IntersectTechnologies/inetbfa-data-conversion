@@ -10,7 +10,7 @@ from datamanager.load import *
 from datamanager.adjust import calc_adj_close, calc_booktomarket
 from datamanager.utils import last_month_end
 import datamanager.transforms as transf
-
+from datamanager.reporting import data_summary_report
 fields = marketdata_fields()
 
 # paths
@@ -36,6 +36,43 @@ def convert_data(task):
     fp = path.join(DL_PATH, name + '.xlsx')
     new_data = load_intebfa_ts_data(fp)
     new_data.to_csv(task.targets[0])
+
+def create_report():
+    '''
+    '''
+    data_summary_report("report.html", "Data Summary Report")
+
+def merge_data(task): 
+    
+    name = task.name.split(':')[1]
+    new = load_ts(path.join(CONVERT_PATH, name + '.csv'))
+    old = load_ts(path.join(MASTER_DATA_PATH, name + '.csv'))
+    
+    merged = empty_dataframe(get_all_equities())
+    merged.update(old)
+    merged.update(new)
+          
+    merged.to_csv(task.targets[0])
+
+def calc_adjusted_close(dependencies, targets):
+    all_equities = get_all_equities()
+
+    # Import closing price data
+    close = load_field_ts(MERGED_PATH, field = "Close")
+
+    # Import dividend ex date data
+    divs = load_field_ts(MERGED_PATH, field = "Dividend Ex Date.csv")
+    adj_close = calc_adj_close(close, divs, all_equities)
+    adj_close.to_csv(targets[0])
+
+def booktomarket(dependencies, targets):
+    # Import closing price data
+    close = load_field_ts(MERGED_PATH, field = "Close")
+
+    # Import book value per share data
+    bookvalue = load_field_ts(MERGED_PATH, field = "Book Value per Share")
+    b2m = calc_booktomarket(close, bookvalue)
+    b2m.to_csv(targets[0])
 
 def resample_monthly(task):
 
@@ -77,74 +114,27 @@ def resample_monthly(task):
     if (write):
         out.to_csv(path.join(MASTER_DATA_PATH, name + '-monthly.csv'))
 
-def create_report():
-    '''
-    '''
-    reportdata = {}
-    columns = ['startdate', 'enddate', 'number', 'comments']
-    with open('report.html', 'w') as report_html:
-        report_html.write('<!DOCTYPE html>')
-        report_html.write('<html>')
-        report_html.write('<head>')
-        report_html.write('<title>Data Report</title>')
-        report_html.write('</head>')
-        report_html.write('<body>')
-        report_html.write('<h1>Conversion Report</h1>')
-        for f in listdir(CONVERT_PATH):
-            file = f
-           
-            report_html.write('<h3>' + f + '</h3>')
-            data = load_ts(path.join(CONVERT_PATH, f))
-            reportdata['startdate'] = [data[ticker].first_valid_index() for ticker in data.columns]
-            reportdata['enddate'] = [data[ticker].last_valid_index() for ticker in data.columns]
-            reportdata['number'] = [data[ticker].count() for ticker in data.columns]
+def monthly_avg_momentum(task):
+    # load the daily close
+    close = load_field_ts(MASTER_DATA_PATH, field = "Close")
 
-            report = pd.DataFrame(reportdata, index = data.columns, columns = columns)
-            report_html.write('<div>' + report.to_html() + '</div>')
-        
-        report_html.write('<h1>Merge Report</h1>')
-        for f in listdir(MERGED_PATH):
-            file = f
-           
-            report_html.write('<h3>' + f + '</h3>')
-            data = load_ts(path.join(MERGED_PATH, f))
-            
-            reportdata['startdate'] = [data[ticker].first_valid_index() for ticker in data.columns]
-            reportdata['enddate'] = [data[ticker].last_valid_index() for ticker in data.columns]
-            reportdata['number'] = [data[ticker].count() for ticker in data.columns]
-
-            report = pd.DataFrame(reportdata, index = data.columns, columns = columns)
-            report_html.write('<div>' + report.to_html() + '</div>')
-
-        report_html.write('</body>')
-        report_html.write('</html>')
-
-def merge_data(task): 
+    # resample to monthly average data
+    close_m = transf.resample_monthly(close, how = 'mean')
     
-    name = task.name.split(':')[1]
-    new = load_ts(path.join(CONVERT_PATH, name + '.csv'))
-    old = load_ts(path.join(MASTER_DATA_PATH, name + '.csv'))
+    # calculate the momentum
+    mom = transf.momentum_monthly(close_m, 12, 1)
+    mom.to_csv(path.join(MASTER_DATA_PATH, "Monthly Avg Momentum.csv"))
+
+def monthly_close_momentum(task):
+    # load the daily close
+    close = load_field_ts(MASTER_DATA_PATH, field = "Close")
+
+    # resample to monthly average data
+    close_m = transf.resample_monthly(close, how = 'last')
     
-    merged = empty_dataframe(get_all_equities())
-    merged.update(old)
-    merged.update(new)
-          
-    merged.to_csv(task.targets[0])
-
-def calc_adjusted_close(dependencies, targets):
-    all_equities = get_all_equities()
-    adj_close = calc_adj_close(closepath, divpath, all_equities)
-    adj_close.to_csv(targets[0])
-
-def booktomarket(dependencies, targets):
-    # Import closing price data with pandas
-    close = pd.read_csv(closepath, index_col = 0, parse_dates=True)
-
-    # Import book value per share data with pandas
-    bookvalue = pd.read_csv(bookvaluepath, index_col = 0, parse_dates=True)
-    
-    b2m = calc_booktomarket(close, bookvalue)
-    b2m.to_csv(targets[0])
+    # calculate the momentum
+    mom = transf.momentum_monthly(close_m, 12, 1)
+    mom.to_csv(path.join(MASTER_DATA_PATH, "Monthly Close Momentum.csv"))
 
 def swapaxes(dependencies, targets):
     
@@ -224,3 +214,15 @@ def task_resample_monthly():
             'targets':[path.join(MASTER_DATA_PATH, f + '-monthly.csv')],
             'file_dep':[path.join(MASTER_DATA_PATH, f + '.csv')],
         }
+
+def task_monthly_close_momentum():
+    return {
+        'actions':[monthly_close_momentum],
+        'task_dep':['merge']
+    }
+
+def task_monthly_avg_momentum():
+    return {
+        'actions':[monthly_avg_momentum],
+        'task_dep':['merge']
+    }

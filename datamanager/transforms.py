@@ -9,11 +9,23 @@ def resample_monthly(data, how = 'last'):
     data_monthly = data.resample('M', how = how)
     return data_monthly
 
-def moving_avg(data, days):
+def moving_avg(data, days, min_days = None):
     '''
+    Calculate the moving average of the daily data
+
+    Parameters
+    ---------
+    data : pandas.DataFrame
+
+    days : int
+
+    min_days : int
+
+    Returns
+    -----------
     '''
 
-
+    return pd.rolling_mean(data, days, min_periods=min_days, freq='D')
 
 def momentum_monthly(close, start_lag, end_lag):
     '''
@@ -39,9 +51,10 @@ def momentum_monthly(close, start_lag, end_lag):
     
     assert close.index.freq == "M"
     
-    # shift dates to align
-    
-    # calculate momentum
+    # shift dates to align and calculate momentum
+    mom = np.log(close.tshift(end_lag)) - np.log(close.tshift(start_lag))
+
+    return mom
     
 def earnings_momentum(ey, close, start_lag, end_lag):
     '''

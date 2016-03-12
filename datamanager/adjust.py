@@ -45,15 +45,10 @@ def calc_dividend_multiplier(div, close):
     mult = (1-(div/close)).dropna()
     return __backwards_calc__(mult)
 
-def calc_adj_close(closepath, divpath, equities):
+def calc_adj_close(close, divs, equities):
     '''
     Calculate the adjusted close
     '''
-    # Import closing price data with pandas
-    close = pd.read_csv(closepath, index_col = 0, parse_dates=True)
-
-    # Import dividend ex date data with pandas
-    divs = pd.read_csv(divpath, index_col = 0, parse_dates=True)
 
     # fillna with pad.
     divmult = empty_dataframe(equities)
