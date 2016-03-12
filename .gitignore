@@ -62,6 +62,9 @@ target/
 .ipynb_checkpoints
 
 # CSV Data files
-**/*.csv
+master/*.csv
+merged/*.csv
+converted/*.csv
+downloads/*.csv
 *.doit.**
 *.user
