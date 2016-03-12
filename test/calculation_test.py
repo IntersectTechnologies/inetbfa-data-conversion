@@ -27,6 +27,23 @@ def test_book2market():
     
     df = df.ffill()
 
+def test_surprise_sum():
+    td = TESTDATA.head(10)
+
+    assert len(td.index) == 10
+
+    last3 = td.tail(3)
+    shifted = td.shift(-2)
+    sum_last3 = last3.sum()
+    sum_ix = shifted.iloc[[5,6,7]].sum()
+
+    assert sum_last3['AGL'] == sum_ix['AGL']
+    
+    rolsum = pd.rolling_sum(shifted, 3)
+
+    assert np.abs(rolsum.iloc[7]['AGL'] - sum_last3['AGL']) < 0.001
+    
+
 def test_momentum():
     resampled = t.resample_monthly(TESTDATA, 'mean')
 
@@ -44,3 +61,13 @@ def test_momentum():
     assert t_mom['AGL'] == mom.ix['2015-12-31']['AGL']
     assert t_mom['SOL'] == mom.ix['2015-12-31']['SOL']
     assert t_mom['SAB'] == mom.ix['2015-12-31']['SAB']
+
+def test_cumulative_return():
+
+    price = [7, 8, 9, 10, 9, 9, 8, 9, 10, 11, 10]
+    index = list(range(0, 11))
+    df = pd.DataFrame(price, index = index, columns = ["Data"])
+    logret = np.log(df) - np.log(df.shift(1))
+
+    pctret = df.pct_change()
+

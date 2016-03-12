@@ -55,9 +55,9 @@ def momentum_monthly(close, start_lag, end_lag):
     assert close.index.freq == "M"
     
     # shift dates to align and calculate momentum
-    mom = np.log(close.tshift(end_lag)) - np.log(close.tshift(start_lag))
+    mom = np.log(close.shift(end_lag)) - np.log(close.shift(start_lag))
 
-    return pd.DataFrame(mom, index = close.index)
+    return mom
     
 def earnings_momentum(ey, close, start_lag, end_lag):
     '''
@@ -66,17 +66,41 @@ def earnings_momentum(ey, close, start_lag, end_lag):
     
 def pead_momentum(announcements, close):
     '''
-    Calculate the price momentum from the most recent earnings annoucnement normalised to annualised returns
+    Calculate the price momentum from the most recent earnings announcement normalised to annualised returns
     A minimum of 2 days since the announcement (from day 3) is required. 
     
     Parameters
     -----------
     
     
-    Rerturns
+    Returns
     -----------
     
     '''
+
+    # make 0 at every earnings announcement
+    anndays = announcements.applymap(lambda x: 0 if np.isnan(x) else 1)
+    
+    last_ann_price = close * anndays
+    last_ann_price.ffill(inplace= True)
+    days_since_df = last_ann_price.copy()
+
+    # convert this to util function taking a predicate
+    days_since = np.NaN
+    for ticker in anndays.columns:
+        for day in anndays.index:
+            if (anndays.loc[day, ticker] == 1):
+                days_since = 0
+            else:
+                days_since += 1
+            
+            days_since_df.loc[day, ticker] = days_since
+  
+    norm_factor = 252 / days_since_df
+    # calculate returns
+    norm_mom = np.log(close) - np.log(last_ann_price)
+
+    return norm_mom
 
 def earnings_surprise(announcements, close):
     '''
@@ -88,10 +112,28 @@ def earnings_surprise(announcements, close):
         The cumulative return (surprise) values on the announcement days (index) - all NaN rows removed
     '''
 
+    ea = announcements.dropna(how='all')
+    # calculate the log returns
+    logret = log_returns(close.drop_na(how='all'))
+
+    # calculate the 3 day rolling sum of returns
+    sum3day = pd.rolling_sum(logret.shift(-2), 3)
+
+    # get the 3 day sum - the surprise
+    ann = ea.applymap(lambda val: 0 if np.isnan(val) else 1)
+    return ann * sum3day
+
 def earnings_surprise_changes(announcements, close):
     '''
     Calculates the change in earnings suprises by comparing an earnings surprise to a previous surprise
     '''    
+
+    # calculate the earnings surprise
+    surprise = earnings_surprise(announcements, close)
+    filled = surprise.ffill()
+
+    diffd = filled.diff()
+
 
 def earnings_surprise_change_momentum(announcements, close):
     '''

@@ -146,6 +146,15 @@ def calc_log_returns(task):
     logret = transf.log_returns(close)
     logret.to_csv(path.join(MASTER_DATA_PATH, "Log Returns.csv"))
 
+def calc_pead_momentum(task):
+    # load close
+    close = load_field_ts(MASTER_DATA_PATH, field = "Close")
+
+    # load dividend decl date
+    announcments = load_field_ts(MASTER_DATA_PATH, field = "Dividend Declaration Date")
+    pead = pead_momentum(announcements, close)
+
+    pead.to_csv(path.join(MASTER_DATA_PATH, "Normalized PEAD Momentum.csv"))
 
 def swapaxes(dependencies, targets):
     
