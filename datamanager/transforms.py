@@ -57,7 +57,7 @@ def momentum_monthly(close, start_lag, end_lag):
     # shift dates to align and calculate momentum
     mom = np.log(close.tshift(end_lag)) - np.log(close.tshift(start_lag))
 
-    return mom
+    return pd.DataFrame(mom, index = close.index)
     
 def earnings_momentum(ey, close, start_lag, end_lag):
     '''
@@ -108,6 +108,6 @@ def log_returns(data):
     :returns Pandas DataFrame
     '''
 
-    assert data.index.freq == 'D'
+    assert data.index.freq == "Day"
     ret = np.log(data) - np.log(data.tshift(1))
     return ret

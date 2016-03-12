@@ -28,6 +28,9 @@
     <Compile Include="datamanager\process\extract.py" />
     <Compile Include="datamanager\process\preprocessing.py" />
     <Compile Include="datamanager\referencedata.py" />
+    <Compile Include="datamanager\reporting.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="datamanager\transforms.py">
       <SubType>Code</SubType>
     </Compile>
@@ -41,6 +44,9 @@
     </Compile>
     <Compile Include="test\calculation_test.py" />
     <Compile Include="test\conversion_tests.py" />
+    <Compile Include="test\mock_data.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="datamanager" />
