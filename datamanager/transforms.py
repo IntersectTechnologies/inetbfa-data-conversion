@@ -108,6 +108,6 @@ def log_returns(data):
     :returns Pandas DataFrame
     '''
 
-    assert data.freq == 'D'
+    assert data.index.freq == 'D'
     ret = np.log(data) - np.log(data.tshift(1))
     return ret
