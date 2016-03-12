@@ -99,7 +99,7 @@ def pead_momentum(announcements, close):
     
     '''
 
-    # make 0 at every earnings announcement
+    # make 1 at every earnings announcement
     anndays = announcements.applymap(lambda x: 0 if np.isnan(x) else 1)
     
     last_ann_price = close * anndays

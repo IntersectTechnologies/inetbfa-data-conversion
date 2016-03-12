@@ -252,3 +252,9 @@ def task_log_returns():
         'actions':[calc_log_returns],
         'file_dep':[path.join(MASTER_DATA_PATH, 'Close.csv')],
     }
+
+def task_pead_momentum():
+    return {
+        'actions':[calc_pead_momentum],
+        'file_dep':[path.join(MASTER_DATA_PATH, 'Close.csv'), path.join(MASTER_DATA_PATH, 'Dividend Declaration Date.csv')],
+    }
