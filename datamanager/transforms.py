@@ -94,3 +94,14 @@ def earnings_surprise_change_momentum(announcements, close):
     '''
     Calculate the price momentum since the most recent earnings surprise change normalised to annualised returns
     '''
+
+def log_returns(data):
+    '''
+    :window Pandas DataFrame
+
+    :returns Pandas DataFrame
+    '''
+
+    assert data.freq == 'D'
+    ret = np.log(data) - np.log(data.tshift(1))
+    return ret

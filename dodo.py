@@ -129,7 +129,7 @@ def monthly_close_momentum(task):
     # load the daily close
     close = load_field_ts(MASTER_DATA_PATH, field = "Close")
 
-    # resample to monthly average data
+    # resample to monthly close data
     close_m = transf.resample_monthly(close, how = 'last')
     
     # calculate the momentum
