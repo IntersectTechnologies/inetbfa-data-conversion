@@ -4,6 +4,7 @@ import datetime as dt
 import calendar as cal
 import pandas as pd
 import string
+import numpy as np
 
 from datamanager.envs import *
 from datamanager.load import *
@@ -35,7 +36,10 @@ def convert_data(task):
     name = task.name.split(':')[1]
     fp = path.join(DL_PATH, name + '.xlsx')
     new_data = load_intebfa_ts_data(fp)
-    new_data.to_csv(task.targets[0])
+
+    # drop all data for current month
+    dropix = new_data.index[new_data.index > np.datetime64(last_month_end())]
+    new_data.drop(dropix).to_csv(task.targets[0])
 
 def create_report():
     '''
