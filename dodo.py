@@ -136,6 +136,13 @@ def monthly_close_momentum(task):
     mom = transf.momentum_monthly(close_m, 12, 1)
     mom.to_csv(path.join(MASTER_DATA_PATH, "Monthly Close Momentum.csv"))
 
+def calc_log_returns(task):
+    close = load_field_ts(MASTER_DATA_PATH, field = "Close")
+
+    logret = transf.log_returns(close)
+    logret.to_csv(path.join(MASTER_DATA_PATH, "Log Returns.csv"))
+
+
 def swapaxes(dependencies, targets):
     
     temp = {}
@@ -218,11 +225,17 @@ def task_resample_monthly():
 def task_monthly_close_momentum():
     return {
         'actions':[monthly_close_momentum],
-        'task_dep':['merge']
+        'file_dep':[path.join(MASTER_DATA_PATH, 'Close.csv')],
     }
 
 def task_monthly_avg_momentum():
     return {
         'actions':[monthly_avg_momentum],
-        'task_dep':['merge']
+        'file_dep':[path.join(MASTER_DATA_PATH, 'Close.csv')],
+    }
+
+def task_log_returns():
+    return {
+        'actions':[calc_log_returns],
+        'file_dep':[path.join(MASTER_DATA_PATH, 'Close.csv')],
     }

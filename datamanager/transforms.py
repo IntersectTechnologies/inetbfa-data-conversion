@@ -1,3 +1,6 @@
+import pandas as pd
+import numpy as np
+
 '''
 This module contains transformation functions for time series data based on pandas DataFrame's
 '''
@@ -97,6 +100,9 @@ def earnings_surprise_change_momentum(announcements, close):
 
 def log_returns(data):
     '''
+
+    Parameters
+    -----
     :window Pandas DataFrame
 
     :returns Pandas DataFrame
