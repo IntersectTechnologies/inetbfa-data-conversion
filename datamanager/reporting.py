@@ -29,7 +29,14 @@ def report_new_listings(htmlreport):
     htmlreport.write('<h1>Equity Listing</h1>')
 
     htmlreport.write('<h3>Newly Listed Equities</h3>')
-    htmlreport.write('<div>' + new.to_html() + '</div>')
+    htmlreport.write('<div>')
+    htmlreport.write('<table>')
+
+    for t in new:
+        htmlreport.write('<tr><td>' + t + '</td></tr>')
+        
+    htmlreport.write('</table>')
+    htmlreport.write('</div>')
 
 def report_convert(htmlreport):
     reportdata = {}
