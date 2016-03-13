@@ -28,9 +28,6 @@
     <Compile Include="datamanager\process\extract.py" />
     <Compile Include="datamanager\process\preprocessing.py" />
     <Compile Include="datamanager\referencedata.py" />
-    <Compile Include="datamanager\reporting.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="datamanager\transforms.py">
       <SubType>Code</SubType>
     </Compile>

@@ -11,7 +11,6 @@ from datamanager.load import *
 from datamanager.adjust import calc_adj_close, calc_booktomarket
 from datamanager.utils import last_month_end
 import datamanager.transforms as transf
-from datamanager.reporting import data_summary_report
 fields = marketdata_fields()
 
 # paths
