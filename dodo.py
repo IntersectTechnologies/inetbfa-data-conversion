@@ -65,7 +65,7 @@ def calc_adjusted_close(dependencies, targets):
     close = load_field_ts(MERGED_PATH, field = "Close")
 
     # Import dividend ex date data
-    divs = load_field_ts(MERGED_PATH, field = "Dividend Ex Date.csv")
+    divs = load_field_ts(MERGED_PATH, field = "Dividend Ex Date")
     adj_close = calc_adj_close(close, divs, all_equities)
     adj_close.to_csv(targets[0])
 
