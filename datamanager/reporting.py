@@ -1,6 +1,6 @@
 import pandas as pd
 from os import path, listdir
-from datamanager.load import get_all_equities_from_data
+from datamanager.load import get_all_equities_from_data, load_ts
 from datamanager.envs import CONVERT_PATH, MERGED_PATH
 
 def data_summary_report(path, title):
