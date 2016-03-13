@@ -41,11 +41,6 @@ def convert_data(task):
     dropix = new_data.index[new_data.index > np.datetime64(last_month_end())]
     new_data.drop(dropix).to_csv(task.targets[0])
 
-def create_report():
-    '''
-    '''
-    data_summary_report("report.html", "Data Summary Report")
-
 def merge_data(task): 
     
     name = task.name.split(':')[1]
@@ -217,12 +212,6 @@ def task_data_per_ticker():
         'actions':[swapaxes],
         'file_dep': files,
         'targets':[path.join(CONVERT_PATH, "tickers")]
-    }
-
-def task_report():
-    return {
-        'actions':[create_report],
-        'task_dep':['merge']
     }
 
 def task_resample_monthly():
