@@ -1,11 +1,14 @@
 import pandas as pd
 from os import path, listdir
+from datamanager.load import get_all_equities_from_data
+from datamanager.envs import CONVERT_PATH, MERGED_PATH
 
 def data_summary_report(path, title):
     reportdata = {}
 
     with open(path, 'w') as report_html:
         report_header(report_html, title)
+        report_new_listings(report_html)
         report_convert(report_html)
         report_merge(report_html)
         
@@ -19,6 +22,14 @@ def report_header(htmlreport, title):
     htmlreport.write('<title>Data Report</title>')
     htmlreport.write('</head>')
     htmlreport.write('<body>')
+
+def report_new_listings(htmlreport):
+    all, current, new, delisted = get_all_equities_from_data(MERGED_PATH, CONVERT_PATH, 'Close')
+
+    htmlreport.write('<h1>Equity Listing</h1>')
+
+    htmlreport.write('<h3>Newly Listed Equities</h3>')
+    htmlreport.write('<div>' + new.to_html() + '</div>')
 
 def report_convert(htmlreport):
     reportdata = {}
@@ -34,6 +45,9 @@ def report_convert(htmlreport):
         reportdata['number'] = [data[ticker].count() for ticker in data.columns]
 
         report = pd.DataFrame(reportdata, index = data.columns, columns = columns)
+
+        # filter report
+
         htmlreport.write('<div>' + report.to_html() + '</div>')
 
 def report_merge(htmlreport):
