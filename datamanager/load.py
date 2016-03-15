@@ -11,8 +11,6 @@ from os import path
 from datamanager.envs import MASTER_DATA_PATH
 from datetime import datetime as dt
 
-daily_path = MASTER_DATA_PATH
-
 def marketdata_fields():
     return ['Close',
             'High',
@@ -218,47 +216,38 @@ def empty_dataframe(equities,  startdate = pd.datetime(1990, 1 , 1).date(), endd
     template = pd.DataFrame(dat, index = rows, columns = cols)
     return template
 
-def load_close(tickers=None, start='2010-01-01', end=str(dt.today().date())):
+def load_field(fpath=MASTER_DATA_PATH, field = 'Close', tickers=None, start='1990-01-01', end=str(dt.today().date())):
     '''
     '''
     
-    return load_field(field = 'Close', tickers=tickers, start=start, end = end)
-
-def load_field(field = 'Close', tickers=None, start='2010-01-01', end=str(dt.today().date())):
-    '''
-    '''
-    
-    data = pd.read_csv(path.join(daily_path, field + '.csv'), sep = ',', index_col = 0, parse_dates = True)
+    data = pd.read_csv(path.join(fpath, field + '.csv'), sep = ',', index_col = 0, parse_dates = True)
     data = data.ix[start:end]
     
     if (tickers==None):
-        return data.dropna(how='all')
+        return data
     else:
-        return data[tickers].dropna(how='all')
+        return data[tickers]
 
-def load_fields(fields, tickers=None, start='2010-01-01', end=str(dt.today().date())):
+def load_fields(fpath=MASTER_DATA_PATH, fields = ['Close'], tickers=None, start='2010-01-01', end=str(dt.today().date())):
     '''
     '''
     
     assert type(fields) == list
     data = {}
     for f in fields:
-        temp = pd.read_csv(path.join(daily_path, f + '.csv'), sep=',', header=0, 
+        temp = pd.read_csv(path.join(fpath, f + '.csv'), sep=',', header=0, 
                     index_col=0, parse_dates=True)
                            
         temp = temp.ix[start:end]  
         
-        if (tickers==None):
-            temp = temp.dropna(how='all')
-        else:
-            temp = temp[tickers].dropna(how='all')
+        if (tickers is not None):
+            temp = temp[tickers]
 
-        temp.fillna(method = 'pad', inplace=True)
         data[f] = temp
         
     return data 
     
-def load_panel(fields = ['Close']):
+def load_panel(fpath=MASTER_DATA_PATH, fields = ['Close']):
     '''
     
     Parameters
@@ -276,7 +265,7 @@ def load_panel(fields = ['Close']):
     dd = {}     # data dictionary
     
     for metric in fields:   
-        fp = path.join(daily_path, metric + '.csv')
+        fp = path.join(fpath, metric + '.csv')
         if path.exists(fp):
             stkd = pd.DataFrame.from_csv(fp)
             dd[metric] = stkd
@@ -289,37 +278,54 @@ def load_panel(fields = ['Close']):
     # Swap panel axes
     panel = panel.swapaxes(0, 2)
     return panel
-  
-def load_numtrades():
-    '''
-    '''
-    
-    return pd.read_csv(path.join(daily_path, 'Number Of Trades.csv'), sep = ',', index_col = 0)
 
-def load_totalnumshares():
+def load_close(fpath=MASTER_DATA_PATH, tickers=None, start='1990-01-01', end=str(dt.today().date())):
+    '''
+    load the closing price data from the supplied path
     '''
     
+    return load_field(fpath, field = 'Close', tickers=tickers, start=start, end = end)
+ 
+def load_numtrades(fpath = MASTER_DATA_PATH, tickers=None, start='1990-01-01', end=str(dt.today().date())):
     '''
-    
-    return pd.read_csv(path.join(daily_path, 'Total Number Of Shares.csv'), sep = ',', index_col = 0, parse_dates=True)
+    '''
+    return load_field(fpath, field = 'Number Of Trades', tickers=tickers, start=start, end = end)
 
-def load_volume():
+def load_totalnumshares(fpath = MASTER_DATA_PATH, tickers=None, start='1990-01-01', end=str(dt.today().date())):
     '''
     '''
-    
-    return pd.read_csv(path.join(daily_path, 'Volume.csv'), sep = ',', index_col = 0, parse_dates=True)
+    return load_field(fpath, field = 'Total Number Of Shares', tickers=tickers, start=start, end = end)
+
+def load_volume(fpath = MASTER_DATA_PATH, tickers=None, start='1990-01-01', end=str(dt.today().date())):
+    '''
+    '''
+    return load_field(fpath, field = 'Volume', tickers=tickers, start=start, end = end)
        
-def load_marketcap():
+def load_marketcap(fpath = MASTER_DATA_PATH, tickers=None, start='1990-01-01', end=str(dt.today().date())):
+    '''
+    '''
+    return load_field(fpath, field = 'Market Cap', tickers=tickers, start=start, end = end)
+
+def load_dy(fpath = MASTER_DATA_PATH, tickers=None, start='1990-01-01', end=str(dt.today().date())):
+    '''
+    '''
+    return load_field(fpath, field = 'DY', tickers=tickers, start=start, end = end)
+
+def load_ey(fpath = MASTER_DATA_PATH, tickers=None, start='1990-01-01', end=str(dt.today().date())):
+    '''
+    '''
+    return load_field(fpath, field = 'EY', tickers=tickers, start=start, end = end)
+   
+def load_pe(fpath = MASTER_DATA_PATH, tickers=None, start='1990-01-01', end=str(dt.today().date())):
+    '''
+    '''
+    return load_field(fpath, field = 'PE', tickers=tickers, start=start, end = end)
+
+def load_equities(fpath = MASTER_DATA_PATH):
     '''
     '''
     
-    return pd.read_csv(path.join(daily_path, 'Market Cap.csv'), sep = ',', index_col = 0, parse_dates=True)
-    
-def load_equities():
-    '''
-    '''
-    
-    EQUITIES = pd.read_csv(path.join(daily_path, 'jse_equities.csv'), sep = ',', index_col = 0)
+    EQUITIES = pd.read_csv(path.join(fpath, 'jse_equities.csv'), sep = ',', index_col = 0)
     
     return EQUITIES
     
