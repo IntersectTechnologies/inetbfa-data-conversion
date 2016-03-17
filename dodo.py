@@ -121,7 +121,7 @@ def monthly_avg_momentum(task):
     
     # calculate the momentum
     mom = transf.momentum_monthly(close_m, 12, 1)
-    mom.to_csv(path.join(MASTER_DATA_PATH, "Monthly Avg Momentum.csv"))
+    mom.to_csv(path.join(MASTER_DATA_PATH, "Monthly-Avg-Momentum.csv"))
 
 def monthly_close_momentum(task):
     # load the daily close
@@ -132,13 +132,13 @@ def monthly_close_momentum(task):
     
     # calculate the momentum
     mom = transf.momentum_monthly(close_m, 12, 1)
-    mom.to_csv(path.join(MASTER_DATA_PATH, "Monthly Close Momentum.csv"))
+    mom.to_csv(path.join(MASTER_DATA_PATH, "Monthly-Close-Momentum.csv"))
 
 def calc_log_returns(task):
     close = load_field_ts(MASTER_DATA_PATH, field = "Close")
 
     logret = transf.log_returns(close)
-    logret.to_csv(path.join(MASTER_DATA_PATH, "Log Returns.csv"))
+    logret.to_csv(path.join(MASTER_DATA_PATH, "Log-Returns.csv"))
 
 def calc_pead_momentum(task):
     # load close
@@ -148,7 +148,7 @@ def calc_pead_momentum(task):
     announcements = load_field_ts(MASTER_DATA_PATH, field = "Dividend Declaration Date")
     pead = transf.pead_momentum(announcements, close)
 
-    pead.to_csv(path.join(MASTER_DATA_PATH, "Normalized PEAD Momentum.csv"))
+    pead.to_csv(path.join(MASTER_DATA_PATH, "Normalized-PEAD-Momentum.csv"))
 
 def swapaxes(dependencies, targets):
     
@@ -233,6 +233,7 @@ def task_monthly_avg_momentum():
     return {
         'actions':[monthly_avg_momentum],
         'file_dep':[path.join(MASTER_DATA_PATH, 'Close.csv')],
+        'targets':[path.join(MASTER_DATA_PATH, "Monthly-Avg-Momentum.csv")]
     }
 
 def task_log_returns():
@@ -245,4 +246,5 @@ def task_pead_momentum():
     return {
         'actions':[calc_pead_momentum],
         'file_dep':[path.join(MASTER_DATA_PATH, 'Close.csv'), path.join(MASTER_DATA_PATH, 'Dividend Declaration Date.csv')],
+        'targets':[path.join(MASTER_DATA_PATH, "Normalized-PEAD-Momentum.csv")]
     }
