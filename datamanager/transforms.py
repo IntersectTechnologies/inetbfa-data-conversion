@@ -32,8 +32,12 @@ def resample_monthly(data, how = 'last'):
     '''
     Resample the data to a monthly frequency using a specific aggregation function
     '''
-    data_monthly = data.resample('M', how = how)
-    return data_monthly
+    if(how == 'sum'):
+       return data.resample('M').sum()
+    elif(how == 'mean'):
+        return data.resample('M').mean()
+
+    return data.resample('M').last()
 
 def moving_avg(data, days, min_days = None):
     '''
