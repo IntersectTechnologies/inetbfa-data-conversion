@@ -285,7 +285,14 @@ def load_close(fpath=MASTER_DATA_PATH, tickers=None, start='1990-01-01', end=str
     '''
     
     return load_field(fpath, field = 'Close', tickers=tickers, start=start, end = end)
- 
+
+def load_adj_close(fpath=MASTER_DATA_PATH, tickers=None, start='1990-01-01', end=str(dt.today().date())):
+    '''
+    load the adjusted closing price data from the supplied path
+    '''
+    
+    return load_field(fpath, field = 'Adjusted Close', tickers=tickers, start=start, end = end)
+
 def load_numtrades(fpath = MASTER_DATA_PATH, tickers=None, start='1990-01-01', end=str(dt.today().date())):
     '''
     '''
