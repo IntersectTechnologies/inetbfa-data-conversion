@@ -17,6 +17,7 @@ fields = marketdata_fields()
 mergein_old = MASTER_DATA_PATH
 mergein_new = CONVERT_PATH
 
+index_src_path = path.join(DL_PATH, 'Indices.xlsx')
 closepath = path.join(MERGED_PATH, "Close.csv")
 divpath = path.join(MERGED_PATH, "Dividend Ex Date.csv")
 bookvaluepath = path.join(MERGED_PATH, "Book Value per Share.csv")
@@ -37,7 +38,13 @@ def convert_data(task):
     new_data = load_intebfa_ts_data(fp)
 
     # drop all data for current month
-    dropix = new_data.index[new_data.index > np.datetime64(last_month_end())]
+    
+    dropix = new_data.index[new_data.index.values.astype('datetime64[D]') > np.datetime64(last_month_end())]
+    new_data.drop(dropix).to_csv(task.targets[0])
+
+def convert_indices(task):
+    new_data = load_inetbfa_ts_data(index_src_path)
+    dropix = new_data.index[new_data.index.values.astype('datetime64[D]') > np.datetime64(last_month_end())]
     new_data.drop(dropix).to_csv(task.targets[0])
 
 def merge_data(task): 
@@ -177,6 +184,13 @@ def task_convert():
             'targets':[path.join(CONVERT_PATH, f+ '.csv')],
             'file_dep':[path.join(DL_PATH, f + '.xlsx')],
         }
+
+def task_convert_index():
+     return {
+        'actions':[convert_indices],
+        'file_dep': [path.join(DL_PATH, 'Indices.xlsx')],
+        'targets':[path.join(MERGED_PATH, "Indices.csv")]
+    }
 
 # 2
 def task_merge():
