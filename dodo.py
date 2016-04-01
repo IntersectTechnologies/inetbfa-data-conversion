@@ -35,7 +35,7 @@ def convert_data(task):
     '''
     name = task.name.split(':')[1]
     fp = path.join(DL_PATH, name + '.xlsx')
-    new_data = load_intebfa_ts_data(fp)
+    new_data = load_inetbfa_ts_data(fp)
 
     # drop all data for current month
     

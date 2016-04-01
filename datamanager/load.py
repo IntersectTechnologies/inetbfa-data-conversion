@@ -89,7 +89,7 @@ def equities_from_data(current_list, all_list):
 
     return(new_all_set, current_set, newly_listed, delisted)
 
-def load_intebfa_ts_data(filepath):
+def load_inetbfa_ts_data(filepath):
     '''
     '''
     drop_cols = [0,1]
