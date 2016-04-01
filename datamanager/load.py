@@ -95,7 +95,7 @@ def load_intebfa_ts_data(filepath):
     drop_cols = [0,1]
     drop_rows = 0
         
-    temp = pd.read_excel(filepath, header=0, skiprows=[1, 2], index_col=2, parse_dates=True)                 
+    temp = pd.read_excel(filepath, header=0, skiprows=[1, 2], index_col=2)                 
     temp.drop(temp.columns[drop_cols], axis=1, inplace=True)
             
     temp.drop(temp.index[drop_rows], axis=0, inplace=True)
@@ -113,7 +113,7 @@ def load_inetbfa_ref_data(fpath):
     if path.isfile(fpath):
             
         fn = fpath
-        temp = pd.read_excel(fn, header=0, skiprows=[2], index_col=2, parse_dates=True)                 
+        temp = pd.read_excel(fn, header=0, skiprows=[2], index_col=2)                 
         temp.drop(temp.columns[drop_cols], axis=1, inplace=True)
         fields = [f for f in temp.ix[0]]
         names = [n.split('(')[0] for n in temp.ix[1]]
