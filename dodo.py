@@ -40,24 +40,24 @@ def convert_data(task):
     # drop all data for current month
     
     dropix = new_data.index[new_data.index.values.astype('datetime64[D]') > np.datetime64(last_month_end())]
-    new_data.drop(dropix).to_csv(task.targets[0])
+    new_data.drop(dropix).sort_index(axis = 1).to_csv(task.targets[0])
 
 def convert_indices(task):
     new_data = load_inetbfa_ts_data(index_src_path)
     dropix = new_data.index[new_data.index.values.astype('datetime64[D]') > np.datetime64(last_month_end())]
-    new_data.drop(dropix).to_csv(task.targets[0])
+    new_data.drop(dropix).sort_index(axis = 1).to_csv(task.targets[0])
 
 def merge_data(task): 
     
     name = task.name.split(':')[1]
     new = load_ts(path.join(CONVERT_PATH, name + '.csv'))
-    old = load_ts(path.join(MASTER_DATA_PATH, name + '.csv'))
+    old = load_ts(path.join(MERGED_PATH, name + '.csv'))
     
     merged = empty_dataframe(get_all_equities(), enddate = last_month_end())
     merged.update(old)
     merged.update(new)
           
-    merged.to_csv(task.targets[0])
+    merged.sort_index(axis = 1).to_csv(task.targets[0])
 
 def calc_adjusted_close(dependencies, targets):
     all_equities = get_all_equities()
@@ -68,7 +68,7 @@ def calc_adjusted_close(dependencies, targets):
     # Import dividend ex date data
     divs = load_field_ts(MERGED_PATH, field = "Dividend Ex Date")
     adj_close = calc_adj_close(close, divs, all_equities, enddate = last_month_end())
-    adj_close.to_csv(targets[0])
+    adj_close.sort_index(axis = 1).to_csv(targets[0])
 
 def booktomarket(dependencies, targets):
     # Import closing price data
@@ -77,7 +77,7 @@ def booktomarket(dependencies, targets):
     # Import book value per share data
     bookvalue = load_field_ts(MERGED_PATH, field = "Book Value per Share")
     b2m = transf.calc_booktomarket(close, bookvalue)
-    b2m.to_csv(targets[0])
+    b2m.sort_index(axis = 1).to_csv(targets[0])
 
 def resample_monthly(task):
 
@@ -117,7 +117,7 @@ def resample_monthly(task):
         write = False
     
     if (write):
-        out.to_csv(path.join(MASTER_DATA_PATH, name + '-monthly.csv'))
+        out.sort_index(axis = 1).to_csv(path.join(MASTER_DATA_PATH, name + '-monthly.csv'))
 
 def monthly_avg_momentum(task):
     # load the daily close
@@ -128,7 +128,7 @@ def monthly_avg_momentum(task):
     
     # calculate the momentum
     mom = transf.momentum_monthly(close_m, 12, 1)
-    mom.to_csv(path.join(MASTER_DATA_PATH, "Monthly-Avg-Momentum.csv"))
+    mom.sort_index(axis = 1).to_csv(path.join(MASTER_DATA_PATH, "Monthly-Avg-Momentum.csv"))
 
 def monthly_close_momentum(task):
     # load the daily close
@@ -139,13 +139,13 @@ def monthly_close_momentum(task):
     
     # calculate the momentum
     mom = transf.momentum_monthly(close_m, 12, 1)
-    mom.to_csv(path.join(MASTER_DATA_PATH, "Monthly-Close-Momentum.csv"))
+    mom.sort_index(axis = 1).to_csv(path.join(MASTER_DATA_PATH, "Monthly-Close-Momentum.csv"))
 
 def calc_log_returns(task):
     close = load_field_ts(MASTER_DATA_PATH, field = "Close")
 
     logret = transf.log_returns(close)
-    logret.to_csv(path.join(MASTER_DATA_PATH, "Log-Returns.csv"))
+    logret.sort_index(axis = 1).to_csv(path.join(MASTER_DATA_PATH, "Log-Returns.csv"))
 
 def calc_pead_momentum(task):
     # load close
@@ -155,7 +155,7 @@ def calc_pead_momentum(task):
     announcements = load_field_ts(MASTER_DATA_PATH, field = "Dividend Declaration Date")
     pead = transf.pead_momentum(announcements, close)
 
-    pead.to_csv(path.join(MASTER_DATA_PATH, "Normalized-PEAD-Momentum.csv"))
+    pead.sort_index(axis = 1).to_csv(path.join(MASTER_DATA_PATH, "Normalized-PEAD-Momentum.csv"))
 
 def swapaxes(dependencies, targets):
     
@@ -169,7 +169,7 @@ def swapaxes(dependencies, targets):
     out = panel.swapaxes(0, 2)
 
     for ticker in out.items:
-        out[ticker].dropna(how='all').to_csv(path.join(CONVERT_PATH, "tickers", ticker + '.csv'), index_label = "Date")
+        out[ticker].dropna(how='all').sort_index(axis = 1).to_csv(path.join(CONVERT_PATH, "tickers", ticker + '.csv'), index_label = "Date")
 
 ##########################################################################################
 # DOIT tasks
