@@ -8,7 +8,7 @@ import numpy as np
 
 from datamanager.envs import *
 from datamanager.load import *
-from datamanager.adjust import calc_adj_close, calc_booktomarket
+from datamanager.adjust import calc_adj_close
 from datamanager.utils import last_month_end
 import datamanager.transforms as transf
 fields = marketdata_fields()
@@ -53,7 +53,7 @@ def merge_data(task):
     new = load_ts(path.join(CONVERT_PATH, name + '.csv'))
     old = load_ts(path.join(MASTER_DATA_PATH, name + '.csv'))
     
-    merged = empty_dataframe(get_all_equities())
+    merged = empty_dataframe(get_all_equities(), enddate = last_month_end())
     merged.update(old)
     merged.update(new)
           
@@ -67,7 +67,7 @@ def calc_adjusted_close(dependencies, targets):
 
     # Import dividend ex date data
     divs = load_field_ts(MERGED_PATH, field = "Dividend Ex Date")
-    adj_close = calc_adj_close(close, divs, all_equities)
+    adj_close = calc_adj_close(close, divs, all_equities, enddate = last_month_end())
     adj_close.to_csv(targets[0])
 
 def booktomarket(dependencies, targets):
@@ -76,7 +76,7 @@ def booktomarket(dependencies, targets):
 
     # Import book value per share data
     bookvalue = load_field_ts(MERGED_PATH, field = "Book Value per Share")
-    b2m = calc_booktomarket(close, bookvalue)
+    b2m = transf.calc_booktomarket(close, bookvalue)
     b2m.to_csv(targets[0])
 
 def resample_monthly(task):

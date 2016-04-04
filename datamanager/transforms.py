@@ -5,9 +5,19 @@ from os import path
 from datamanager.envs import MASTER_DATA_PATH
 
 '''
-This module contains transformation functions for time series data based on pandas DataFrame's
+This module contains equity indicator and transformation functions for time series data based on pandas DataFrame's
 '''
 
+def calc_booktomarket(close, bookvalue):
+    '''
+    '''
+    
+    # should forward fill - the book-value made known at a certain date is valid for the next year / or until the next book value is available
+    bookval = bookvalue.ffill()
+    b2m = bookval / close
+
+    return b2m
+    
 def detrended_oscillator(close):
     '''
     Calculate the detrended oscillator

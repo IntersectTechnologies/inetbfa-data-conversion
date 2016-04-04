@@ -45,13 +45,13 @@ def calc_dividend_multiplier(div, close):
     mult = (1-(div/close)).dropna()
     return __backwards_calc__(mult)
 
-def calc_adj_close(close, divs, equities):
+def calc_adj_close(close, divs, equities, enddate = None):
     '''
     Calculate the adjusted close
     '''
 
     # fillna with pad.
-    divmult = empty_dataframe(equities)
+    divmult = empty_dataframe(equities, enddate=enddate)
     for ticker in divs.columns:
         # get the dividends and close of a single ticker and drop all NaN values
         tmp_div = divs[ticker].dropna()
@@ -63,7 +63,7 @@ def calc_adj_close(close, divs, equities):
 
     # get the new index 
     startdate = pd.datetime(2000, 1, 1).date()
-    divm = empty_dataframe(equities, startdate)
+    divm = empty_dataframe(equities, startdate, enddate=enddate)
 
     # update the blank dataframe - expand to the actual index
     divm.update(divmult) 
@@ -75,12 +75,3 @@ def calc_adj_close(close, divs, equities):
     # Save to file
     return adj_close
     
-def calc_booktomarket(close, bookvalue):
-    '''
-    '''
-    
-    # should forward fill - the book-value made known at a certain date is valid for the next year / or until the next book value is available
-    bookval = bookvalue.ffill()
-    b2m = bookval / close
-
-    return b2m
