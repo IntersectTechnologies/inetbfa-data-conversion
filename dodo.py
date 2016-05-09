@@ -47,6 +47,14 @@ def convert_indices(task):
     dropix = new_data.index[new_data.index.values.astype('datetime64[D]') > np.datetime64(last_month_end())]
     new_data.drop(dropix).sort_index(axis = 1).to_csv(task.targets[0])
 
+def merge_index(task): 
+    new = load_ts(path.join(CONVERT_PATH, 'Indices.csv'))
+    old = load_ts(path.join(MERGED_PATH, 'Indices.csv'))
+    
+    merged = old.update(new)
+          
+    merged.sort_index(axis = 1).to_csv(task.targets[0])
+
 def merge_data(task): 
     
     name = task.name.split(':')[1]
@@ -189,7 +197,14 @@ def task_convert_index():
      return {
         'actions':[convert_indices],
         'file_dep': [path.join(DL_PATH, 'Indices.xlsx')],
-        'targets':[path.join(MERGED_PATH, "Indices.csv")]
+        'targets':[path.join(CONVERT_PATH, "Indices.csv")]
+    }
+
+def task_merge_index():
+    return {
+        'actions':[merge_index],
+        'targets':[path.join(MERGED_PATH, "Indices.csv")],
+        'file_dep':[path.join(CONVERT_PATH, "Indices.csv")]
     }
 
 # 2
