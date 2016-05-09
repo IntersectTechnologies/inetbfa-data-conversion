@@ -51,8 +51,10 @@ def merge_index(task):
     new = load_ts(path.join(CONVERT_PATH, 'Indices.csv'))
     old = load_ts(path.join(MERGED_PATH, 'Indices.csv'))
     
-    old.update(new)
-    merged = old.copy()
+    merged = empty_dataframe(old.columns, enddate = last_month_end())
+    merged.update(old)
+    merged.update(new)
+
     merged.sort_index(axis = 1).to_csv(task.targets[0])
 
 def merge_data(task): 
