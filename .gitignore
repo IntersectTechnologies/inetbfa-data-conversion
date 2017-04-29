@@ -67,4 +67,5 @@ merged/*.csv
 converted/*.csv
 downloads/*.csv
 *.doit.**
-*.user
+*.pyproj.**
+.vagrant/

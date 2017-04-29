@@ -6,47 +6,50 @@ Converts and merges data downloaded with the INETBFA Excel Add-In to csv formats
 
 ## Getting started:
 
-Install python on your system if it is not already installed:
+If you do not already have git installed, download [git](https://git-scm.com/downloads) and follow the installation instructions.
 
-- Python 2.7+ should work
-- Tested on Python 2.7+, 3.4+
-- Get the Anaconda python distributio from:  https://www.continuum.io/downloads
-
-Install python doit automation tool:
-
-    pip install doit
-
-Clone this repository in an empty directory
+Clone this repository in by typing the following into a command line:
 
     git clone https://github.com/IntersectTechnologies/inetbfa-data-conversion.git
+
+To build and run the data conversion tool we use vagrant to set up a complete environment.
+
+Download and install [Vagrant](https://www.vagrantup.com/downloads.html)
+
+The Vagrant file in the repository has the complete configuration for the environment and will download and install all the dependencies when typing:
+
+    vagrant up
+
+on the command line.
+
+This will start a virtual machine with the newest Miniconda Python 3 distribution from Continuum Analytics installed.  All the package dependencies will be installed as part of the provisioning of the vagrant virtual environment.
+
+After the virtual machine is running, type the following:
+
+    vagrant ssh
+
 
 **Download data**
 
 To download new data you should have MS Excel installed and have the INETBFA Excel Add-Inn installed and configured.  This requires a subscription from http://www.inetbfa.com/
 Update the data in the downloads folder by opening each of the Excel Workbooks, going to the INETBFA tab and refreshing the imported data.
 
-The Excel files are ignored in the master branch to avoid adding changes to the repository, but you can get a copy by checking out the initialise branch:
+The Excel files are ignored in the master branch to avoid adding Excel file changes to the repository, but you can get a copy by checking out the initialise branch:
 
     git checkout initialise
 
-**Convert data**
+Go back to the master branch:
 
-To convert the data run the doit task from the command line:
+    git checkout master
 
-    doit convert
+and run the following command:
 
-**Merge the data**
+    doit convert merge adjust_close book2market
 
-To merge the newly converted data with the exisiting data
+This will create the following files:
 
-    doit merge    
 
-**Adjustment tasks**
 
-After the data has been updated the adjustment tasks can be run.
+After the conversion has completed you can again destroy the virtualised environment with:
 
-    doit adjust_close book2market
-
-**Transformation tasks**
-
-If you have a complete dataset in the correct format you can run the available transformation tasks.  Currently none is available, but momentum and moving_avg and resampling is planned for the near future... watch this space!
+    vagrant destroy
