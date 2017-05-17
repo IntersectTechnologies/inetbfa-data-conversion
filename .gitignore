@@ -68,4 +68,3 @@ converted/*.csv
 downloads/*.csv
 *.doit.**
 *.pyproj.**
-.vagrant/
