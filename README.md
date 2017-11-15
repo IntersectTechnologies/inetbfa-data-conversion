@@ -12,7 +12,7 @@ Download and install [Anaconda](https://www.continuum.io/downloads) python distr
 
 If you do not already have git installed, download [git](https://git-scm.com/downloads) and follow the installation instructions.
 
-Clone this repository in by typing the following into git bash:
+Clone this repository in a shell/command prompt:
 
     git clone https://github.com/IntersectTechnologies/inetbfa-data-conversion.git
 
@@ -30,7 +30,7 @@ To initialise the directory structure run the bash script
 
 **Download data**
 
-To download new data you should have MS Excel installed and have the INETBFA Excel Add-Inn installed and configured.  This requires a subscription from http://www.inetbfa.com/
+To download new data you should have MS Excel installed and have the INETBFA Excel Add-Inn installed and configured.  This requires a subscription from http://www.inetbfa.com/ now IRESS (http://www.iress.co.za)
 
 The data should be in a format compatible with the converter tools, stock tickers as the columns header and dates as the row index.  The converter tool only understands this specific format of the Excel files and expects the data frequency to be daily.  Each metric e.g. close, DY, PE etc should be saved in a separate file in the downloads folder
 
