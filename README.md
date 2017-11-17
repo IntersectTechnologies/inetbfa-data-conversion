@@ -14,7 +14,7 @@ If you do not already have git installed, download [git](https://git-scm.com/dow
 
 Clone this repository in a shell/command prompt:
 
-    git clone https://github.com/IntersectTechnologies/inetbfa-data-conversion.git
+    git clone https://github.com/nielswart/inetbfa-data-conversion.git
 
 Install the required python packages with conda:
 
